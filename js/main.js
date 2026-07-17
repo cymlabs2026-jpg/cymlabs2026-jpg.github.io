@@ -44,6 +44,13 @@
         hamburguesa.focus();
       }
     });
+
+    // Al pasar a escritorio el CSS oculta el menú y la hamburguesa. Si quedara abierto,
+    // el bloqueo de scroll del body seguiría activo y sin ningún control para quitarlo.
+    const anchoEscritorio = window.matchMedia('(min-width: 1024px)');
+    anchoEscritorio.addEventListener('change', function (e) {
+      if (e.matches) cerrarMenu();
+    });
   }
 
   /* ---------------------------------------------------------------
@@ -355,14 +362,25 @@
       temporizadorResize = setTimeout(dimensionar, 200);
     });
 
-    // No gastar batería animando algo que nadie está viendo.
+    // No gastar batería animando algo que nadie está viendo. Hacen falta las dos
+    // condiciones a la vez: volver a la pestaña no debe reanudar la animación si
+    // el hero quedó fuera de pantalla.
+    let heroALaVista = true;
+    let pestanaALaVista = !document.hidden;
+
+    function revisarAnimacion() {
+      if (heroALaVista && pestanaALaVista) iniciar();
+      else detener();
+    }
+
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden) detener();
-      else iniciar();
+      pestanaALaVista = !document.hidden;
+      revisarAnimacion();
     });
 
     const heroObserver = new IntersectionObserver(function (entradas) {
-      entradas[0].isIntersecting ? iniciar() : detener();
+      heroALaVista = entradas[0].isIntersecting;
+      revisarAnimacion();
     }, { threshold: 0 });
 
     heroObserver.observe(canvas);

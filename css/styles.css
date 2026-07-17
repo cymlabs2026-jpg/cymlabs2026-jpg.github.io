@@ -367,7 +367,12 @@ p { text-wrap: pretty; }
   font-size: 1rem;
 }
 
-body.menu-abierto { overflow: hidden; }
+/* El bloqueo de scroll solo debe existir donde existe el menú móvil. Acotarlo aquí
+   evita que un cambio a escritorio con el menú abierto deje la página sin scroll y
+   sin ningún control visible para recuperarlo. */
+@media (max-width: 1023px) {
+  body.menu-abierto { overflow: hidden; }
+}
 
 /* ========================= Hero ========================= */
 
