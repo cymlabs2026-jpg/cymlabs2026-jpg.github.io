@@ -59,7 +59,13 @@
   const nav = document.getElementById('nav');
   const enlacesNav = Array.from(document.querySelectorAll('.nav__enlace'));
   const secciones = enlacesNav
-    .map(function (enlace) { return document.querySelector(enlace.getAttribute('href')); })
+    .map(function (enlace) {
+      // Solo las anclas de esta misma página participan en el resaltado por scroll.
+      // Los enlaces a otras páginas (p. ej. "/index.html#soluciones" desde una
+      // subpágina) no son selectores válidos y romperían querySelector.
+      const href = enlace.getAttribute('href');
+      return href && href.charAt(0) === '#' ? document.querySelector(href) : null;
+    })
     .filter(Boolean);
 
   let tickPendiente = false;
