@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>C&amp;M Labs | Inteligencia Artificial para transformar negocios y potenciar profesionales</title>
+<meta name="description" content="C&amp;M Labs diseña soluciones de Inteligencia Artificial, automatización de procesos y Business Intelligence para empresas y profesionales independientes. La IA al servicio de tu crecimiento.">
+<meta name="author" content="C&amp;M Labs">
+<meta name="theme-color" content="#0F172A">
+<link rel="canonical" href="https://cymlabs2026-jpg.github.io/">
+
+<!-- Open Graph / redes sociales -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_LA">
+<meta property="og:site_name" content="C&amp;M Labs">
+<meta property="og:title" content="C&amp;M Labs | La Inteligencia Artificial al servicio de tu crecimiento">
+<meta property="og:description" content="Soluciones de Inteligencia Artificial, automatización y analítica de datos para empresas y profesionales.">
+<meta property="og:url" content="https://cymlabs2026-jpg.github.io/">
+<meta property="og:image" content="https://cymlabs2026-jpg.github.io/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="C&amp;M Labs | La Inteligencia Artificial al servicio de tu crecimiento">
+<meta name="twitter:description" content="Soluciones de Inteligencia Artificial, automatización y analítica de datos para empresas y profesionales.">
+<meta name="twitter:image" content="https://cymlabs2026-jpg.github.io/assets/og-image.png">
+
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+<script src="js/main.js" defer></script>
+
+<!-- Sin JavaScript no hay animaciones ni acordeones, pero todo el contenido debe seguir visible -->
+<noscript>
+  <style>
+    .revelar { opacity: 1; transform: none; }
+    .solucion__panel { grid-template-rows: 1fr; }
+    .solucion__chevron, .pestanas { display: none; }
+    .panel[hidden] { display: block; }
+  </style>
+</noscript>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "C&M Labs",
+  "alternateName": "CyM Labs",
+  "url": "https://cymlabs2026-jpg.github.io/",
+  "logo": "https://cymlabs2026-jpg.github.io/assets/logo.svg",
+  "email": "c.y.m.labs2026@gmail.com",
+  "slogan": "La Inteligencia Artificial al servicio de tu crecimiento",
+  "description": "C&M Labs diseña e implementa soluciones de Inteligencia Artificial, automatización de procesos y Business Intelligence que ayudan a empresas y profesionales a optimizar procesos, reducir costos y tomar decisiones basadas en datos.",
+  "areaServed": "Latinoamérica",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Palmira",
+    "addressRegion": "Valle del Cauca",
+    "addressCountry": "CO"
+  },
+  "knowsAbout": [
+    "Inteligencia Artificial",
+    "Automatización de procesos",
+    "Business Intelligence",
+    "Power BI",
+    "Agentes de IA",
+    "Desarrollo de software",
+    "Analítica de datos",
+    "Transformación digital"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "ventas",
+    "email": "c.y.m.labs2026@gmail.com",
+    "telephone": "+57-317-546-9066",
+    "availableLanguage": ["es"]
+  }
+}
+</script>
+</head>
+
+<body>
+
+<a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
+<!-- ============================ NAVEGACIÓN ============================ -->
+<header class="nav" id="nav">
+  <div class="contenedor nav__inner">
+    <a class="nav__logo" href="#inicio" aria-label="C&amp;M Labs, ir al inicio">
+      <img src="assets/logo.svg" alt="C&amp;M Labs" width="320" height="96">
+    </a>
+
+    <nav class="nav__enlaces" aria-label="Navegación principal">
+      <a class="nav__enlace" href="#nosotros">Nosotros</a>
+      <a class="nav__enlace" href="#publicos">A quién ayudamos</a>
+      <a class="nav__enlace" href="#soluciones">Soluciones</a>
+      <a class="nav__enlace" href="#sectores">Sectores</a>
+      <a class="nav__enlace" href="#formacion">Formación</a>
+      <a class="nav__enlace" href="#contacto">Contacto</a>
+    </nav>
+
+    <a class="boton boton--primario nav__cta" href="#contacto">Hablemos</a>
+
+    <button class="nav__hamburguesa" id="hamburguesa" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu-movil" id="menu-movil">
+  <a href="#nosotros">Nosotros</a>
+  <a href="#publicos">A quién ayudamos</a>
+  <a href="#soluciones">Soluciones</a>
+  <a href="#sectores">Sectores</a>
+  <a href="#formacion">Formación</a>
+  <a href="#contacto">Contacto</a>
+  <a class="boton boton--primario" href="#contacto">Hablemos</a>
+</div>
+
+<main id="contenido">
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="inicio">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  <div class="contenedor">
+    <div class="hero__contenido">
+      <p class="etiqueta">Inteligencia Artificial aplicada</p>
+
+      <h1>La Inteligencia Artificial<br><span class="degradado-texto">al servicio de tu crecimiento</span></h1>
+
+      <p class="hero__bajada">
+        Inteligencia para transformar negocios y potenciar profesionales.
+        Convertimos la tecnología en tu mayor ventaja competitiva.
+      </p>
+
+      <div class="hero__acciones">
+        <a class="boton boton--primario" href="https://calendly.com/c-y-m-labs2026/30min" target="_blank" rel="noopener" data-calendly>
+          Agendar una reunión
+        </a>
+        <a class="boton boton--secundario" href="#soluciones">Ver soluciones</a>
+      </div>
+
+      <div class="hero__pastillas">
+        <span class="pastilla">Agentes de IA</span>
+        <span class="pastilla">Automatización</span>
+        <span class="pastilla">Business Intelligence</span>
+        <span class="pastilla">Power BI</span>
+        <span class="pastilla">Desarrollo a medida</span>
+        <span class="pastilla">Formación</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ NOSOTROS ============================ -->
+<section class="seccion seccion--alt" id="nosotros">
+  <div class="contenedor">
+    <div class="historia__grid revelar">
+
+      <div class="historia__texto">
+        <p class="etiqueta">Nuestra historia</p>
+        <h2>La tecnología deja de ser una barrera y se convierte en ventaja</h2>
+        <p style="margin-top: 1.5rem;">
+          En C&amp;M Labs creemos que la Inteligencia Artificial debe ser una herramienta accesible
+          que permita a empresas y profesionales trabajar de forma más inteligente, tomar mejores
+          decisiones y alcanzar un crecimiento sostenible.
+        </p>
+        <p>
+          Desarrollamos soluciones tecnológicas que simplifican procesos, automatizan tareas
+          repetitivas y convierten los datos en oportunidades de negocio.
+        </p>
+        <p>
+          Nuestro propósito es que la tecnología deje de ser una barrera y se convierta en la
+          mayor ventaja competitiva de nuestros clientes.
+        </p>
+      </div>
+
+      <div class="pmv">
+        <article class="pmv__item">
+          <h3>Propósito</h3>
+          <p>Impulsar el crecimiento de empresas y profesionales mediante soluciones inteligentes basadas en Inteligencia Artificial, automatización y analítica de datos.</p>
+        </article>
+        <article class="pmv__item">
+          <h3>Misión</h3>
+          <p>Diseñar e implementar soluciones de Inteligencia Artificial y automatización que ayuden a empresas y profesionales a optimizar procesos, reducir costos, aumentar la productividad y tomar decisiones estratégicas basadas en datos.</p>
+        </article>
+        <article class="pmv__item">
+          <h3>Visión</h3>
+          <p>Convertirnos en la empresa referente en Latinoamérica en soluciones de Inteligencia Artificial aplicada, reconocida por transformar la productividad y competitividad de organizaciones y profesionales.</p>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ VALORES ============================ -->
+<section class="seccion" id="valores">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Nuestros valores</p>
+      <h2>Los principios que guían cada proyecto</h2>
+    </div>
+
+    <div class="valores__grid revelar">
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+        </span>
+        <span>Innovación constante</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.8.8-5 4.7 1.3 6.8L12 17.3 6 20.6l1.3-6.8-5-4.7 6.8-.8L12 2z"/></svg>
+        </span>
+        <span>Excelencia</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <span>Confianza</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 6h10"/><path d="M4 18h7"/></svg>
+        </span>
+        <span>Simplicidad</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+        </span>
+        <span>Orientación a resultados</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2.5z"/><path d="M8 7h7M8 11h7"/></svg>
+        </span>
+        <span>Aprendizaje continuo</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5"/><path d="M3 14h6l-3 5-3-5zM15 14h6l-3 5-3-5z"/></svg>
+        </span>
+        <span>Ética tecnológica</span>
+      </div>
+      <div class="valor">
+        <span class="icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </span>
+        <span>Cercanía con el cliente</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ A QUIÉN AYUDAMOS ============================ -->
+<section class="seccion seccion--alt" id="publicos">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">¿A quién ayudamos?</p>
+      <h2>Dos caminos, un mismo objetivo: crecer con inteligencia</h2>
+      <p>Trabajamos con organizaciones que buscan transformar sus operaciones y con profesionales que quieren recuperar su tiempo.</p>
+    </div>
+
+    <div class="pestanas revelar" role="tablist" aria-label="Selecciona tu perfil">
+      <button class="pestana" id="tab-empresas" role="tab" aria-selected="true" aria-controls="panel-empresas">Empresas</button>
+      <button class="pestana" id="tab-profesionales" role="tab" aria-selected="false" aria-controls="panel-profesionales" tabindex="-1">Profesionales</button>
+    </div>
+
+    <!-- Panel Empresas -->
+    <div class="panel" id="panel-empresas" role="tabpanel" aria-labelledby="tab-empresas" tabindex="0">
+      <p class="panel__intro">
+        Desde grandes corporaciones hasta startups en crecimiento, acompañamos a organizaciones
+        de todo tamaño en su adopción de Inteligencia Artificial.
+      </p>
+
+      <ul class="publico__grid">
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Grandes empresas</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>PYMES</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Startups</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Centros logísticos</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Empresas industriales</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Constructoras</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Empresas comerciales</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Clínicas</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Universidades</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Instituciones públicas</li>
+      </ul>
+
+      <div class="propuesta">
+        <h3>Nuestra propuesta para empresas</h3>
+        <p>
+          Ayudamos a las organizaciones a automatizar procesos, optimizar operaciones y mejorar
+          la toma de decisiones mediante soluciones de Inteligencia Artificial adaptadas a sus
+          objetivos y estrategias corporativas.
+        </p>
+        <a class="boton boton--primario" href="#contacto">Solicitar diagnóstico para mi empresa</a>
+      </div>
+    </div>
+
+    <!-- Panel Profesionales -->
+    <div class="panel" id="panel-profesionales" role="tabpanel" aria-labelledby="tab-profesionales" tabindex="0" hidden>
+      <p class="panel__intro">
+        Ayudamos a profesionales independientes a trabajar mejor con Inteligencia Artificial,
+        automatizando lo administrativo para que dediques tu tiempo a lo que realmente aporta valor.
+      </p>
+
+      <ul class="publico__grid">
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Ingenieros</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Contadores</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Abogados</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Arquitectos</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Médicos</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Psicólogos</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Consultores</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Coaches</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Docentes</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Diseñadores</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Community Managers</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Agentes inmobiliarios</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Asesores financieros</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Freelancers</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Emprendedores</li>
+        <li class="publico__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Creadores de contenido</li>
+      </ul>
+
+      <div class="propuesta">
+        <h3>Nuestra propuesta para profesionales</h3>
+        <p>
+          Impulsamos la productividad de profesionales independientes mediante herramientas de IA
+          que automatizan tareas administrativas, optimizan el tiempo y permiten enfocarse en
+          actividades de mayor valor.
+        </p>
+        <a class="boton boton--primario" href="#contacto">Quiero potenciar mi trabajo</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================ SOLUCIONES ============================ -->
+<section class="seccion" id="soluciones">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Nuestras soluciones</p>
+      <h2>Seis áreas para transformar tu forma de trabajar</h2>
+      <p>Cada área agrupa servicios que implementamos de punta a punta. Despliega para ver el detalle.</p>
+    </div>
+
+    <div class="soluciones__grid revelar">
+
+      <!-- IA -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-ia">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="3"/><path d="M12 7V4M9 3h6"/><circle cx="9.5" cy="13" r="1.2" fill="currentColor"/><circle cx="14.5" cy="13" r="1.2" fill="currentColor"/><path d="M2 12v3M22 12v3"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Inteligencia Artificial</h3>
+            <p>Agentes y asistentes que trabajan por ti, 24/7.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-ia">
+          <div>
+            <ul class="solucion__lista">
+              <li>Agentes de IA personalizados</li>
+              <li>Chatbots inteligentes</li>
+              <li>Asistentes virtuales</li>
+              <li>IA Generativa</li>
+              <li>Automatización con IA</li>
+              <li>IA para atención al cliente</li>
+              <li>IA para ventas</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Automatización -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-auto">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Automatización de Procesos</h3>
+            <p>Que las tareas repetitivas dejen de consumir tu equipo.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-auto">
+          <div>
+            <ul class="solucion__lista">
+              <li>n8n</li>
+              <li>Make</li>
+              <li>Power Automate</li>
+              <li>Zapier</li>
+              <li>Automatización de correos</li>
+              <li>Automatización documental</li>
+              <li>Automatización comercial</li>
+              <li>Automatización logística</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- BI -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-bi">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Business Intelligence</h3>
+            <p>Tus datos convertidos en decisiones, no en planillas.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-bi">
+          <div>
+            <ul class="solucion__lista">
+              <li>Power BI</li>
+              <li>Dashboards Ejecutivos</li>
+              <li>Indicadores KPI</li>
+              <li>Analítica de Datos</li>
+              <li>Forecast</li>
+              <li>Modelos Predictivos</li>
+              <li>Reportes Automáticos</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Desarrollo -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-dev">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-3 3 3 3M16 9l3 3-3 3M13.5 7l-3 10"/><rect x="2" y="3" width="20" height="18" rx="3"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Desarrollo Tecnológico</h3>
+            <p>Software a medida que se adapta a tu operación.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-dev">
+          <div>
+            <ul class="solucion__lista">
+              <li>Aplicaciones Web</li>
+              <li>Software Empresarial</li>
+              <li>APIs</li>
+              <li>Integraciones</li>
+              <li>Portales Corporativos</li>
+              <li>CRM</li>
+              <li>ERP</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Productividad -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-prod">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 12.5h6L11 22l8.5-10.5h-6L13 2z"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Productividad Profesional</h3>
+            <p>Diseñado para independientes: recupera tus horas.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-prod">
+          <div>
+            <ul class="solucion__lista">
+              <li>Asistentes personales con IA</li>
+              <li>Automatización de agendas</li>
+              <li>Automatización de propuestas comerciales</li>
+              <li>Automatización de contratos</li>
+              <li>Gestión documental inteligente</li>
+              <li>Automatización de WhatsApp</li>
+              <li>Automatización de correo electrónico</li>
+              <li>Organización de proyectos</li>
+              <li>Creación automática de informes</li>
+              <li>Gestión de clientes (CRM)</li>
+              <li>Facturación automatizada</li>
+              <li>Resúmenes automáticos de reuniones</li>
+              <li>Organización del conocimiento</li>
+              <li>Automatización de contenido para redes sociales</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Formación -->
+      <article class="solucion">
+        <button class="solucion__boton" aria-expanded="false" aria-controls="sol-form">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9L12 4 2 9l10 5 10-5z"/><path d="M6 11.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-5.5"/></svg>
+          </span>
+          <span class="solucion__texto">
+            <h3>Formación y Capacitación</h3>
+            <p>Para que tu equipo domine la IA, no solo la use.</p>
+          </span>
+          <svg class="solucion__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="solucion__panel" id="sol-form">
+          <div>
+            <ul class="solucion__lista">
+              <li>Inteligencia Artificial para Empresas</li>
+              <li>Claude Empresarial</li>
+              <li>Power BI</li>
+              <li>Excel Avanzado</li>
+              <li>Automatización Empresarial</li>
+              <li>Ingeniería de Prompts</li>
+              <li>IA para Directivos</li>
+              <li>IA para Profesionales</li>
+              <li>IA aplicada a Logística</li>
+              <li>Transformación Digital</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SECTORES ============================ -->
+<section class="seccion seccion--alt" id="sectores">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Sectores que atendemos</p>
+      <h2>Conocemos el lenguaje de tu industria</h2>
+    </div>
+  </div>
+
+  <div class="marquesina revelar" aria-label="Sectores que atendemos: Industria, Construcción, Salud, Educación, Logística, Comercio, Retail, Transporte, Sector Financiero, Consultoría, Servicios Profesionales y Tecnología">
+    <div class="marquesina__pista" aria-hidden="true">
+      <!-- Los sectores se duplican para que el bucle de la animación sea continuo -->
+      <span class="sector">Industria</span>
+      <span class="sector">Construcción</span>
+      <span class="sector">Salud</span>
+      <span class="sector">Educación</span>
+      <span class="sector">Logística</span>
+      <span class="sector">Comercio</span>
+      <span class="sector">Retail</span>
+      <span class="sector">Transporte</span>
+      <span class="sector">Sector Financiero</span>
+      <span class="sector">Consultoría</span>
+      <span class="sector">Servicios Profesionales</span>
+      <span class="sector">Tecnología</span>
+      <span class="sector">Industria</span>
+      <span class="sector">Construcción</span>
+      <span class="sector">Salud</span>
+      <span class="sector">Educación</span>
+      <span class="sector">Logística</span>
+      <span class="sector">Comercio</span>
+      <span class="sector">Retail</span>
+      <span class="sector">Transporte</span>
+      <span class="sector">Sector Financiero</span>
+      <span class="sector">Consultoría</span>
+      <span class="sector">Servicios Profesionales</span>
+      <span class="sector">Tecnología</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FORMACIÓN ============================ -->
+<section class="seccion" id="formacion">
+  <div class="contenedor">
+    <div class="formacion__grid revelar">
+
+      <div>
+        <p class="etiqueta">Formación y capacitación</p>
+        <h2>Capacitamos a tu equipo en Inteligencia Artificial</h2>
+        <p style="margin-top: 1.5rem; color: var(--texto-suave);">
+          Programas diseñados para directivos, equipos técnicos y profesionales independientes.
+          Formación práctica y aplicada a tu contexto real de trabajo, no teoría genérica.
+        </p>
+        <a class="boton boton--primario" href="#contacto" style="margin-top: 2rem;">Solicitar programa de formación</a>
+      </div>
+
+      <ul class="formacion__lista">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Inteligencia Artificial para Empresas</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Claude Empresarial</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Power BI</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Excel Avanzado</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Automatización Empresarial</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Ingeniería de Prompts</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>IA para Directivos</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>IA para Profesionales</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>IA aplicada a Logística</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Transformación Digital</li>
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACTO ============================ -->
+<section class="seccion seccion--alt" id="contacto">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Contacto</p>
+      <h2>Conversemos sobre tu próximo paso</h2>
+      <p>Cuéntanos qué necesitas y te respondemos con una propuesta concreta.</p>
+    </div>
+
+    <div class="contacto__grid revelar">
+
+      <form class="formulario" id="formulario" action="https://formspree.io/f/xlgqjjpp" method="POST" novalidate>
+
+        <div class="campo--doble">
+          <div class="campo">
+            <label for="nombre">Nombre y apellido *</label>
+            <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Tu nombre">
+            <span class="campo__error" data-error-de="nombre"></span>
+          </div>
+          <div class="campo">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="tu@correo.com">
+            <span class="campo__error" data-error-de="email"></span>
+          </div>
+        </div>
+
+        <div class="campo--doble">
+          <div class="campo">
+            <label for="perfil">¿Quién eres? *</label>
+            <select id="perfil" name="perfil" required>
+              <option value="">Selecciona una opción</option>
+              <option value="Empresa">Represento a una empresa</option>
+              <option value="Profesional">Soy profesional independiente</option>
+            </select>
+            <span class="campo__error" data-error-de="perfil"></span>
+          </div>
+          <div class="campo">
+            <label for="organizacion">Empresa u ocupación</label>
+            <input type="text" id="organizacion" name="organizacion" autocomplete="organization" placeholder="Opcional">
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="necesidad">¿Qué necesitas? *</label>
+          <select id="necesidad" name="necesidad" required>
+            <option value="">Selecciona una opción</option>
+            <option value="Inteligencia Artificial">Inteligencia Artificial (agentes, chatbots, asistentes)</option>
+            <option value="Automatización de Procesos">Automatización de Procesos</option>
+            <option value="Business Intelligence">Business Intelligence y Power BI</option>
+            <option value="Desarrollo Tecnológico">Desarrollo Tecnológico (web, software, integraciones)</option>
+            <option value="Productividad Profesional">Productividad Profesional</option>
+            <option value="Formación y Capacitación">Formación y Capacitación</option>
+            <option value="Aún no lo tengo claro">Aún no lo tengo claro, necesito orientación</option>
+          </select>
+          <span class="campo__error" data-error-de="necesidad"></span>
+        </div>
+
+        <div class="campo">
+          <label for="mensaje">Cuéntanos tu caso *</label>
+          <textarea id="mensaje" name="mensaje" required placeholder="Describe brevemente tu situación actual y qué te gustaría lograr."></textarea>
+          <span class="campo__error" data-error-de="mensaje"></span>
+        </div>
+
+        <!-- Asunto del correo que llega a la bandeja. main.js lo reescribe con el perfil
+             y la necesidad antes de enviar, para poder priorizar sin abrir el mensaje. -->
+        <input type="hidden" name="_subject" id="asunto" value="Nuevo contacto desde la web de C&amp;M Labs">
+
+        <!-- Campo trampa contra bots: invisible para personas, tentador para robots -->
+        <div class="solo-lectores" aria-hidden="true">
+          <label for="sitio-web">No completar este campo</label>
+          <input type="text" id="sitio-web" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="boton boton--primario boton--bloque" id="btn-enviar">Enviar mensaje</button>
+
+        <p class="formulario__estado" id="estado-formulario" role="status" hidden></p>
+      </form>
+
+      <div class="contacto__directo">
+
+        <a class="contacto__canal" href="https://wa.me/573175469066?text=Hola%20C%26M%20Labs%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20soluciones%20de%20IA." target="_blank" rel="noopener" data-whatsapp>
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+          </span>
+          <span>
+            <h3>WhatsApp</h3>
+            <p>Respuesta rápida en horario laboral</p>
+          </span>
+        </a>
+
+        <a class="contacto__canal" href="mailto:c.y.m.labs2026@gmail.com">
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2.5 7l9.5 6 9.5-6"/></svg>
+          </span>
+          <span>
+            <h3>Correo</h3>
+            <p>c.y.m.labs2026@gmail.com</p>
+          </span>
+        </a>
+
+        <a class="contacto__canal" href="https://calendly.com/c-y-m-labs2026/30min" target="_blank" rel="noopener" data-calendly>
+          <span class="icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg>
+          </span>
+          <span>
+            <h3>Agenda una reunión</h3>
+            <p>30 minutos para entender tu caso, sin costo</p>
+          </span>
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ PIE DE PÁGINA ============================ -->
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__grid">
+
+      <div class="pie__marca">
+        <div class="pie__logo">
+          <img src="assets/logo.svg" alt="C&amp;M Labs" width="320" height="96" loading="lazy">
+        </div>
+        <p>Inteligencia para transformar negocios y potenciar profesionales.</p>
+
+        <!-- Aquí van los iconos de redes sociales cuando existan los perfiles.
+             El README explica cómo restituirlos; el estilo .pie__redes sigue en el CSS. -->
+      </div>
+
+      <div>
+        <h3>Soluciones</h3>
+        <ul class="pie__lista">
+          <li><a href="#soluciones">Inteligencia Artificial</a></li>
+          <li><a href="#soluciones">Automatización de Procesos</a></li>
+          <li><a href="#soluciones">Business Intelligence</a></li>
+          <li><a href="#soluciones">Desarrollo Tecnológico</a></li>
+          <li><a href="#soluciones">Productividad Profesional</a></li>
+          <li><a href="#formacion">Formación y Capacitación</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <ul class="pie__lista">
+          <li><a href="mailto:c.y.m.labs2026@gmail.com">c.y.m.labs2026@gmail.com</a></li>
+          <li><a href="https://wa.me/573175469066" target="_blank" rel="noopener" data-whatsapp>+57 317 546 9066</a></li>
+          <li>Palmira, Colombia</li>
+          <li><a href="#contacto">Formulario de contacto</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="pie__base">
+      <p>&copy; <span id="anio">2026</span> C&amp;M Labs. Todos los derechos reservados.</p>
+      <p class="pie__ecosistema">
+        Ecosistema en construcción:
+        <span>Smart · Analytics · Agents · Academy · Cloud · Logistics AI</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<a class="whatsapp-flotante" href="https://wa.me/573175469066?text=Hola%20C%26M%20Labs%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20soluciones%20de%20IA." target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp" data-whatsapp>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+</a>
+
+</body>
+</html>
