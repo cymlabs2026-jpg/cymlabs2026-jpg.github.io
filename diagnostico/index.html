@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Diagnóstico Digital gratuito | C&amp;M Labs</title>
+<meta name="description" content="Responde 10 preguntas sobre tu operación y recibe al instante un diagnóstico con las oportunidades de IA, automatización y datos para tu negocio. Gratis.">
+<meta name="theme-color" content="#0F172A">
+<link rel="canonical" href="https://cymlabs2026-jpg.github.io/diagnostico/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_LA">
+<meta property="og:site_name" content="C&amp;M Labs">
+<meta property="og:title" content="Diagnóstico Digital gratuito | C&amp;M Labs">
+<meta property="og:description" content="10 preguntas, 3 minutos: descubre dónde está perdiendo horas tu operación y qué haría la IA por tu negocio.">
+<meta property="og:url" content="https://cymlabs2026-jpg.github.io/diagnostico/">
+<meta property="og:image" content="https://cymlabs2026-jpg.github.io/assets/logo-perfil.png">
+
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/css/styles.css">
+
+<style>
+  .diag-main{min-height:100vh; padding:110px 0 80px}
+  .diag-caja{max-width:760px; margin:0 auto; background:var(--superficie); border:1px solid var(--borde); border-radius:18px; padding:2.2rem 2rem}
+  .diag-progreso{height:6px; background:rgba(148,163,184,.15); border-radius:999px; margin-bottom:1.8rem; overflow:hidden}
+  .diag-progreso div{height:100%; width:0%; background:linear-gradient(90deg,var(--azul-tec),var(--cian-ia)); border-radius:999px; transition:width .3s}
+  .diag-paso{color:var(--cian-ia); font-size:.78rem; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:.5rem}
+  .diag-caja h2{font-size:clamp(1.25rem,3vw,1.6rem); margin-bottom:1.4rem; line-height:1.3}
+  .diag-opciones{display:grid; gap:.7rem}
+  .diag-op{display:block; width:100%; text-align:left; background:var(--fondo); border:1px solid var(--borde); border-radius:12px; padding:1rem 1.1rem; color:var(--texto); font-size:.98rem; cursor:pointer; transition:border-color .15s, transform .15s; font-family:inherit}
+  .diag-op:hover{border-color:var(--cian-ia); transform:translateY(-1px)}
+  .diag-op small{display:block; color:var(--texto-suave); font-size:.82rem; margin-top:.2rem}
+  .diag-chips{display:flex; flex-wrap:wrap; gap:.6rem}
+  .diag-chips button{border:1px solid var(--borde); background:var(--fondo); color:var(--texto); border-radius:999px; padding:.6rem 1.1rem; font-size:.9rem; cursor:pointer; font-family:inherit}
+  .diag-chips button:hover{border-color:var(--cian-ia)}
+  .diag-atras{margin-top:1.4rem; background:none; border:none; color:var(--texto-suave); font-size:.85rem; cursor:pointer; font-family:inherit}
+  .diag-atras:hover{color:var(--cian-ia)}
+
+  /* resultados */
+  .res-nivel{display:flex; align-items:center; gap:1.2rem; background:var(--fondo); border:1px solid var(--borde); border-radius:14px; padding:1.2rem 1.4rem; margin-bottom:1.4rem; flex-wrap:wrap}
+  .res-gauge{font-family:'Sora',sans-serif; font-size:2.4rem; font-weight:600; background:linear-gradient(90deg,var(--azul-tec),var(--cian-ia)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .res-nivel p{color:var(--texto-suave); font-size:.92rem; max-width:46ch}
+  .res-nivel b{color:var(--texto)}
+  .oportunidad{background:var(--fondo); border:1px solid var(--borde); border-left:3px solid var(--cian-ia); border-radius:12px; padding:1.2rem 1.3rem; margin-bottom:1rem}
+  .oportunidad .num{color:var(--cian-ia); font-size:.75rem; font-weight:700; letter-spacing:1px; text-transform:uppercase}
+  .oportunidad h3{font-size:1.05rem; margin:.3rem 0 .5rem}
+  .oportunidad p{font-size:.92rem; color:var(--texto-suave); margin-bottom:.5rem}
+  .oportunidad .ej{font-size:.88rem; color:var(--texto); background:rgba(6,182,212,.07); border-radius:8px; padding:.6rem .8rem}
+  .oportunidad .ej::before{content:"💡 En tu sector: "; color:var(--cian-ia); font-weight:700}
+  .res-cta{background:linear-gradient(135deg,rgba(37,99,235,.25),rgba(6,182,212,.15)); border:1px solid var(--cian-ia); border-radius:14px; padding:1.5rem; margin-top:1.6rem; text-align:center}
+  .res-cta p{margin-bottom:1rem}
+  .res-lead{margin-top:1.6rem; background:var(--fondo); border:1px dashed var(--borde); border-radius:12px; padding:1.2rem 1.3rem}
+  .res-lead h3{font-size:.95rem; margin-bottom:.7rem}
+  .res-lead form{display:flex; gap:.6rem; flex-wrap:wrap}
+  .res-lead input{flex:1; min-width:200px; background:var(--superficie); border:1px solid var(--borde); border-radius:9px; padding:.7rem .9rem; color:var(--texto); font-family:inherit; font-size:.92rem}
+  .res-lead input:focus{outline:none; border-color:var(--cian-ia)}
+  .res-lead .ok{color:#34D399; font-size:.9rem}
+  .res-acciones{display:flex; gap:.8rem; flex-wrap:wrap; justify-content:center}
+
+  @media print{
+    body{background:#fff !important; color:#111 !important}
+    .nav, .diag-atras, .res-cta, .res-lead, .whatsapp-flotante, .no-imprimir{display:none !important}
+    .diag-caja{border:none; box-shadow:none; background:#fff}
+    .diag-caja *, .oportunidad *{color:#111 !important}
+    .oportunidad{border:1px solid #ccc; border-left:3px solid #0891b2; page-break-inside:avoid}
+    .res-gauge{color:#0891b2 !important; -webkit-text-fill-color:#0891b2}
+  }
+</style>
+</head>
+
+<body>
+
+<header class="nav" id="nav">
+  <div class="contenedor nav__inner">
+    <a class="nav__logo" href="/" aria-label="C&amp;M Labs, ir al inicio">
+      <img src="/assets/logo.svg" alt="C&amp;M Labs" width="320" height="96">
+    </a>
+    <nav class="nav__enlaces" aria-label="Navegación principal">
+      <a class="nav__enlace" href="/">Inicio</a>
+      <a class="nav__enlace" href="/index.html#soluciones">Soluciones</a>
+      <a class="nav__enlace" href="/index.html#contacto">Contacto</a>
+    </nav>
+    <a class="boton boton--primario nav__cta" href="https://calendly.com/c-y-m-labs2026/30min" target="_blank" rel="noopener">Agendar reunión</a>
+    <button class="nav__hamburguesa" id="hamburguesa" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú de navegación" style="display:none"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="diag-main">
+  <div class="contenedor">
+    <div class="diag-caja" id="app">
+      <noscript><p>Esta herramienta necesita JavaScript. También puedes <a href="/index.html#contacto" style="color:var(--cian-ia)">escribirnos directamente</a>.</p></noscript>
+    </div>
+  </div>
+</main>
+
+<script>
+// ================================================================
+//  DIAGNÓSTICO DIGITAL C&M LABS — motor de reglas expertas
+// ================================================================
+const FORMSPREE = "https://formspree.io/f/xlgqjjpp";
+const CALENDLY = "https://calendly.com/c-y-m-labs2026/30min";
+const WA = "https://wa.me/573175469066";
+
+const SECTORES = ["Industria y manufactura","Logística y transporte","Comercio y retail","Salud y servicios profesionales","Educación","Construcción","Sector financiero","Tecnología","Otro"];
+
+// preguntas: cada opción suma puntos a áreas (ia, auto, bi, dev, form) y a "riesgo" (inversa de madurez)
+const PREGUNTAS = [
+{t:"¿Cómo conocen hoy los resultados del negocio?", ops:[
+  {l:"Tenemos un tablero de indicadores al día", s:{}},
+  {l:"Alguien arma informes cada semana o cada mes", d:"Horas de trabajo manual recurrente", s:{bi:3, riesgo:2}},
+  {l:"Cada área lleva sus planillas por su lado", d:"Varias versiones de la verdad", s:{bi:3, riesgo:3}},
+  {l:"Por intuición y el extracto del banco", s:{bi:3, riesgo:3}}]},
+{t:"¿Cuánto tarda armar el informe más importante (ventas, producción, gerencia)?", ops:[
+  {l:"Nada: se genera solo", s:{}},
+  {l:"Un par de horas", s:{bi:2, auto:1, riesgo:1}},
+  {l:"Un día o más, cada vez", s:{bi:3, auto:2, riesgo:2}},
+  {l:"No existe ese informe", s:{bi:2, riesgo:3}}]},
+{t:"¿Cuánta información se copia y pega a mano entre sistemas o planillas?", ops:[
+  {l:"Casi nada, los sistemas están conectados", s:{}},
+  {l:"Algunas cosas cada semana", s:{auto:2, riesgo:1}},
+  {l:"Es el pan de cada día", d:"Digitación doble, errores y horas perdidas", s:{auto:3, riesgo:3}}]},
+{t:"¿Hay procesos que dependen de que alguien 'se acuerde' de hacerlos?", ops:[
+  {l:"No: todo tiene proceso y registro", s:{}},
+  {l:"Algunos, y a veces se caen", s:{auto:2, riesgo:2}},
+  {l:"Casi todos viven en la cabeza de la gente", s:{auto:3, form:1, riesgo:3}}]},
+{t:"¿Cuánto tardan en responderle a un cliente nuevo que escribe o llama?", ops:[
+  {l:"Minutos: hay quien responde siempre", s:{}},
+  {l:"Unas horas, según la carga", s:{ia:2, riesgo:1}},
+  {l:"A veces al día siguiente (o se pierde)", d:"Ventas que se enfrían", s:{ia:3, auto:1, riesgo:3}}]},
+{t:"¿Cuánto tiempo se va en redactar, clasificar o resumir información repetitiva?", ops:[
+  {l:"Poco: no es nuestro caso", s:{}},
+  {l:"Varias horas a la semana", s:{ia:2, riesgo:1}},
+  {l:"Hay gente que se dedica casi solo a eso", s:{ia:3, riesgo:2}}]},
+{t:"¿Dónde vive la operación del día a día?", ops:[
+  {l:"En un sistema que nos queda bien", s:{}},
+  {l:"En Excel… y ya no aguanta", s:{dev:3, bi:1, riesgo:2}},
+  {l:"En papel, WhatsApp y memoria", s:{dev:3, auto:2, riesgo:3}}]},
+{t:"¿Tu presencia digital (página, catálogo, agenda) te trae clientes?", ops:[
+  {l:"Sí, es un canal que funciona", s:{}},
+  {l:"Existe, pero no vende", s:{dev:2, riesgo:1}},
+  {l:"No tenemos, o da pena mostrarla", s:{dev:3, riesgo:2}}]},
+{t:"¿El equipo domina las herramientas que ya pagan (Excel, Power BI, IA)?", ops:[
+  {l:"Sí, les sacamos jugo", s:{}},
+  {l:"A medias: se usa el 20%", s:{form:3, riesgo:2}},
+  {l:"No, y cada quien improvisa", s:{form:3, riesgo:3}}]},
+{t:"¿Ya usan Inteligencia Artificial en el trabajo?", ops:[
+  {l:"Sí, con método y casos definidos", s:{}},
+  {l:"Algunos, por su cuenta y sin criterio", s:{ia:2, form:2, riesgo:1}},
+  {l:"No: no sabemos por dónde empezar", s:{ia:3, form:1, riesgo:2}}]}
+];
+
+const AREAS_INFO = {
+ia:{n:"Inteligencia Artificial", t:"Agentes de IA que trabajan por ti",
+  p:"Detectamos tareas mentales repetitivas y demoras de respuesta que un agente de IA puede asumir: preparar, redactar, clasificar y responder — con aprobación humana.",
+  ej:["un agente que lee los pedidos que llegan por correo y los carga al sistema sin digitación","un agente que responde '¿dónde está mi carga?' con el estado real del envío, 24/7","un agente que responde las preguntas de compradores por WhatsApp a cualquier hora","un asistente que resume el caso de cada paciente o cliente antes de la cita","un asistente que responde las preguntas frecuentes de estudiantes y aspirantes","un agente que arma el informe diario de obra desde fotos y notas de voz","un agente que clasifica PQRs y propone la respuesta completa para revisión","un agente que resuelve el soporte nivel 1 con tu base de conocimiento"]},
+auto:{n:"Automatización de Procesos", t:"Procesos que corren solos",
+  p:"Hay trabajo manual repetitivo (copiar datos, avisar, consolidar, conciliar) que puede quedar corriendo solo con flujos automatizados sobre tus sistemas actuales.",
+  ej:["el parte diario de producción consolidado y enviado a gerencia a las 6:00 am","la prueba de entrega del conductor actualiza el sistema y avisa al cliente sola","cada pedido factura, descuenta inventario y genera guía sin tocar teclado","recordatorios de cita por WhatsApp que reducen las sillas vacías","matrículas y certificados emitidos automáticamente, sin filas","las compras de obra solicitadas, aprobadas y enviadas al proveedor en un flujo","la conciliación bancaria cruzada sola, con solo las excepciones para revisar","el onboarding de cada cliente nuevo creado completo al firmar"]},
+bi:{n:"Business Intelligence", t:"Tus datos convertidos en decisiones",
+  p:"El negocio se está midiendo tarde o a mano. Un tablero en Power BI conectado a tus datos te diría cada mañana cómo vas — sin que nadie arme informes.",
+  ej:["tablero de producción por línea y turno: desperdicio y paradas al día","tablero de entregas a tiempo y costo real por ruta","ventas por producto y sede con alertas de inventario crítico","ocupación de agenda y facturación por servicio, al día","alertas tempranas de deserción y cartera por estudiante","avance físico vs presupuesto por obra, antes del sobrecosto","tablero de cartera: aging, riesgo y efectividad de cobranza","salud del servicio: tiempos de respuesta, SLA y carga del equipo"]},
+dev:{n:"Desarrollo Tecnológico", t:"La herramienta que tu operación necesita",
+  p:"Parte de tu operación vive en Excel, papel o llamadas. Una herramienta a la medida (o una web que sí venda) eliminaría ese cuello de botella — y el código queda tuyo.",
+  ej:["una app de planta para control de calidad con fotos y firma digital","un portal donde tus clientes agendan recogidas y descargan sus documentos","un catálogo web conectado al inventario con pedido directo a WhatsApp","un sitio profesional con agenda en línea y admisión previa a la cita","un portal de familias: notas, certificados y pagos en autoservicio","una bitácora digital de obra con foto, GPS y firma, lista para interventoría","un simulador de crédito con tus políticas: cliente y asesor ven el mismo número","una célula externa que saca adelante los módulos que tu equipo no alcanza"]},
+form:{n:"Formación y Capacitación", t:"Capacidad instalada en tu equipo",
+  p:"Tu equipo usa una fracción de las herramientas que ya pagas. Formación práctica sobre TUS datos (Excel Avanzado, Power BI, IA) convierte licencias en resultados.",
+  ej:["Excel Avanzado + Power BI para que planeación automatice sus propios reportes","Power BI para la torre de control, con proyecto sobre sus datos reales","IA para el equipo comercial: propuestas en la mitad del tiempo","Claude Empresarial: IA con manejo correcto de información sensible","docentes creando material y evaluaciones con IA, con política clara","Excel Avanzado para presupuestos de obra ordenados y auditables","Power BI aplicado a cartera y riesgo para reportes en minutos","ingeniería de prompts para estandarizar el uso de IA del equipo técnico"]}
+};
+
+// ================================================================
+let paso = -1; // -1 intro, 0 tipo, 1 sector, luego preguntas, luego resultado
+let perfil = {tipo:null, sector:0};
+let respuestas = [];
+const $app = document.getElementById("app");
+const TOTAL_PASOS = 2 + PREGUNTAS.length;
+
+function progreso(n){ return `<div class="diag-progreso"><div style="width:${Math.round(n/TOTAL_PASOS*100)}%"></div></div>`; }
+
+function render(){
+  if(paso === -1){
+    $app.innerHTML = `
+      <p class="diag-paso">Diagnóstico Digital · Gratuito · 3 minutos</p>
+      <h2>Descubre dónde está perdiendo horas tu operación — y qué haría la IA por tu negocio</h2>
+      <p style="color:var(--texto-suave); margin-bottom:1.6rem">10 preguntas sencillas. Al final recibes un diagnóstico inmediato con tus 3 mayores oportunidades de mejora, con ejemplos de tu sector. Sin registro obligatorio.</p>
+      <button class="boton boton--primario" onclick="paso=0;render()">Comenzar mi diagnóstico</button>`;
+    return;
+  }
+  if(paso === 0){
+    $app.innerHTML = progreso(1) + `
+      <p class="diag-paso">Paso 1 de ${TOTAL_PASOS}</p>
+      <h2>¿Cuál describe mejor tu caso?</h2>
+      <div class="diag-opciones">
+        <button class="diag-op" onclick="perfil.tipo='empresa';paso=1;render()">🏢 Una empresa u organización<small>Desde pyme hasta gran empresa o institución</small></button>
+        <button class="diag-op" onclick="perfil.tipo='profesional';paso=1;render()">🚀 Un profesional independiente<small>Consultor, médico, abogado, contador, creador…</small></button>
+      </div>`;
+    return;
+  }
+  if(paso === 1){
+    $app.innerHTML = progreso(2) + `
+      <p class="diag-paso">Paso 2 de ${TOTAL_PASOS}</p>
+      <h2>¿En qué sector trabajas?</h2>
+      <div class="diag-chips">${SECTORES.map((s,i)=>`<button onclick="perfil.sector=${i};paso=2;render()">${s}</button>`).join("")}</div>
+      <button class="diag-atras" onclick="paso=0;render()">← Volver</button>`;
+    return;
+  }
+  const qi = paso - 2;
+  if(qi < PREGUNTAS.length){
+    const q = PREGUNTAS[qi];
+    $app.innerHTML = progreso(paso+1) + `
+      <p class="diag-paso">Pregunta ${qi+1} de ${PREGUNTAS.length}</p>
+      <h2>${q.t}</h2>
+      <div class="diag-opciones">${q.ops.map((o,j)=>`
+        <button class="diag-op" onclick="responder(${j})">${o.l}${o.d?`<small>${o.d}</small>`:""}</button>`).join("")}
+      </div>
+      <button class="diag-atras" onclick="paso--;respuestas.pop();render()">← Volver</button>`;
+    return;
+  }
+  renderResultado();
+}
+
+function responder(j){
+  respuestas[paso-2] = j;
+  paso++;
+  render();
+}
+
+function calcular(){
+  const score = {ia:0, auto:0, bi:0, dev:0, form:0};
+  let riesgo = 0, riesgoMax = 0;
+  PREGUNTAS.forEach((q,i)=>{
+    const s = q.ops[respuestas[i]].s || {};
+    for(const k in s){ if(k==="riesgo") riesgo += s[k]; else score[k] += s[k]; }
+    riesgoMax += Math.max(...q.ops.map(o=>(o.s&&o.s.riesgo)||0));
+  });
+  const madurez = Math.max(5, Math.round(100 - (riesgo/riesgoMax)*100));
+  const top = Object.entries(score).sort((a,b)=>b[1]-a[1]).filter(x=>x[1]>0).slice(0,3);
+  return {madurez, top};
+}
+
+function nivelTexto(m){
+  if(m>=75) return {n:"Avanzado", d:"Tu operación está bien digitalizada. Las oportunidades de abajo son para pasar de bueno a excepcional."};
+  if(m>=45) return {n:"En construcción", d:"Hay bases, pero se está escapando tiempo y dinero en trabajo manual. Las oportunidades de abajo son las fugas más grandes."};
+  return {n:"Alto potencial", d:"Buenas noticias: tu operación tiene mucho por ganar. Cada oportunidad de abajo representa horas y errores recuperables desde el primer mes."};
+}
+
+function renderResultado(){
+  const r = calcular();
+  const nv = nivelTexto(r.madurez);
+  const sec = perfil.sector;
+  const fecha = new Date().toLocaleDateString("es-CO",{day:"numeric",month:"long",year:"numeric"});
+
+  const ops = r.top.length ? r.top : [["ia",1],["bi",1],["auto",1]];
+  const bloques = ops.map((t,i)=>{
+    const a = AREAS_INFO[t[0]];
+    const ejemplo = sec < 8 ? a.ej[sec] : a.ej[2];
+    return `<div class="oportunidad">
+      <span class="num">Oportunidad ${i+1} · ${a.n}</span>
+      <h3>${a.t}</h3>
+      <p>${a.p}</p>
+      <div class="ej">${ejemplo}.</div>
+    </div>`;
+  }).join("");
+
+  $app.innerHTML = `
+    <p class="diag-paso">Tu diagnóstico · ${fecha}</p>
+    <h2>Resultado: ${SECTORES[sec]} · ${perfil.tipo === "empresa" ? "Empresa" : "Profesional independiente"}</h2>
+
+    <div class="res-nivel">
+      <div><div class="res-gauge">${r.madurez}<span style="font-size:1.2rem">/100</span></div>
+      <div style="font-weight:700">${nv.n}</div></div>
+      <p>${nv.d}</p>
+    </div>
+
+    <p style="font-weight:700; margin-bottom:1rem">Tus 3 mayores oportunidades:</p>
+    ${bloques}
+
+    <div class="res-cta no-imprimir">
+      <p><b>Este es el diagnóstico preliminar.</b> El siguiente paso es gratis también: 30 minutos con nuestro equipo para convertir estas oportunidades en un plan concreto, con alcance y tiempos reales.</p>
+      <div class="res-acciones">
+        <a class="boton boton--primario" href="${CALENDLY}" target="_blank" rel="noopener">📅 Agendar mi diagnóstico completo</a>
+        <a class="boton boton--secundario" href="${WA}?text=${encodeURIComponent("Hola C&M Labs, acabo de hacer el Diagnóstico Digital ("+SECTORES[sec]+", nivel "+r.madurez+"/100) y quiero conversar.")}" target="_blank" rel="noopener">💬 Hablar por WhatsApp</a>
+        <button class="boton boton--secundario" onclick="window.print()">🖨 Guardar en PDF</button>
+      </div>
+    </div>
+
+    <div class="res-lead no-imprimir" id="leadBox">
+      <h3>¿Quieres que un consultor revise tu diagnóstico y te escriba con recomendaciones?</h3>
+      <form onsubmit="enviarLead(event)">
+        <input type="text" id="leadNombre" placeholder="Tu nombre" required>
+        <input type="email" id="leadCorreo" placeholder="Tu correo" required>
+        <button class="boton boton--primario" type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <button class="diag-atras no-imprimir" onclick="paso=-1;respuestas=[];render()">↺ Hacer el diagnóstico de nuevo</button>`;
+  window.scrollTo({top:0});
+}
+
+async function enviarLead(e){
+  e.preventDefault();
+  const r = calcular();
+  const datos = {
+    _subject: "Nuevo Diagnóstico Digital completado",
+    nombre: document.getElementById("leadNombre").value,
+    correo: document.getElementById("leadCorreo").value,
+    tipo: perfil.tipo,
+    sector: SECTORES[perfil.sector],
+    madurez: r.madurez + "/100",
+    oportunidades: r.top.map(t=>AREAS_INFO[t[0]].n).join(", "),
+    respuestas: PREGUNTAS.map((q,i)=>q.t+" → "+q.ops[respuestas[i]].l).join(" | ")
+  };
+  const caja = document.getElementById("leadBox");
+  try{
+    const resp = await fetch(FORMSPREE, {method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify(datos)});
+    caja.innerHTML = resp.ok
+      ? `<p class="ok">✓ Recibido. Un consultor de C&amp;M Labs revisará tu diagnóstico y te escribirá pronto.</p>`
+      : `<p>No pudimos enviar. Escríbenos por <a href="${WA}" style="color:var(--cian-ia)">WhatsApp</a>.</p>`;
+  }catch(err){
+    caja.innerHTML = `<p>No pudimos enviar. Escríbenos por <a href="${WA}" style="color:var(--cian-ia)">WhatsApp</a>.</p>`;
+  }
+}
+
+render();
+</script>
+</body>
+</html>
