@@ -275,7 +275,7 @@
      Cada tarjeta lee --mx / --my en su CSS; aquí solo se actualizan.
      --------------------------------------------------------------- */
   const SELECTOR_BRILLO = '.solucion, .valor, .publico__item, .contacto__canal, .pmv__item, ' +
-                          '.formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista';
+                          '.formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista, .caso__despues';
 
   if (window.matchMedia('(hover: hover)').matches) {
     document.addEventListener('pointermove', function (e) {
@@ -320,6 +320,53 @@
       }, { threshold: 0.6 });
       cifras.forEach(function (el) { obsCifras.observe(el); });
     }
+  }
+
+  /* ---------------------------------------------------------------
+     Calculadora de pérdida por trabajo manual
+     Todo se calcula en el navegador; no se envía ningún dato.
+     --------------------------------------------------------------- */
+  const calc = document.getElementById('calc');
+
+  if (calc) {
+    const pesos = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+    const numero = new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1 });
+    const SEMANAS_MES = 4.33;
+    const HORAS_DIA = 8;
+
+    const personas = document.getElementById('calc-personas');
+    const horas = document.getElementById('calc-horas');
+    const costo = document.getElementById('calc-costo');
+
+    function pintarBarra(rango) {
+      const pct = (rango.value - rango.min) / (rango.max - rango.min) * 100;
+      rango.style.setProperty('--pct', pct + '%');
+    }
+
+    function calcular() {
+      const p = Number(personas.value);
+      const h = Number(horas.value);
+      const c = Number(costo.value);
+
+      const horasMes = Math.round(p * h * SEMANAS_MES);
+      const costoMes = horasMes * c;
+      const recupera = Math.round(horasMes / 2);
+
+      document.getElementById('calc-personas-v').textContent = p;
+      document.getElementById('calc-horas-v').textContent = h + ' h';
+      document.getElementById('calc-costo-v').textContent = pesos.format(c);
+
+      document.getElementById('calc-res-horas').textContent = numero.format(horasMes);
+      document.getElementById('calc-res-mes').textContent = pesos.format(costoMes);
+      document.getElementById('calc-res-anio').textContent = pesos.format(costoMes * 12);
+      document.getElementById('calc-res-recupera').textContent = numero.format(recupera);
+      document.getElementById('calc-res-dias').textContent = numero.format(recupera / HORAS_DIA);
+
+      [personas, horas, costo].forEach(pintarBarra);
+    }
+
+    calc.addEventListener('input', calcular);
+    calcular();
   }
 
   /* ---------------------------------------------------------------

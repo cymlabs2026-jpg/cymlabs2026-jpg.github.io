@@ -28,15 +28,15 @@
 <meta name="twitter:description" content="Soluciones de Inteligencia Artificial, automatización y analítica de datos para empresas y profesionales.">
 <meta name="twitter:image" content="https://cymlabs2026-jpg.github.io/assets/og-image.png">
 
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2">
-<link rel="apple-touch-icon" href="assets/favicon.svg?v=2">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=3">
+<link rel="apple-touch-icon" href="assets/favicon.svg?v=3">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=2">
-<script src="js/main.js?v=2" defer></script>
+<link rel="stylesheet" href="css/styles.css?v=3">
+<script src="js/main.js?v=3" defer></script>
 
 <!-- Sin JavaScript no hay animaciones ni acordeones, pero todo el contenido debe seguir visible -->
 <noscript>
@@ -55,7 +55,7 @@
   "name": "C&M Labs",
   "alternateName": "CyM Labs",
   "url": "https://cymlabs2026-jpg.github.io/",
-  "logo": "https://cymlabs2026-jpg.github.io/assets/logo.svg?v=2",
+  "logo": "https://cymlabs2026-jpg.github.io/assets/logo.svg?v=3",
   "email": "c.y.m.labs2026@gmail.com",
   "slogan": "La Inteligencia Artificial al servicio de tu crecimiento",
   "description": "C&M Labs diseña e implementa soluciones de Inteligencia Artificial, automatización de procesos y Business Intelligence que ayudan a empresas y profesionales a optimizar procesos, reducir costos y tomar decisiones basadas en datos.",
@@ -95,7 +95,7 @@
 <header class="nav" id="nav">
   <div class="contenedor nav__inner">
     <a class="nav__logo" href="#inicio" aria-label="C&amp;M Labs, ir al inicio">
-      <img src="assets/logo.svg?v=2" alt="C&amp;M Labs" width="320" height="96">
+      <img src="assets/logo.svg?v=3" alt="C&amp;M Labs" width="320" height="96">
     </a>
 
     <nav class="nav__enlaces" aria-label="Navegación principal">
@@ -581,6 +581,128 @@
   </div>
 </section>
 
+<!-- ============================ CALCULADORA DE PÉRDIDA ============================ -->
+<section class="seccion" id="calculadora">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Calculadora</p>
+      <h2>¿Cuánto te cuesta hoy el trabajo manual?</h2>
+      <p>Mueve los valores según tu realidad. El cálculo es tuyo: no guardamos ni enviamos nada.</p>
+    </div>
+
+    <div class="calc revelar">
+      <form class="calc__controles" id="calc" onsubmit="return false">
+        <div class="calc__campo">
+          <label for="calc-personas">Personas que hacen tareas repetitivas</label>
+          <div class="calc__fila">
+            <input type="range" id="calc-personas" min="1" max="50" step="1" value="3">
+            <output for="calc-personas" id="calc-personas-v">3</output>
+          </div>
+        </div>
+        <div class="calc__campo">
+          <label for="calc-horas">Horas a la semana, por persona, en esas tareas</label>
+          <div class="calc__fila">
+            <input type="range" id="calc-horas" min="1" max="40" step="1" value="8">
+            <output for="calc-horas" id="calc-horas-v">8 h</output>
+          </div>
+          <p class="calc__ayuda">Copiar datos, armar informes, responder lo mismo, digitar pedidos…</p>
+        </div>
+        <div class="calc__campo">
+          <label for="calc-costo">Costo de una hora de trabajo (COP)</label>
+          <div class="calc__fila">
+            <input type="range" id="calc-costo" min="10000" max="150000" step="5000" value="25000">
+            <output for="calc-costo" id="calc-costo-v">$25.000</output>
+          </div>
+        </div>
+      </form>
+
+      <div class="calc__resultado" aria-live="polite">
+        <p class="calc__titulo">Hoy se van en tareas repetitivas</p>
+        <p class="calc__horas"><span id="calc-res-horas">104</span> horas al mes</p>
+        <p class="calc__dinero" id="calc-res-mes">$2.600.000</p>
+        <p class="calc__sub">al mes · <span id="calc-res-anio">$31.200.000</span> al año</p>
+
+        <div class="calc__escenario">
+          <p>Si automatizas solo la <b>mitad</b> de esas tareas, recuperas</p>
+          <p class="calc__recupera"><span id="calc-res-recupera">52</span> horas al mes</p>
+          <p class="calc__nota">Equivale a <span id="calc-res-dias">6,5</span> días completos de trabajo para dedicar a vender, atender o crecer.</p>
+        </div>
+
+        <div class="calc__acciones">
+          <a class="boton boton--primario boton--bloque" href="https://calendly.com/c-y-m-labs2026/30min" target="_blank" rel="noopener" data-calendly>Quiero recuperar ese tiempo</a>
+          <a class="calc__enlace" href="diagnostico/">O descubre primero qué automatizar · Diagnóstico gratis →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CASO DEMOSTRATIVO ============================ -->
+<section class="seccion seccion--alt" id="caso">
+  <div class="contenedor">
+    <div class="seccion__cabecera revelar">
+      <p class="etiqueta">Caso demostrativo</p>
+      <h2>Así se ve la IA trabajando en una distribuidora</h2>
+      <p>Un ejemplo ilustrativo de cómo implementaríamos IA en una empresa de distribución típica. Las cifras son estimaciones de referencia, no resultados de un cliente.</p>
+    </div>
+
+    <div class="caso revelar">
+      <article class="caso__fila">
+        <div class="caso__antes">
+          <p class="caso__marca">Antes</p>
+          <h3>Pedidos que llegan por correo</h3>
+          <p>Una persona los lee uno a uno y los digita en el sistema. Errores de digitación y pedidos que esperan horas.</p>
+          <p class="caso__dato">≈ 2 horas al día</p>
+        </div>
+        <div class="caso__flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="caso__despues">
+          <p class="caso__marca">Después</p>
+          <h3>Un agente los carga solo</h3>
+          <p>Lee cada correo, extrae productos y cantidades, y deja el pedido creado para una revisión final.</p>
+          <p class="caso__dato">≈ 15 minutos de revisión al día</p>
+        </div>
+      </article>
+
+      <article class="caso__fila">
+        <div class="caso__antes">
+          <p class="caso__marca">Antes</p>
+          <h3>Informe semanal de ventas</h3>
+          <p>Cada lunes se cruzan varios Excel a mano para saber cómo fue la semana. Cuando está listo, ya es tarde para decidir.</p>
+          <p class="caso__dato">≈ 6 horas cada semana</p>
+        </div>
+        <div class="caso__flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="caso__despues">
+          <p class="caso__marca">Después</p>
+          <h3>Tablero en Power BI</h3>
+          <p>Se actualiza solo cada mañana. Ventas por cliente, producto y vendedor, listas para la reunión.</p>
+          <p class="caso__dato">0 horas armando el informe</p>
+        </div>
+      </article>
+
+      <article class="caso__fila">
+        <div class="caso__antes">
+          <p class="caso__marca">Antes</p>
+          <h3>Preguntas de clientes por WhatsApp</h3>
+          <p>"¿Hay disponible?", "¿Dónde va mi pedido?". Se responden cuando alguien puede; fuera de horario, nadie responde.</p>
+          <p class="caso__dato">Respuestas en horas</p>
+        </div>
+        <div class="caso__flecha" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="caso__despues">
+          <p class="caso__marca">Después</p>
+          <h3>Asistente 24/7</h3>
+          <p>Responde disponibilidad y estado del pedido al instante, y pasa a una persona los casos que lo necesitan.</p>
+          <p class="caso__dato">Respuestas en segundos, a cualquier hora</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="caso__cta revelar">
+      <p>¿Tu empresa tiene procesos parecidos?</p>
+      <a class="boton boton--primario" href="#diagnostico">Ver qué podemos automatizar</a>
+    </div>
+  </div>
+</section>
+
 <!-- ============================ DIAGNÓSTICO DESTACADO ============================ -->
 <section class="seccion diag-destacado" id="diagnostico">
   <div class="contenedor">
@@ -857,7 +979,7 @@
 
       <div class="pie__marca">
         <div class="pie__logo">
-          <img src="assets/logo.svg?v=2" alt="C&amp;M Labs" width="320" height="96" loading="lazy">
+          <img src="assets/logo.svg?v=3" alt="C&amp;M Labs" width="320" height="96" loading="lazy">
         </div>
         <p>Inteligencia para transformar negocios y potenciar profesionales.</p>
 

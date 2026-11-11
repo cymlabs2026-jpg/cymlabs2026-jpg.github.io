@@ -1279,7 +1279,7 @@ p { text-wrap: pretty; }
 .diag-destacado {
   background:
     radial-gradient(ellipse 50% 60% at 85% 50%, rgba(212, 175, 55, 0.08), transparent 70%),
-    var(--fondo-alt);
+    var(--fondo);
 }
 
 .diag-destacado__grid {
@@ -1395,4 +1395,219 @@ p { text-wrap: pretty; }
 
 @media (min-width: 900px) {
   .diag-destacado__grid { grid-template-columns: 1fr 1fr; gap: var(--e-6); }
+}
+
+/* ========================= Calculadora de pérdida ========================= */
+
+.calc {
+  display: grid;
+  gap: var(--e-3);
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.calc__controles,
+.calc__resultado {
+  border: 1px solid var(--borde);
+  border-radius: 20px;
+  padding: var(--e-4);
+}
+
+.calc__controles {
+  display: grid;
+  gap: var(--e-4);
+  align-content: center;
+  background-color: var(--superficie);
+}
+
+.calc__campo label {
+  display: block;
+  font-weight: 500;
+  color: var(--texto);
+  margin-bottom: 10px;
+}
+
+.calc__fila {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.calc__fila output {
+  min-width: 92px;
+  text-align: right;
+  font-family: var(--font-titular);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--oro);
+}
+
+.calc__ayuda { font-size: 0.82rem; color: var(--texto-tenue); margin-top: 6px; }
+
+.calc input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--oro) var(--pct, 50%), rgba(255, 255, 255, 0.1) var(--pct, 50%));
+  cursor: pointer;
+}
+
+.calc input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--oro-claro);
+  border: 4px solid var(--noche);
+  box-shadow: 0 0 0 1px var(--oro), 0 4px 14px rgba(212, 175, 55, 0.45);
+}
+
+.calc input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--oro-claro);
+  border: 4px solid var(--noche);
+  box-shadow: 0 0 0 1px var(--oro);
+}
+
+.calc__resultado {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212, 175, 55, 0.12), transparent 70%),
+    #0D1322;
+  border-color: var(--borde-fuerte);
+  box-shadow: var(--sombra), 0 0 80px -30px rgba(212, 175, 55, 0.3);
+  text-align: center;
+}
+
+.calc__titulo {
+  font-family: var(--font-dato);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+}
+
+.calc__horas { margin-top: var(--e-1); font-size: 1.05rem; color: var(--texto-suave); }
+.calc__horas span { color: var(--texto); font-weight: 600; }
+
+.calc__dinero {
+  font-family: var(--font-titular);
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-top: 4px;
+  color: #FCA5A5;
+}
+
+.calc__sub { color: var(--texto-tenue); font-size: 0.92rem; }
+.calc__sub span { color: var(--texto-suave); font-weight: 600; }
+
+.calc__escenario {
+  margin-top: var(--e-3);
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+.calc__escenario b { color: var(--texto); }
+
+.calc__recupera {
+  font-family: var(--font-titular);
+  font-size: clamp(1.8rem, 4vw, 2.3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background: var(--degradado);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.calc__nota { font-size: 0.88rem; color: var(--texto-tenue); max-width: 36ch; margin: 4px auto 0; }
+
+.calc__acciones { display: grid; gap: var(--e-2); margin-top: var(--e-3); }
+
+.calc__enlace { font-size: 0.88rem; color: var(--oro-texto); }
+.calc__enlace:hover { color: var(--oro-claro); }
+
+@media (min-width: 900px) {
+  .calc { grid-template-columns: 1.1fr 0.9fr; }
+}
+
+/* ========================= Caso demostrativo ========================= */
+
+.caso { display: grid; gap: var(--e-2); max-width: 1040px; margin-inline: auto; }
+
+.caso__fila {
+  display: grid;
+  gap: var(--e-1);
+  align-items: stretch;
+}
+
+.caso__antes,
+.caso__despues {
+  border-radius: var(--radio);
+  padding: var(--e-3);
+  border: 1px solid var(--borde);
+}
+
+.caso__antes { background-color: rgba(255, 255, 255, 0.015); }
+
+.caso__despues {
+  background-color: rgba(212, 175, 55, 0.05);
+  border-color: var(--borde-fuerte);
+}
+
+.caso__fila h3 { font-size: 1.1rem; margin-bottom: 6px; }
+.caso__antes h3 { color: var(--texto-suave); }
+.caso__fila p { font-size: 0.92rem; color: var(--texto-tenue); line-height: 1.55; }
+
+.caso__fila .caso__marca {
+  font-family: var(--font-dato);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.caso__antes .caso__marca { color: var(--texto-tenue); }
+.caso__despues .caso__marca { color: var(--oro); }
+
+.caso__fila .caso__dato {
+  margin-top: var(--e-2);
+  font-family: var(--font-titular);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.caso__antes .caso__dato { color: #FCA5A5; }
+.caso__despues .caso__dato { color: var(--oro-claro); }
+
+.caso__flecha {
+  display: grid;
+  place-items: center;
+  color: var(--oro);
+  transform: rotate(90deg);
+}
+
+.caso__flecha svg { width: 26px; height: 26px; }
+
+.caso__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  margin-top: var(--e-4);
+  color: var(--texto-suave);
+}
+
+@media (min-width: 800px) {
+  .caso__fila { grid-template-columns: 1fr 48px 1fr; }
+  .caso__flecha { transform: none; }
 }
