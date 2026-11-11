@@ -271,19 +271,80 @@
   }
 
   /* ---------------------------------------------------------------
-     Fondo animado del hero: red de nodos y circuitos
-     Refuerza el concepto del isotipo (personas, datos y tecnología conectados).
+     Brillo que sigue al cursor en las tarjetas
+     Cada tarjeta lee --mx / --my en su CSS; aquí solo se actualizan.
+     --------------------------------------------------------------- */
+  const SELECTOR_BRILLO = '.solucion, .valor, .publico__item, .contacto__canal, .pmv__item, ' +
+                          '.formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista';
+
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', function (e) {
+      const tarjeta = e.target.closest && e.target.closest(SELECTOR_BRILLO);
+      if (!tarjeta) return;
+      const r = tarjeta.getBoundingClientRect();
+      tarjeta.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      tarjeta.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+  }
+
+  /* ---------------------------------------------------------------
+     Cifras que cuentan hacia arriba al aparecer en pantalla
+     --------------------------------------------------------------- */
+  const cifras = document.querySelectorAll('[data-contar]');
+
+  function contar(el) {
+    const meta = Number(el.dataset.contar);
+    const sufijo = el.dataset.sufijo || '';
+    if (movimientoReducido) { el.textContent = meta + sufijo; return; }
+    const inicio = performance.now();
+    const duracion = 1400;
+    (function paso(ahora) {
+      const t = Math.min((ahora - inicio) / duracion, 1);
+      const suave = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(meta * suave) + sufijo;
+      if (t < 1) requestAnimationFrame(paso);
+    })(inicio);
+  }
+
+  if (cifras.length) {
+    if (!('IntersectionObserver' in window)) {
+      cifras.forEach(contar);
+    } else {
+      const obsCifras = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          if (entrada.isIntersecting) {
+            contar(entrada.target);
+            obsCifras.unobserve(entrada.target);
+          }
+        });
+      }, { threshold: 0.6 });
+      cifras.forEach(function (el) { obsCifras.observe(el); });
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     Hero: red neuronal interactiva
+     Capas de nodos conectadas; pulsos de luz viajan de una capa a la
+     siguiente como datos que se procesan. Los nodos cerca del cursor
+     se encienden y disparan pulsos nuevos.
      --------------------------------------------------------------- */
   const canvas = document.getElementById('hero-canvas');
 
-  if (canvas && !movimientoReducido) {
+  if (canvas) {
     const ctx = canvas.getContext('2d');
+    const hero = canvas.parentElement;
+    // Con "reducir movimiento" activo la red se dibuja quieta y solo responde al cursor.
+    const quieto = movimientoReducido;
     let nodos = [];
+    let enlaces = [];
+    let salientes = [];
+    let pulsos = [];
     let animacion = null;
     let ancho = 0;
     let alto = 0;
-
-    const DISTANCIA_ENLACE = 150;
+    const cursor = { x: -9999, y: -9999 };
+    const RADIO_CURSOR = 130;
+    const MAX_PULSOS = 90;
 
     function dimensionar() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -295,61 +356,154 @@
       canvas.height = Math.floor(alto * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Densidad proporcional al área, con tope para no castigar equipos modestos.
-      const cantidad = Math.min(Math.round((ancho * alto) / 16000), 90);
+      // Escritorio: la red ocupa la mitad derecha. Móvil: todo el ancho, detrás del texto.
+      const escritorio = ancho >= 1000;
+      const capas = escritorio ? [5, 8, 11, 8, 5] : [4, 6, 7, 6, 4];
+      const x0 = escritorio ? ancho * 0.5 : ancho * 0.08;
+      const x1 = escritorio ? ancho - Math.max(60, ancho * 0.06) : ancho * 0.92;
+      const yArriba = alto * 0.16;
+      const yAbajo = alto * 0.86;
 
-      nodos = Array.from({ length: cantidad }, function () {
-        return {
-          x: Math.random() * ancho,
-          y: Math.random() * alto,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          r: Math.random() * 1.6 + 1
-        };
+      nodos = [];
+      capas.forEach(function (cantidad, c) {
+        const x = x0 + (x1 - x0) * c / (capas.length - 1);
+        for (let j = 0; j < cantidad; j++) {
+          nodos.push({
+            bx: x,
+            by: yArriba + (yAbajo - yArriba) * (j + 0.5) / cantidad,
+            x: x, y: 0,
+            capa: c,
+            fase: Math.random() * Math.PI * 2,
+            brillo: 0
+          });
+        }
       });
+
+      // Cada nodo se conecta con parte de la capa siguiente (no con toda: se vería saturado).
+      enlaces = [];
+      salientes = nodos.map(function () { return []; });
+      nodos.forEach(function (a, i) {
+        nodos.forEach(function (b, k) {
+          if (b.capa === a.capa + 1 && Math.random() < 0.5) {
+            salientes[i].push(enlaces.length);
+            enlaces.push([i, k]);
+          }
+        });
+      });
+      pulsos = [];
     }
 
-    function dibujar() {
+    function lanzarPulso(indiceEnlace, rapido) {
+      if (pulsos.length >= MAX_PULSOS || indiceEnlace === undefined) return;
+      pulsos.push({ e: indiceEnlace, p: 0, v: rapido ? 0.03 : 0.012 + Math.random() * 0.01 });
+    }
+
+    function lanzarDesde(indiceNodo, rapido) {
+      const opciones = salientes[indiceNodo];
+      if (opciones && opciones.length) {
+        lanzarPulso(opciones[Math.floor(Math.random() * opciones.length)], rapido);
+      }
+    }
+
+    hero.addEventListener('pointermove', function (e) {
+      const r = canvas.getBoundingClientRect();
+      cursor.x = e.clientX - r.left;
+      cursor.y = e.clientY - r.top;
+      if (quieto) dibujar(0);
+    }, { passive: true });
+
+    hero.addEventListener('pointerleave', function () {
+      cursor.x = -9999;
+      cursor.y = -9999;
+      if (quieto) dibujar(0);
+    });
+
+    let ultimo = 0;
+
+    function dibujar(tiempo) {
       ctx.clearRect(0, 0, ancho, alto);
+      const t = quieto ? 0 : (tiempo || 0);
 
-      nodos.forEach(function (nodo) {
-        nodo.x += nodo.vx;
-        nodo.y += nodo.vy;
+      // Flotación suave de cada nodo alrededor de su posición base.
+      nodos.forEach(function (n, i) {
+        n.x = n.bx + Math.cos(t / 2600 + n.fase) * 4;
+        n.y = n.by + Math.sin(t / 2200 + n.fase) * 6;
 
-        if (nodo.x < 0 || nodo.x > ancho) nodo.vx *= -1;
-        if (nodo.y < 0 || nodo.y > alto) nodo.vy *= -1;
+        const cerca = Math.hypot(n.x - cursor.x, n.y - cursor.y) < RADIO_CURSOR;
+        n.brillo = quieto ? (cerca ? 1 : 0) : n.brillo + ((cerca ? 1 : 0) - n.brillo) * 0.12;
+
+        // El cursor "activa" nodos: disparan datos hacia la siguiente capa.
+        if (!quieto && cerca && Math.random() < 0.06) lanzarDesde(i, true);
       });
 
-      // Enlaces entre nodos cercanos: la opacidad decae con la distancia.
-      for (let i = 0; i < nodos.length; i++) {
-        for (let j = i + 1; j < nodos.length; j++) {
-          const dx = nodos[i].x - nodos[j].x;
-          const dy = nodos[i].y - nodos[j].y;
-          const distancia = Math.hypot(dx, dy);
-
-          if (distancia < DISTANCIA_ENLACE) {
-            ctx.strokeStyle = 'rgba(37, 99, 235, ' + (1 - distancia / DISTANCIA_ENLACE) * 0.35 + ')';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(nodos[i].x, nodos[i].y);
-            ctx.lineTo(nodos[j].x, nodos[j].y);
-            ctx.stroke();
-          }
-        }
+      // Actividad espontánea: siempre hay datos entrando por la primera capa.
+      if (!quieto && t - ultimo > 140) {
+        ultimo = t;
+        const entrada = nodos.filter(function (n) { return n.capa === 0; });
+        const elegido = nodos.indexOf(entrada[Math.floor(Math.random() * entrada.length)]);
+        lanzarDesde(elegido, false);
       }
 
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.7)';
-      nodos.forEach(function (nodo) {
+      // Conexiones
+      enlaces.forEach(function (enl) {
+        const a = nodos[enl[0]];
+        const b = nodos[enl[1]];
+        const luz = Math.max(a.brillo, b.brillo);
+        ctx.strokeStyle = 'rgba(212, 175, 55, ' + (0.14 + luz * 0.45) + ')';
+        ctx.lineWidth = 0.7 + luz * 0.6;
         ctx.beginPath();
-        ctx.arc(nodo.x, nodo.y, nodo.r, 0, Math.PI * 2);
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      });
+
+      // Pulsos de datos
+      pulsos = pulsos.filter(function (p) {
+        p.p += p.v;
+        const enl = enlaces[p.e];
+        const a = nodos[enl[0]];
+        const b = nodos[enl[1]];
+        const x = a.x + (b.x - a.x) * p.p;
+        const y = a.y + (b.y - a.y) * p.p;
+
+        ctx.fillStyle = 'rgba(255, 226, 140, 0.18)';
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255, 232, 160, 0.95)';
+        ctx.beginPath();
+        ctx.arc(x, y, 1.9, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (p.p >= 1) {
+          b.brillo = Math.min(1, b.brillo + 0.5);
+          if (Math.random() < 0.75) lanzarDesde(enl[1], false);
+          return false;
+        }
+        return true;
+      });
+
+      // Nodos
+      nodos.forEach(function (n) {
+        const r = 3 + n.brillo * 2.6;
+        if (n.brillo > 0.05) {
+          ctx.fillStyle = 'rgba(212, 175, 55, ' + n.brillo * 0.16 + ')';
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r + 10, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.fillStyle = n.brillo > 0.3 ? '#FFE28C' : 'rgba(212, 175, 55, 0.8)';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      animacion = requestAnimationFrame(dibujar);
+      animacion = quieto ? null : requestAnimationFrame(dibujar);
     }
 
     function iniciar() {
-      if (animacion === null) dibujar();
+      if (quieto) dibujar(0);
+      else if (animacion === null) animacion = requestAnimationFrame(dibujar);
     }
 
     function detener() {
@@ -365,7 +519,7 @@
     let temporizadorResize;
     window.addEventListener('resize', function () {
       clearTimeout(temporizadorResize);
-      temporizadorResize = setTimeout(dimensionar, 200);
+      temporizadorResize = setTimeout(function () { dimensionar(); if (quieto) dibujar(0); }, 200);
     });
 
     // No gastar batería animando algo que nadie está viendo. Hacen falta las dos

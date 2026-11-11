@@ -31,7 +31,7 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: radial-gradient(ellipse 70% 60% at 15% 0%, rgba(37, 99, 235, 0.20), transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 15% 0%, rgba(212, 175, 55, 0.12), transparent 70%);
   pointer-events: none;
 }
 .curso-hero .contenedor { position: relative; z-index: 1; }
@@ -93,8 +93,8 @@
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: rgba(37, 99, 235, 0.15);
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  background: var(--oro-velo);
+  border: 1px solid rgba(212, 175, 55, 0.28);
   font-family: var(--font-dato);
   font-weight: 600;
   color: var(--cian-ia);
@@ -103,9 +103,9 @@
 .modulo h3 { font-size: 1.1rem; margin-bottom: 6px; }
 .modulo p { font-size: 0.95rem; color: var(--texto-tenue); }
 .modulo--final .modulo__num {
-  background: var(--degradado);
-  color: var(--blanco);
-  border-color: transparent;
+  background: var(--oro);
+  color: var(--tinta);
+  border-color: var(--oro);
 }
 .modulo--final .modulo__num::before { content: '★'; font-size: 1.1rem; }
 
@@ -117,8 +117,8 @@
 
 /* Tarjeta de inscripción */
 .inscripcion-card {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(6, 182, 212, 0.08));
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  background: linear-gradient(160deg, rgba(212, 175, 55, 0.08), rgba(255, 255, 255, 0.02) 60%);
+  border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio);
   padding: var(--e-4);
   max-width: 660px;
