@@ -77,8 +77,11 @@
     const puntoLectura = window.scrollY + window.innerHeight * 0.35;
     let activa = null;
 
+    // El menú no sigue el orden de la página: gana la sección más baja que ya pasó.
     secciones.forEach(function (seccion) {
-      if (seccion.offsetTop <= puntoLectura) activa = seccion;
+      if (seccion.offsetTop <= puntoLectura && (!activa || seccion.offsetTop > activa.offsetTop)) {
+        activa = seccion;
+      }
     });
 
     enlacesNav.forEach(function (enlace) {
@@ -275,7 +278,22 @@
      Cada tarjeta lee --mx / --my en su CSS; aquí solo se actualizan.
      --------------------------------------------------------------- */
   const SELECTOR_BRILLO = '.solucion, .valor, .publico__item, .contacto__canal, .pmv__item, ' +
-                          '.formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista, .caso__despues';
+                          '.formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista, .caso__despues, ' +
+                          '.linea, .paquete';
+
+  /* ---------------------------------------------------------------
+     Botones que llevan al formulario con la necesidad ya elegida
+     (por ejemplo, "Postular mi empresa al piloto" → Ontara).
+     --------------------------------------------------------------- */
+  document.querySelectorAll('[data-necesidad]').forEach(function (boton) {
+    boton.addEventListener('click', function () {
+      const selector = document.getElementById('necesidad');
+      if (!selector) return;
+      const valor = boton.getAttribute('data-necesidad');
+      const existe = Array.prototype.some.call(selector.options, function (op) { return op.value === valor; });
+      if (existe) selector.value = valor;
+    });
+  });
 
   if (window.matchMedia('(hover: hover)').matches) {
     document.addEventListener('pointermove', function (e) {
