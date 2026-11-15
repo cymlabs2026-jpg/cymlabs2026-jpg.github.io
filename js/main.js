@@ -496,7 +496,7 @@
         const a = nodos[enl[0]];
         const b = nodos[enl[1]];
         const luz = Math.max(a.brillo, b.brillo);
-        ctx.strokeStyle = 'rgba(184, 137, 43, ' + (0.2 + luz * 0.5) + ')';
+        ctx.strokeStyle = 'rgba(8, 145, 178, ' + (0.16 + luz * 0.5) + ')';
         ctx.lineWidth = 0.7 + luz * 0.6;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -513,11 +513,11 @@
         const x = a.x + (b.x - a.x) * p.p;
         const y = a.y + (b.y - a.y) * p.p;
 
-        ctx.fillStyle = 'rgba(184, 137, 43, 0.16)';
+        ctx.fillStyle = 'rgba(139, 92, 246, 0.18)';
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = 'rgba(138, 106, 31, 0.95)';
+        ctx.fillStyle = 'rgba(124, 58, 237, 0.95)';
         ctx.beginPath();
         ctx.arc(x, y, 1.9, 0, Math.PI * 2);
         ctx.fill();
@@ -534,12 +534,12 @@
       nodos.forEach(function (n) {
         const r = 3 + n.brillo * 2.6;
         if (n.brillo > 0.05) {
-          ctx.fillStyle = 'rgba(184, 137, 43, ' + n.brillo * 0.16 + ')';
+          ctx.fillStyle = 'rgba(124, 58, 237, ' + n.brillo * 0.14 + ')';
           ctx.beginPath();
           ctx.arc(n.x, n.y, r + 10, 0, Math.PI * 2);
           ctx.fill();
         }
-        ctx.fillStyle = n.brillo > 0.3 ? '#8A6A1F' : 'rgba(184, 137, 43, 0.8)';
+        ctx.fillStyle = n.brillo > 0.3 ? '#7C3AED' : 'rgba(8, 145, 178, 0.8)';
         ctx.beginPath();
         ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.fill();

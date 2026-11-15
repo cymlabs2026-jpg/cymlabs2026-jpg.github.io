@@ -4,16 +4,19 @@
    ========================================================================== */
 
 :root {
-  /* Color de marca — tema "Blanco y oro"
-     Fondo blanco limpio, texto azul noche y el oro solo como acento.
+  /* Color de marca — tema "Blanco, cian y violeta"
+     Fondo blanco limpio, texto azul noche y los colores del logo como acento.
+     Los nombres --oro* se conservan por compatibilidad: ahora son tonos cian.
      Los nombres antiguos (--azul-*, --cian-ia) se conservan como alias para no
      romper los estilos internos de cada página. */
   --noche: #0B1220;          /* azul noche: titulares */
-  --tinta: #070B14;          /* texto sobre botones dorados */
-  --oro: #B8892B;            /* acento: botones, líneas, iconos */
-  --oro-texto: #8A6A1F;      /* oro oscuro: texto pequeño legible sobre blanco */
-  --oro-claro: #D4AF37;      /* oro brillante: estados hover */
-  --oro-velo: rgba(184, 137, 43, 0.08);
+  --tinta: #FFFFFF;          /* texto sobre botones de color */
+  --oro: #0891B2;            /* cian de acento: líneas, iconos, pestañas */
+  --oro-texto: #0E7490;      /* cian oscuro: texto pequeño legible sobre blanco */
+  --oro-claro: #22D3EE;      /* cian brillante del logo: resaltes */
+  --violeta: #7C3AED;        /* violeta del logo */
+  --oro-velo: rgba(8, 145, 178, 0.07);
+  --degradado-boton: linear-gradient(120deg, #0891B2 0%, #2F6FE4 55%, #7C3AED 100%);
 
   --azul-corporativo: var(--tinta);
   --azul-tecnologico: var(--oro);
@@ -28,14 +31,14 @@
   --superficie: #FFFFFF;
   --superficie-hover: #FCFCFD;
   --borde: rgba(11, 18, 32, 0.09);
-  --borde-fuerte: rgba(184, 137, 43, 0.45);
+  --borde-fuerte: rgba(8, 145, 178, 0.40);
 
   /* Texto */
   --texto: #0B1220;
   --texto-suave: #3B4456;
   --texto-tenue: #667085;
 
-  --degradado: linear-gradient(120deg, #D4AF37 0%, #B8892B 50%, #8A6A1F 100%);
+  --degradado: linear-gradient(120deg, #06B6D4 0%, #3B82F6 50%, #8B5CF6 100%);
 
   /* Tipografía */
   --font-titular: 'Sora', system-ui, sans-serif;
@@ -225,17 +228,20 @@ p { text-wrap: pretty; }
 }
 
 .boton--primario {
-  background: var(--oro);
-  color: var(--tinta);
-  border: 1px solid var(--oro);
-  box-shadow: 0 10px 30px -12px rgba(184, 137, 43, 0.55);
+  background: var(--degradado-boton);
+  background-size: 160% 100%;
+  background-position: 0% 0%;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 10px 30px -12px rgba(59, 91, 219, 0.55);
+  transition: transform var(--transicion), box-shadow var(--transicion),
+              background-position 0.4s ease;
 }
 
 .boton--primario:hover {
   transform: translateY(-2px);
-  background: var(--oro-claro);
-  border-color: var(--oro-claro);
-  box-shadow: 0 16px 40px -12px rgba(184, 137, 43, 0.7);
+  background-position: 100% 0%;
+  box-shadow: 0 16px 40px -12px rgba(124, 58, 237, 0.55);
 }
 
 .boton--secundario {
@@ -282,7 +288,7 @@ p { text-wrap: pretty; }
   width: 100%;
 }
 
-.nav__logo img { height: 38px; width: auto; }
+.nav__logo img { height: 44px; width: auto; }
 
 .nav__enlaces {
   display: flex;
@@ -465,14 +471,14 @@ p { text-wrap: pretty; }
   height: 8px;
   border-radius: 50%;
   background: var(--oro);
-  box-shadow: 0 0 0 0 rgba(184, 137, 43, 0.6);
+  box-shadow: 0 0 0 0 rgba(8, 145, 178, 0.6);
   animation: latido 2s infinite;
 }
 
 @keyframes latido {
-  0%   { box-shadow: 0 0 0 0 rgba(184, 137, 43, 0.55); }
-  70%  { box-shadow: 0 0 0 10px rgba(184, 137, 43, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(184, 137, 43, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(8, 145, 178, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(8, 145, 178, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(8, 145, 178, 0); }
 }
 
 .hero__pastillas {
@@ -540,7 +546,7 @@ p { text-wrap: pretty; }
   place-items: center;
   border-radius: 12px;
   background: var(--oro-velo);
-  border: 1px solid rgba(184, 137, 43, 0.28);
+  border: 1px solid rgba(8, 145, 178, 0.28);
   color: var(--oro-texto);
   margin-bottom: var(--e-2);
   flex-shrink: 0;
@@ -695,7 +701,7 @@ p { text-wrap: pretty; }
 }
 
 .propuesta {
-  background: linear-gradient(160deg, rgba(184, 137, 43, 0.08), rgba(255, 255, 255, 0.02) 60%);
+  background: linear-gradient(160deg, rgba(8, 145, 178, 0.08), rgba(255, 255, 255, 0.02) 60%);
   border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio);
   padding: var(--e-4);
@@ -917,7 +923,7 @@ p { text-wrap: pretty; }
   outline: none;
   border-color: var(--cian-ia);
   background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(184, 137, 43, 0.15);
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
 }
 
 .campo select { appearance: none; cursor: pointer; }
@@ -1008,7 +1014,7 @@ p { text-wrap: pretty; }
   margin-bottom: var(--e-4);
 }
 
-.pie__logo img { height: 44px; width: auto; margin-bottom: var(--e-2); }
+.pie__logo img { height: 48px; width: auto; margin-bottom: var(--e-2); }
 
 .pie__marca p {
   font-size: 0.9rem;
@@ -1168,7 +1174,7 @@ p { text-wrap: pretty; }
 :is(.solucion, .valor, .publico__item, .contacto__canal, .pmv__item,
     .formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista):hover {
   background-image: radial-gradient(380px circle at var(--mx, -500px) var(--my, -500px),
-                    rgba(184, 137, 43, 0.10), transparent 45%);
+                    rgba(8, 145, 178, 0.10), transparent 45%);
 }
 
 :is(.valor, .publico__item, .contacto__canal, .modulo, .cifra):hover {
@@ -1278,7 +1284,7 @@ p { text-wrap: pretty; }
 
 .diag-destacado {
   background:
-    radial-gradient(ellipse 50% 60% at 85% 50%, rgba(184, 137, 43, 0.08), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 50%, rgba(8, 145, 178, 0.08), transparent 70%),
     var(--fondo);
 }
 
@@ -1324,7 +1330,7 @@ p { text-wrap: pretty; }
   border: 1px solid var(--borde-fuerte);
   border-radius: 20px;
   padding: var(--e-4);
-  box-shadow: var(--sombra), 0 0 80px -30px rgba(184, 137, 43, 0.35);
+  box-shadow: var(--sombra), 0 0 80px -30px rgba(8, 145, 178, 0.35);
 }
 
 .diag-vista__marca {
@@ -1462,7 +1468,7 @@ p { text-wrap: pretty; }
   border-radius: 50%;
   background: var(--oro-claro);
   border: 4px solid #FFFFFF;
-  box-shadow: 0 0 0 1px var(--oro), 0 4px 14px rgba(184, 137, 43, 0.45);
+  box-shadow: 0 0 0 1px var(--oro), 0 4px 14px rgba(8, 145, 178, 0.45);
 }
 
 .calc input[type='range']::-moz-range-thumb {
@@ -1476,10 +1482,10 @@ p { text-wrap: pretty; }
 
 .calc__resultado {
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184, 137, 43, 0.12), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(8, 145, 178, 0.12), transparent 70%),
     #FFFFFF;
   border-color: var(--borde-fuerte);
-  box-shadow: var(--sombra), 0 0 80px -30px rgba(184, 137, 43, 0.3);
+  box-shadow: var(--sombra), 0 0 80px -30px rgba(8, 145, 178, 0.3);
   text-align: center;
 }
 
@@ -1533,7 +1539,7 @@ p { text-wrap: pretty; }
 .calc__acciones { display: grid; gap: var(--e-2); margin-top: var(--e-3); }
 
 .calc__enlace { font-size: 0.88rem; color: var(--oro-texto); }
-.calc__enlace:hover { color: var(--oro-claro); }
+.calc__enlace:hover { color: var(--violeta); }
 
 @media (min-width: 900px) {
   .calc { grid-template-columns: 1.1fr 0.9fr; }
@@ -1559,7 +1565,7 @@ p { text-wrap: pretty; }
 .caso__antes { background-color: #FFFFFF; }
 
 .caso__despues {
-  background-color: rgba(184, 137, 43, 0.05);
+  background-color: rgba(8, 145, 178, 0.05);
   border-color: var(--borde-fuerte);
 }
 
@@ -1586,7 +1592,7 @@ p { text-wrap: pretty; }
 }
 
 .caso__antes .caso__dato { color: #D92D20; }
-.caso__despues .caso__dato { color: var(--oro-claro); }
+.caso__despues .caso__dato { color: var(--violeta); }
 
 .caso__flecha {
   display: grid;

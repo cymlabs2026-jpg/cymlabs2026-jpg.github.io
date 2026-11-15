@@ -1,22 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="C&amp;M Labs">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="C&amp;M Labs">
   <defs>
-    <linearGradient id="favGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#F0D592"/>
-      <stop offset="100%" stop-color="#C29B45"/>
+    <linearGradient id="marco" x1="205" y1="205" x2="584" y2="594" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="55%" stop-color="#4F95F3"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
     </linearGradient>
   </defs>
-  <rect width="100" height="100" rx="22" fill="#070B14"/>
-  <g fill="none" stroke="url(#favGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M44 30 A17 17 0 1 0 44 66"/>
-    <path d="M58 66 V34 L69 50 L80 34 V66"/>
+  <rect width="800" height="800" rx="170" fill="#0B0F14"/>
+
+  <!-- Isotipo: chip con forma de C y una M de píxeles -->
+  <g stroke-linecap="round" fill="none">
+    <path d="M566 300 V285 A62 62 0 0 0 504 223 H285 A62 62 0 0 0 223 285 V514 A62 62 0 0 0 285 576 H504 A62 62 0 0 0 566 514 V498" stroke="url(#marco)" stroke-width="37"/>
+    <g stroke="#22D3EE" stroke-width="18">
+      <path d="M322 168 V205 M400 168 V205 M478 168 V205"/>
+      <path d="M322 594 V631 M400 594 V631 M478 594 V631"/>
+      <path d="M168 322 H205 M168 400 H205 M168 478 H205"/>
+    </g>
+    <path d="M588 400 H628" stroke="#8B5CF6" stroke-width="18"/>
   </g>
-  <g fill="#E6C878">
-    <circle cx="44" cy="30" r="4"/>
-    <circle cx="44" cy="66" r="4"/>
-    <circle cx="69" cy="50" r="4"/>
-  </g>
-  <g stroke="#E6C878" stroke-width="2.5" stroke-linecap="round" opacity="0.8">
-    <path d="M44 30 L58 34"/>
-    <path d="M44 66 L58 66"/>
+  <circle cx="634" cy="400" r="15" fill="#8B5CF6"/>
+
+  <g>
+    <rect x="270" y="270" width="41" height="41" rx="8" fill="#22D3EE"/>
+    <rect x="489" y="270" width="41" height="41" rx="8" fill="#22D3EE"/>
+    <rect x="270" y="325" width="41" height="41" rx="8" fill="#2BBCEF"/>
+    <rect x="325" y="325" width="41" height="41" rx="8" fill="#2BBCEF"/>
+    <rect x="434" y="325" width="41" height="41" rx="8" fill="#2BBCEF"/>
+    <rect x="489" y="325" width="41" height="41" rx="8" fill="#2BBCEF"/>
+    <rect x="270" y="380" width="41" height="41" rx="8" fill="#3B9FF2"/>
+    <rect x="380" y="380" width="41" height="41" rx="8" fill="#3B9FF2"/>
+    <rect x="489" y="380" width="41" height="41" rx="8" fill="#3B9FF2"/>
+    <rect x="270" y="434" width="41" height="41" rx="8" fill="#5E84F4"/>
+    <rect x="489" y="434" width="41" height="41" rx="8" fill="#5E84F4"/>
+    <rect x="270" y="489" width="41" height="41" rx="8" fill="#8B5CF6"/>
+    <rect x="489" y="489" width="41" height="41" rx="8" fill="#8B5CF6"/>
   </g>
 </svg>
