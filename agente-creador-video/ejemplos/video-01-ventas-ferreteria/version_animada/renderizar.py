@@ -6,10 +6,12 @@ repetible. Luego se une con la intro y la pantalla final de la marca.
 
 Uso (con el agente instalado con los extras [marca] y [voz]):
     python renderizar.py                                  # video sin voz
-    python renderizar.py --voz ruta/es_MX-claude-high.onnx  # con locución y subtítulos
+    python renderizar.py --voz ruta/es_MX-claude-high.onnx  # con voz sintética y subtítulos
+    python renderizar.py --locucion carpeta/              # con tu voz grabada (e1.wav … e9.wav, cierre.wav)
     python renderizar.py --previa                         # cuadros fijos para revisar el diseño
 
-Salida en esta carpeta: video_01_version_animada.mp4 (y subtitulos.srt si hay voz).
+Salida en esta carpeta: el video (por defecto video_01_version_animada.mp4) y, si hay voz,
+sus subtítulos con el mismo nombre y extensión .srt.
 """
 
 from __future__ import annotations
@@ -174,7 +176,21 @@ def sintetizar_locucion(modelo: str, config: dict, carpeta: Path) -> dict[str, t
     return clips
 
 
-def video(modelo_voz: str | None) -> None:
+def cargar_locucion(carpeta: Path) -> dict[str, tuple[Path, float]]:
+    """Locución grabada: un archivo por bloque y, si existe, textos.json con lo que se dijo (para los subtítulos)."""
+    clips = {}
+    for clave in LOCUCION:
+        archivo = next((carpeta / f"{clave}{ext}" for ext in (".wav", ".mp3", ".m4a") if (carpeta / f"{clave}{ext}").exists()), None)
+        if archivo is None:
+            raise SystemExit(f"Falta el bloque {clave} en {carpeta}")
+        clips[clave] = (archivo, medios.duracion(archivo))
+    textos = carpeta / "textos.json"
+    if textos.exists():
+        LOCUCION.update(json.loads(textos.read_text(encoding="utf-8")))
+    return clips
+
+
+def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: str = "video_01_version_animada.mp4") -> None:
     from playwright.sync_api import sync_playwright
 
     config = cargar_config()
@@ -184,7 +200,12 @@ def video(modelo_voz: str | None) -> None:
     marca = config["marca"]
 
     # 0. Locución: cada escena dura al menos lo que su voz más los respiros.
-    clips = sintetizar_locucion(modelo_voz, config, trabajo / "voz") if modelo_voz else {}
+    if locucion:
+        clips = cargar_locucion(Path(locucion))
+    elif modelo_voz:
+        clips = sintetizar_locucion(modelo_voz, config, trabajo / "voz")
+    else:
+        clips = {}
     escenas = [[e, max(d, round(clips[e][1] + ENTRADA_VOZ + SALIDA_VOZ, 2)) if e in clips else d] for e, d in ESCENAS_BASE]
     cierre_s = max(marca["cierre_s"], round(clips["cierre"][1] + 2.5, 2)) if clips else marca["cierre_s"]
 
@@ -223,7 +244,7 @@ def video(modelo_voz: str | None) -> None:
     tarjeta_a_clip(trabajo / "cierre.png", trabajo / "cierre.mp4", cierre_s, config["video"])
 
     # 3. Todo junto.
-    salida = AQUI / "video_01_version_animada.mp4"
+    salida = AQUI / nombre_salida
     imagen = trabajo / "imagen.mp4" if clips else salida
     medios.concatenar([trabajo / "intro.mp4", animacion, trabajo / "cierre.mp4"], imagen)
     if clips:
@@ -256,12 +277,14 @@ def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, int
                   "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{duracion:.3f}", str(salida))
 
     plan = [{"inicio": 0, "fin": duracion, "tipo": "normal", "velocidad": 1.0}]
-    (AQUI / "subtitulos.srt").write_text(generar_srt(bloques, plan), encoding="utf-8")
+    salida.with_suffix(".srt").write_text(generar_srt(bloques, plan), encoding="utf-8")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--previa", action="store_true")
-    parser.add_argument("--voz", help="Modelo .onnx de Piper para la locución")
+    parser.add_argument("--voz", help="Modelo .onnx de Piper para la locución sintética")
+    parser.add_argument("--locucion", help="Carpeta con la locución grabada por bloques")
+    parser.add_argument("--salida", default="video_01_version_animada.mp4", help="Nombre del video final")
     args = parser.parse_args()
-    previa() if args.previa else video(args.voz)
+    previa() if args.previa else video(args.voz, args.locucion, args.salida)
