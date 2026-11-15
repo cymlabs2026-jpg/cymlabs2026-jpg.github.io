@@ -8,6 +8,8 @@
 
 **Duración final esperada:** de 7 a 8 minutos (la grabación cruda puede durar 20; el agente corta y acelera).
 
+**Miniatura:** `miniatura.png` de esta carpeta (texto «¿Por qué cayó 28 %?» con el gráfico de Palmira Norte). Para regenerarla: `python generar_miniatura.py`.
+
 **Llamado a la acción:** formación Claude Empresarial → https://cymlabs2026-jpg.github.io/formacion/claude-empresarial.html
 
 ---
@@ -124,7 +126,7 @@ Si el panel no muestra alguna, pídesela: «agrega una alerta sobre la tendencia
 
 ## Después de grabar
 
-Crea el proyecto y copia las tomas en su carpeta `crudo/`:
+Crea el proyecto y copia las tomas en su carpeta `crudo/`. Copia también `foco.png` (el gráfico de la caída de Palmira Norte) en la carpeta del proyecto: el agente lo usa como foco de la miniatura.
 
 ```bash
 agente-video nuevo "Analiza las ventas con Claude"
@@ -136,7 +138,7 @@ Procésalo (el agente se detiene cuando el guion está listo para revisar):
 agente-video procesar proyectos/2026-11-15-analiza-las-ventas-con-claude
 ```
 
-Revisa `guion.md`: confirma que los tres prompts quedaron completos y que los capítulos coinciden con las tomas. Luego aprueba:
+Revisa `guion.md`: confirma que los tres prompts quedaron completos y que los capítulos coinciden con las tomas. En la sección «Miniatura» deja `¿Por qué *cayó 28 %*?`. Luego aprueba:
 
 ```bash
 agente-video aprobar proyectos/2026-11-15-analiza-las-ventas-con-claude

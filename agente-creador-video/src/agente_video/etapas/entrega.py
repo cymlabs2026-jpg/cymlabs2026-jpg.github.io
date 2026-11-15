@@ -5,6 +5,7 @@ from __future__ import annotations
 from .. import medios, tiempo
 from ..proyecto import Proyecto, leer_json
 from . import guion as guion_etapa
+from . import marca as marca_etapa
 
 NOMBRE = "entrega"
 DESCRIPCION = "Capítulos, descripción y reporte"
@@ -14,12 +15,15 @@ CAPITULOS_MINIMOS = 3
 SEPARACION_MINIMA_S = 10
 
 
-def capitulos_finales(capitulos: list[dict], plan: list[dict], duracion: float) -> tuple[list[dict], list[str]]:
+def capitulos_finales(
+    capitulos: list[dict], plan: list[dict], duracion: float, desplazamiento: float = 0.0
+) -> tuple[list[dict], list[str]]:
     """Traduce los capítulos al tiempo final y aplica las reglas de YouTube."""
     avisos = []
     finales: list[dict] = []
     for c in sorted(capitulos, key=lambda c: c["inicio"]):
-        t = 0.0 if not finales else tiempo.remapear(c["inicio"], plan)
+        # El primer capítulo siempre empieza en 0:00 (incluye la intro).
+        t = 0.0 if not finales else desplazamiento + tiempo.remapear(c["inicio"], plan)
         if finales and t - finales[-1]["inicio"] < SEPARACION_MINIMA_S:
             avisos.append(f"Capítulo «{c['titulo']}» omitido: queda a menos de {SEPARACION_MINIMA_S} s del anterior.")
             continue
@@ -38,7 +42,7 @@ def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
     guion = guion_etapa.cargar(proyecto)
     duracion = medios.duracion(proyecto.entrega / "video_final.mp4")
 
-    capitulos, avisos = capitulos_finales(guion["capitulos"], plan, duracion)
+    capitulos, avisos = capitulos_finales(guion["capitulos"], plan, duracion, marca_etapa.desplazamiento(proyecto))
     texto_capitulos = "\n".join(f"{tiempo.a_youtube(c['inicio'])} {c['titulo']}" for c in capitulos)
     (proyecto.entrega / "capitulos.txt").write_text(texto_capitulos + "\n", encoding="utf-8")
 
@@ -64,6 +68,7 @@ def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
         f"- Tiempos muertos cortados: {plan_info['tramos_cortados']}",
         f"- Capítulos: {len(capitulos)}",
         f"- Voz: {config['voz']['modo']}",
+        f"- Miniatura: {'entrega/miniatura.png' if (proyecto.entrega / 'miniatura.png').exists() else 'no generada'}",
     ]
     if avisos:
         reporte += ["\n## Avisos\n"] + [f"- {a}" for a in avisos]

@@ -1,0 +1,52 @@
+/* Identidad visual compartida por la intro, el cierre y la miniatura.
+   Mismos colores y tipografías que el sitio de C&M Labs. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@500;600&display=swap');
+
+:root {
+  --noche: #0B1220;
+  --texto-suave: #3B4456;
+  --cian: #0891B2;
+  --cian-claro: #22D3EE;
+  --violeta: #7C3AED;
+  --degradado: linear-gradient(120deg, #06B6D4 0%, #3B82F6 50%, #8B5CF6 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #FFFFFF;
+  color: var(--noche);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  position: relative;
+  /* Brillos suaves de los colores del logo en las esquinas. */
+  background:
+    radial-gradient(900px 600px at 105% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
+    radial-gradient(800px 600px at -10% 110%, rgba(34, 211, 238, 0.18), transparent 60%),
+    #FFFFFF;
+}
+
+/* Cuadrícula de puntos, como el fondo técnico del sitio. */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(11, 18, 32, 0.08) 2px, transparent 2px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.2));
+}
+
+.titular { font-family: 'Sora', 'Segoe UI', Arial, sans-serif; font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; }
+.etiqueta {
+  display: inline-block;
+  font-family: 'Sora', sans-serif; font-weight: 700; font-size: 30px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cian);
+}
+.barra { height: 14px; border-radius: 999px; background: var(--degradado); }
+.logo svg { display: block; width: 100%; height: auto; }
+.contenido { position: relative; z-index: 1; }

@@ -17,7 +17,9 @@ transcripcion = ["faster-whisper>=1.0"]
 ia = ["anthropic>=2.8", "pydantic>=2"]
 # Voz sintética local con Piper.
 voz = ["piper-tts>=1.2"]
-todo = ["agente-creador-video[transcripcion,ia,voz]"]
+# Intro, cierre y miniatura con la identidad de marca (después: playwright install chromium).
+marca = ["playwright>=1.40"]
+todo = ["agente-creador-video[transcripcion,ia,voz,marca]"]
 dev = ["pytest>=8"]
 
 [project.scripts]

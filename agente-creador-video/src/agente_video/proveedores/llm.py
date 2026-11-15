@@ -24,6 +24,7 @@ class CapituloIA(BaseModel):
 
 class GuionIA(BaseModel):
     titulos: list[str] = Field(description="Tres títulos; el recomendado primero")
+    miniatura: str = Field(description="Texto de la miniatura: máximo cuatro palabras; la palabra clave entre *asteriscos*")
     descripcion: str
     prompts: list[str] = Field(description="Prompts dictados en el video, completos y en orden")
     capitulos: list[CapituloIA]
@@ -102,6 +103,7 @@ def a_guion(guion: GuionIA, segmentos: list[dict]) -> dict:
             capitulos.append({"inicio": inicio, "titulo": c.titulo.strip()})
     return {
         "titulos": [t.strip() for t in guion.titulos],
+        "miniatura": guion.miniatura.strip(),
         "descripcion": guion.descripcion.strip(),
         "prompts": [p.strip() for p in guion.prompts if p.strip()],
         "capitulos": capitulos,

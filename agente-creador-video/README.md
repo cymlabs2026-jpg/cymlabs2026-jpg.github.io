@@ -4,14 +4,14 @@ Convierte una grabación de pantalla sin editar en un tutorial listo para YouTub
 
 Tú grabas la demostración; el agente hace la edición. Solo te pide una cosa: revisar el guion antes del montaje final.
 
-> **Versión 0.1: modo tutorial.** Las siguientes fases (zoom en los clics, avatar, formato vertical, conexión con el Agente de YouTube) están en la [hoja de ruta](#hoja-de-ruta).
+> **Versión 0.2: modo tutorial con identidad de marca.** Las siguientes fases (zoom en los clics, avatar, formato vertical, conexión con el Agente de YouTube) están en la [hoja de ruta](#hoja-de-ruta).
 
 ## Cómo funciona
 
 ```
 crudo/*.mp4 ─► 1 ingesta ─► 2 transcripción ─► 3 análisis ─► 4 guion ─► ✋ tu revisión
                                                                              │
-           entrega/ ◄─ 8 entrega ◄─ 7 subtítulos ◄─ 6 audio ◄─ 5 montaje ◄───┘
+  entrega/ ◄─ 9 entrega ◄─ 8 subtítulos ◄─ 7 audio ◄─ 6 marca ◄─ 5 montaje ◄─┘
 ```
 
 | # | Etapa | Qué hace | Con qué |
@@ -22,9 +22,10 @@ crudo/*.mp4 ─► 1 ingesta ─► 2 transcripción ─► 3 análisis ─► 4
 | 4 | Guion | Limpia muletillas, propone capítulos, 3 títulos, descripción y recupera los prompts dictados | Claude |
 | ✋ | Aprobación | Revisas y corriges `guion.md` | Tú |
 | 5 | Montaje | Corta el tiempo muerto y acelera las esperas (×4 por defecto) | FFmpeg |
-| 6 | Audio | Tu voz original o una voz sintética, música de fondo que baja sola cuando hablas, nivel de YouTube (−14 LUFS) | FFmpeg, Piper |
-| 7 | Subtítulos | `.srt` sincronizado con el video final, o grabados en la imagen | FFmpeg |
-| 8 | Entrega | Capítulos con las reglas de YouTube, descripción con prompts y capítulos, títulos y un reporte | — |
+| 6 | Marca | Intro con el título, pantalla final con huecos para los elementos de YouTube y miniatura de 1280×720 | Playwright, FFmpeg |
+| 7 | Audio | Tu voz original o una voz sintética, música de fondo que baja sola cuando hablas, nivel de YouTube (−14 LUFS) | FFmpeg, Piper |
+| 8 | Subtítulos | `.srt` sincronizado con el video final, o grabados en la imagen | FFmpeg |
+| 9 | Entrega | Capítulos con las reglas de YouTube, descripción con prompts y capítulos, títulos y un reporte | — |
 
 Cada etapa guarda su resultado en la carpeta del proyecto. Si algo falla, al volver a ejecutar se retoma donde quedó, sin repetir lo que ya está hecho.
 
@@ -57,8 +58,14 @@ python -m venv .venv
 (En Mac o Linux: `source .venv/bin/activate`)
 
 ```bash
-pip install -e ".[transcripcion,ia]"
+pip install -e ".[transcripcion,ia,marca]"
 ```
+
+```bash
+playwright install chromium
+```
+
+(El último comando descarga el navegador que dibuja la intro, el cierre y la miniatura. Sin él, el agente funciona igual pero sin esas piezas.)
 
 Para el guion con Claude, copia `.env.example` como `.env` y pon tu clave de la API. Sin clave el agente funciona igual, pero el guion queda como la transcripción tal cual, sin capítulos, títulos ni descripción.
 
@@ -82,7 +89,7 @@ agente-video procesar proyectos/2026-11-15-tutorial-claude-sheets
 
 El agente se detiene cuando el guion está listo.
 
-**4. Revisa `guion.md`.** Corrige textos, títulos, capítulos o prompts. Si dejas vacío un bloque de la narración, esa frase sale de los subtítulos y de la voz sintética. No cambies las marcas de tiempo entre corchetes.
+**4. Revisa `guion.md`.** Corrige textos, títulos, el texto de la miniatura (máximo cuatro palabras; lo que va entre `*asteriscos*` se resalta), capítulos o prompts. Si dejas vacío un bloque de la narración, esa frase sale de los subtítulos y de la voz sintética. No cambies las marcas de tiempo entre corchetes.
 
 **5. Aprueba** (y el agente termina solo):
 
@@ -97,6 +104,7 @@ agente-video aprobar proyectos/2026-11-15-tutorial-claude-sheets
 | `video_final.mp4` | El video para subir |
 | `subtitulos.srt` | Súbelo en YouTube Studio → Subtítulos |
 | `titulos.txt` | Tres opciones; la primera es la recomendada |
+| `miniatura.png` | Miniatura de 1280×720 lista para subir |
 | `descripcion.txt` | Descripción con los prompts y los capítulos, lista para pegar |
 | `capitulos.txt` | Solo los capítulos |
 | `reporte.md` | Cuánto se recortó y avisos (por ejemplo, capítulos omitidos) |
@@ -126,6 +134,8 @@ Todo está en `config/canal.toml`, comentado. Lo más útil:
 | `[edicion] silencio_min_s` | Cuánto tiene que durar un silencio para tratarlo como espera |
 | `[voz] modo` | `original` (tu voz) o `sintetica` (voz generada con Piper desde el guion) |
 | `[musica] archivo` | Música de fondo; baja sola cuando hay voz |
+| `[marca] intro`, `cierre`, `miniatura` | Activar o quitar cada pieza de marca |
+| `[marca] cierre_llamado` | El llamado a la acción de la pantalla final |
 | `[subtitulos] quemar` | `true` para grabar los subtítulos en la imagen |
 | `[ia] aprobar_guion` | `false` para que no se detenga a pedir revisión |
 
@@ -139,6 +149,12 @@ modo = "sintetica"
 **Glosario** (`config/glosario.toml`): corrige lo que la transcripción escucha mal, como "Cloud" en lugar de "Claude". Añade los nombres de tus productos y cursos.
 
 **Instrucciones del guion** (`prompts/guion_tutorial.md`): la fórmula del tutorial (gancho, contexto, pasos, puente, cierre) y las reglas de limpieza. Se edita sin tocar código.
+
+### Miniatura
+
+El agente pone el texto de la sección «Miniatura» de `guion.md` junto a un **foco visual**: si en la carpeta del proyecto hay un `foco.png` (por ejemplo, una captura del resultado), usa ese; si no, toma un cuadro del video cerca del final, que es donde suele verse el resultado.
+
+El diseño de la intro, el cierre y la miniatura está en `plantillas/marca/` (HTML y CSS, con los colores y tipografías del sitio). Se puede rediseñar sin tocar código.
 
 ### Voz sintética
 
@@ -157,6 +173,7 @@ agente-creador-video/
 │   └── glosario.toml       Correcciones de nombres y términos
 ├── prompts/
 │   └── guion_tutorial.md   Instrucciones para Claude
+├── plantillas/marca/       Diseño de la intro, el cierre y la miniatura
 ├── plantillas/musica/      Música de fondo (no se sube a Git)
 ├── proyectos/              Una carpeta por video (no se sube a Git)
 ├── src/agente_video/
@@ -164,10 +181,12 @@ agente-creador-video/
 │   ├── orquestador.py      Orden de etapas, reanudación y aprobación
 │   ├── etapas/             Una etapa por archivo
 │   ├── proveedores/        Claude, Whisper y Piper; intercambiables
+│   ├── render.py           Convierte las plantillas de marca en imágenes
 │   ├── tiempo.py           Plan de edición y conversión de tiempos
 │   ├── medios.py           Operaciones con FFmpeg
 │   ├── proyecto.py         Carpeta y estado de un video
 │   └── config.py           Configuración y glosario
+├── ejemplos/               Material listo para grabar (video 01: ventas de una ferretería)
 └── tests/
 ```
 
@@ -187,7 +206,7 @@ proyectos/2026-11-15-tutorial-claude-sheets/
 ## Pruebas
 
 ```bash
-pip install -e ".[ia,dev]"
+pip install -e ".[ia,marca,dev]"
 ```
 
 ```bash
@@ -199,6 +218,7 @@ Las pruebas de punta a punta fabrican una grabación falsa con FFmpeg y usan pro
 ## Hoja de ruta
 
 - [x] **Fase 1 — Modo tutorial:** cortes, aceleración, guion, subtítulos, capítulos, descripción, voz original o sintética, música.
+- [x] Intro, pantalla final y miniatura con la identidad de marca.
 - [ ] Zoom automático donde se hace clic o se escribe.
 - [ ] Avatar de presentador (HeyGen) en intro y cierre.
 - [ ] Formato vertical para Shorts y Reels a partir del mismo proyecto.

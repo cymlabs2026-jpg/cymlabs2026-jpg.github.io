@@ -5,6 +5,7 @@ from __future__ import annotations
 from .. import medios, tiempo
 from ..proyecto import Proyecto, leer_json
 from . import guion as guion_etapa
+from . import marca as marca_etapa
 
 NOMBRE = "subtitulos"
 DESCRIPCION = "Subtítulos sincronizados"
@@ -37,13 +38,14 @@ def _en_lineas(trozo: str) -> str:
     return trozo[:corte].strip() + "\n" + trozo[corte:].strip()
 
 
-def generar_srt(narracion: list[dict], plan: list[dict]) -> str:
+def generar_srt(narracion: list[dict], plan: list[dict], desplazamiento: float = 0.0) -> str:
     entradas = []
     for bloque in narracion:
         texto = bloque["texto"].strip()
         if not texto:
             continue
-        ini, fin = tiempo.remapear(bloque["inicio"], plan), tiempo.remapear(bloque["fin"], plan)
+        ini = desplazamiento + tiempo.remapear(bloque["inicio"], plan)
+        fin = desplazamiento + tiempo.remapear(bloque["fin"], plan)
         if fin - ini < 0.3:
             continue
         trozos = partir_texto(texto)
@@ -62,7 +64,7 @@ def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
     plan = leer_json(proyecto.ruta("edicion.json"))["tramos"]
     narracion = guion_etapa.cargar(proyecto)["narracion"]
     srt = proyecto.entrega / "subtitulos.srt"
-    contenido = generar_srt(narracion, plan)
+    contenido = generar_srt(narracion, plan, marca_etapa.desplazamiento(proyecto))
     srt.write_text(contenido, encoding="utf-8")
 
     if config["subtitulos"]["quemar"]:

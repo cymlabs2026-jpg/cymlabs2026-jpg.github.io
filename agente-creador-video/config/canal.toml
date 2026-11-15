@@ -34,6 +34,22 @@ esfuerzo = "high"
 # El proceso se detiene tras el guion hasta que lo apruebes.
 aprobar_guion = true
 
+[marca]
+# Tarjeta de entrada con el título del video (necesita Playwright: pip install -e ".[marca]").
+intro = true
+intro_s = 3
+etiqueta = "Tutorial"
+lema = "Software · Flujos de trabajo · Formación en IA"
+# Pantalla final: deja dos recuadros libres para los elementos de YouTube Studio (5 a 20 s).
+cierre = true
+cierre_s = 15
+cierre_titulo = "¿Quieres llevar esto a tu equipo?"
+cierre_llamado = "En la formación <b>Claude Empresarial</b> tu equipo aprende a usar la IA para analizar, escribir y decidir."
+cierre_enlace = "cymlabs2026-jpg.github.io"
+# Miniatura de 1280x720 con el texto de la sección «Miniatura» de guion.md.
+# El foco visual es foco.png en la carpeta del proyecto o, si no existe, un cuadro del video.
+miniatura = true
+
 [voz]
 # "original": se conserva tu voz de la grabación (limpia y recortada).
 # "sintetica": se reemplaza por una voz generada con Piper a partir del guion.

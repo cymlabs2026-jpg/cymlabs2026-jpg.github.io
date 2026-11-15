@@ -8,6 +8,7 @@ from .. import medios, tiempo
 from ..proyecto import Proyecto, leer_json
 from . import ErrorEtapa
 from . import guion as guion_etapa
+from . import marca as marca_etapa
 
 NOMBRE = "audio"
 DESCRIPCION = "Voz, música y nivel de audio"
@@ -17,9 +18,9 @@ ACELERACION_MAXIMA_VOZ = 1.3
 
 
 def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
-    montaje = proyecto.trabajo / "montaje.mp4"
-    duracion = medios.duracion(montaje)
-    entradas: list[str] = ["-i", str(montaje)]
+    base = marca_etapa.video_base(proyecto)
+    duracion = medios.duracion(base)
+    entradas: list[str] = ["-i", str(base)]
     filtros: list[str] = []
     resumen: dict = {"voz": config["voz"]["modo"]}
 
@@ -80,7 +81,8 @@ def _voz_sintetica(proyecto, config, servicios, plan, duracion, entradas, filtro
     carpeta.mkdir(exist_ok=True)
 
     bloques = [b for b in guion_etapa.cargar(proyecto)["narracion"] if b["texto"].strip()]
-    inicios = [tiempo.remapear(b["inicio"], plan) for b in bloques]
+    despl = marca_etapa.desplazamiento(proyecto)
+    inicios = [despl + tiempo.remapear(b["inicio"], plan) for b in bloques]
     etiquetas, ajustados = [], 0
     for i, (bloque, inicio) in enumerate(zip(bloques, inicios)):
         wav = carpeta / f"{i:03d}.wav"

@@ -55,6 +55,7 @@ class GuionistaFalso:
     def generar(self, segmentos, config):
         return {
             "titulos": ["Título recomendado", "Alternativo"],
+            "miniatura": "¿Por qué *cayó*?",
             "descripcion": "Descripción de prueba.",
             "prompts": ["Prompt de prueba"],
             "capitulos": [{"inicio": 0.0, "titulo": "Intro"}, {"inicio": 24.2, "titulo": "Cierre"}],
@@ -82,6 +83,7 @@ def servicios():
 def _config(proyecto, **cambios):
     config = cargar_config(proyecto.carpeta)
     config["video"].update(ancho=640, alto=360)
+    config["marca"].update(intro=False, cierre=False, miniatura=False)
     for seccion, valores in cambios.items():
         config[seccion].update(valores)
     return config
@@ -140,3 +142,21 @@ def test_musica_de_fondo(tmp_path, servicios):
     config = _config(proyecto, musica={"archivo": str(musica)}, ia={"aprobar_guion": False})
     procesar(proyecto, servicios=servicios, config=config)
     assert 14 < duracion(proyecto.entrega / "video_final.mp4") < 19
+
+
+@pytest.mark.skipif(not __import__("agente_video.render", fromlist=["x"]).disponible(), reason="requiere Playwright")
+def test_intro_cierre_y_miniatura(tmp_path, servicios):
+    proyecto = Proyecto.crear(tmp_path, "Prueba marca")
+    _grabacion_falsa(proyecto.crudo / "toma1.mp4")
+    config = _config(proyecto, ia={"aprobar_guion": False})
+    config["marca"].update(intro=True, cierre=True, miniatura=True, intro_s=3, cierre_s=5)
+    procesar(proyecto, servicios=servicios, config=config)
+
+    # ≈16 s de contenido + 3 s de intro + 5 s de cierre.
+    assert 22 < duracion(proyecto.entrega / "video_final.mp4") < 27
+    srt = (proyecto.entrega / "subtitulos.srt").read_text(encoding="utf-8")
+    assert srt.split("\n")[1].startswith("00:00:03")  # la primera frase entra después de la intro
+    miniatura = proyecto.entrega / "miniatura.png"
+    medidas = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=width,height", "-of", "csv=p=0",
+                              str(miniatura)], capture_output=True, text=True, check=True).stdout.strip()
+    assert medidas == "1280,720"

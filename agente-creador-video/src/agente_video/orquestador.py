@@ -6,11 +6,11 @@ import time
 
 from . import medios
 from .config import cargar_config
-from .etapas import ErrorEtapa, analisis, audio, entrega, guion, ingesta, montaje, subtitulos, transcripcion
+from .etapas import ErrorEtapa, analisis, audio, entrega, guion, ingesta, marca, montaje, subtitulos, transcripcion
 from .proveedores import Servicios, servicios_por_defecto
 from .proyecto import Proyecto
 
-ETAPAS = [ingesta, transcripcion, analisis, guion, montaje, audio, subtitulos, entrega]
+ETAPAS = [ingesta, transcripcion, analisis, guion, montaje, marca, audio, subtitulos, entrega]
 NOMBRES = [e.NOMBRE for e in ETAPAS]
 # Antes de esta etapa hace falta tu aprobación del guion.
 ETAPA_CON_APROBACION = "montaje"
@@ -69,7 +69,7 @@ def aprobar_guion(proyecto: Proyecto) -> dict:
         raise ErrorEtapa("guion.md no tiene bloques de narración: ¿se borraron las marcas de tiempo?")
     proyecto.aprobar("guion")
     # Si ya se había montado con un guion anterior, lo que depende del guion se rehace.
-    proyecto.invalidar_desde(["audio", "subtitulos", "entrega"])
+    proyecto.invalidar_desde(["marca", "audio", "subtitulos", "entrega"])
     return datos
 
 

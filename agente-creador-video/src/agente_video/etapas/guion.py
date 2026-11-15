@@ -57,6 +57,7 @@ def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
 def guion_basico(segmentos: list[dict]) -> dict:
     return {
         "titulos": [],
+        "miniatura": "",
         "descripcion": "",
         "prompts": [],
         "capitulos": [],
@@ -79,6 +80,9 @@ def a_markdown(guion: dict, carpeta: Path) -> str:
 
     partes.append("## Títulos\n")
     partes += [f"{i}. {t}" for i, t in enumerate(guion["titulos"], 1)] or ["(sin títulos)"]
+
+    partes.append("\n## Miniatura\n")
+    partes.append(guion.get("miniatura") or "(sin texto)")
 
     partes.append("\n## Capítulos\n")
     partes += [f"- {a_marca(c['inicio'])} | {c['titulo']}" for c in guion["capitulos"]] or ["(sin capítulos)"]
@@ -145,6 +149,7 @@ def de_markdown(texto: str) -> dict:
 
     return {
         "titulos": titulos,
+        "miniatura": " ".join(_limpio(s.get("miniatura", "")).split()),
         "descripcion": _limpio(s.get("descripción", "")),
         "prompts": [p for p in prompts if p],
         "capitulos": sorted(capitulos, key=lambda c: c["inicio"]),

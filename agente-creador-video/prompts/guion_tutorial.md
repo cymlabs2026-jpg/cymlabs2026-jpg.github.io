@@ -32,3 +32,4 @@ Propón entre 4 y 12 capítulos. Cada capítulo empieza en un segmento (por su n
 - Escribe una descripción para YouTube de 2 a 4 párrafos cortos: qué se aprende, para quién es y el resultado final. Sin hashtags ni capítulos (se añaden después).
 - Si en la grabación se dicta o lee un prompt para una IA, recupéralo completo y limpio en la lista de prompts, en el orden en que aparecen. Si solo se resume, reconstrúyelo lo más fiel posible sin añadir peticiones nuevas.
 - Propón tres títulos para el video, de máximo 70 caracteres, y marca el recomendado poniéndolo primero.
+- Propón el texto de la miniatura: máximo cuatro palabras que complementen el título recomendado sin repetirlo y despierten curiosidad por el resultado (por ejemplo, una cifra o una pregunta). Pon entre *asteriscos* la palabra o cifra que debe resaltarse.

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+{{css}}
+.contenido { position: absolute; inset: 0; padding: 140px 160px; display: flex; flex-direction: column; justify-content: center; }
+.titular { font-size: 118px; max-width: 1500px; margin: 36px 0 56px; }
+.barra { width: 420px; }
+.logo { position: absolute; left: 160px; bottom: 110px; width: 420px; }
+.canal { position: absolute; right: 160px; bottom: 122px; font-size: 34px; font-weight: 600; color: var(--texto-suave); }
+</style>
+</head>
+<body>
+  <div class="contenido">
+    <span class="etiqueta">{{etiqueta}}</span>
+    <h1 class="titular">{{titulo}}</h1>
+    <div class="barra"></div>
+  </div>
+  <div class="logo">{{logo}}</div>
+  <div class="canal">{{lema}}</div>
+</body>
+</html>

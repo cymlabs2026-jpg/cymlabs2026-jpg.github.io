@@ -50,6 +50,7 @@ def test_glosario_palabra_completa():
 def test_guion_markdown_ida_y_vuelta():
     original = {
         "titulos": ["Claude Sheets en 6 minutos", "Otro título"],
+        "miniatura": "¿Por qué *cayó*?",
         "descripcion": "Aprende a usar las tres herramientas.\n\nSegundo párrafo.",
         "prompts": ["Voy a lanzar un curso online.\nOrdénalo por semana."],
         "capitulos": [{"inicio": 0.0, "titulo": "Intro"}, {"inicio": 18.3, "titulo": "Qué son los artefactos"}],
@@ -68,6 +69,7 @@ def test_guion_editado_a_mano():
     datos = guion.de_markdown(texto)
     assert datos["narracion"][0]["texto"] == "Hola, mundo."
     assert datos["capitulos"] == [] and datos["titulos"] == [] and datos["descripcion"] == ""
+    assert datos["miniatura"] == ""
 
 
 def test_subtitulos_se_parten_y_remapean():
@@ -98,7 +100,7 @@ def test_respuesta_de_claude_a_guion():
 
     segmentos = [{"inicio": 0.4, "fin": 7.0, "texto": "eh Cloud acaba de"}, {"inicio": 19.0, "fin": 28.0, "texto": "los artefactos"}]
     respuesta = GuionIA(
-        titulos=["A", "B", "C"], descripcion=" Desc ", prompts=["p1", " "],
+        titulos=["A", "B", "C"], miniatura=" *-28 %* ", descripcion=" Desc ", prompts=["p1", " "],
         capitulos=[CapituloIA(segmento=1, titulo="Artefactos"), CapituloIA(segmento=0, titulo="Intro"),
                    CapituloIA(segmento=9, titulo="Inexistente")],
         segmentos=[SegmentoLimpio(id=0, texto="Claude acaba de")],
@@ -107,3 +109,22 @@ def test_respuesta_de_claude_a_guion():
     assert guion["capitulos"] == [{"inicio": 0.0, "titulo": "Intro"}, {"inicio": 19.0, "titulo": "Artefactos"}]
     assert [b["texto"] for b in guion["narracion"]] == ["Claude acaba de", "los artefactos"]
     assert guion["prompts"] == ["p1"] and guion["descripcion"] == "Desc"
+    assert guion["miniatura"] == "*-28 %*"
+
+
+def test_desplazamiento_de_la_intro():
+    plan = [{"inicio": 0, "fin": 100, "tipo": "normal", "velocidad": 1.0}]
+    srt = subtitulos.generar_srt([{"inicio": 10, "fin": 12, "texto": "Hola."}], plan, desplazamiento=3)
+    assert "00:00:13,000 --> 00:00:15,000" in srt
+    caps = [{"inicio": 0, "titulo": "Intro"}, {"inicio": 30, "titulo": "Paso 1"}, {"inicio": 60, "titulo": "Paso 2"}]
+    finales, _ = capitulos_finales(caps, plan, 103, desplazamiento=3)
+    assert [c["inicio"] for c in finales] == [0.0, 33, 63]
+
+
+def test_plantilla_escapa_texto_y_resalta():
+    from agente_video import render
+    from agente_video.config import RAIZ
+
+    html = render.llenar(RAIZ / "plantillas" / "marca", "miniatura.html", {"texto": "<b>¿Por qué *cayó*?", "foco": "x"})
+    assert "&lt;b&gt;¿Por qué <span class=\"acento\">cayó</span>?" in html
+    assert "{{" not in html and "<svg" in html

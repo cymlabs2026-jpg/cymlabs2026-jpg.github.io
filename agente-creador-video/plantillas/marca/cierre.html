@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+{{css}}
+/* Pantalla final de YouTube: los dos recuadros de la derecha dejan sitio
+   para los elementos que se añaden en YouTube Studio (video sugerido y suscripción). */
+.contenido { position: absolute; left: 140px; top: 150px; width: 820px; }
+.titular { font-size: 92px; margin: 28px 0 40px; }
+.barra { width: 300px; margin-bottom: 52px; }
+.llamado { font-size: 40px; line-height: 1.35; color: var(--texto-suave); font-weight: 500; }
+.llamado b { color: var(--noche); font-weight: 600; }
+.enlace { margin-top: 36px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 38px; color: var(--cian); }
+.logo { position: absolute; left: 140px; bottom: 100px; width: 380px; }
+.hueco {
+  position: absolute; right: 140px; width: 720px; border-radius: 24px;
+  border: 4px dashed rgba(8, 145, 178, 0.35); background: rgba(255, 255, 255, 0.6);
+}
+.hueco.video { top: 150px; height: 405px; }
+.hueco.suscribir { top: 620px; height: 300px; width: 300px; border-radius: 50%; right: 350px; }
+</style>
+</head>
+<body>
+  <div class="contenido">
+    <span class="etiqueta">{{etiqueta}}</span>
+    <h2 class="titular">{{titulo}}</h2>
+    <div class="barra"></div>
+    <p class="llamado">{{llamado}}</p>
+    <p class="enlace">{{enlace}}</p>
+  </div>
+  <div class="hueco video"></div>
+  <div class="hueco suscribir"></div>
+  <div class="logo">{{logo}}</div>
+</body>
+</html>
