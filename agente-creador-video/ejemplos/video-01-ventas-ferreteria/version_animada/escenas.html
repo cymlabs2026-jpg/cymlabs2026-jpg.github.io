@@ -161,8 +161,8 @@ body::before { z-index: 0; }
 <script>
 const D = /*DATOS*/;
 
-// Duración de cada escena en segundos (el guion de tiempos del video).
-const ESCENAS = [["e1", 8], ["e2", 11], ["e3", 7], ["e4", 10], ["e5", 8], ["e6", 10], ["e7", 9], ["e8", 11], ["e9", 7]];
+// Duración de cada escena en segundos: la calcula renderizar.py (se alarga si la voz lo necesita).
+const ESCENAS = D.escenas;
 const TOTAL = ESCENAS.reduce((s, [, d]) => s + d, 0);
 const FUNDIDO = 0.45;
 

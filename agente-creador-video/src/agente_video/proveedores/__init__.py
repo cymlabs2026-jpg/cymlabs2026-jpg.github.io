@@ -48,6 +48,10 @@ def servicios_por_defecto() -> Servicios:
     def voz(config: dict):
         from .tts import VozPiper
 
-        return VozPiper(config["voz"]["modelo_piper"])
+        return VozPiper(
+            config["voz"]["modelo_piper"],
+            velocidad=config["voz"].get("velocidad", 1.0),
+            pronunciacion=config.get("_pronunciacion", {}),
+        )
 
     return Servicios(transcriptor=transcriptor, guionista=guionista, voz=voz)

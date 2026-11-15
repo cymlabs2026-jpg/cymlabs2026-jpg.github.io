@@ -162,6 +162,11 @@ El diseño de la intro, el cierre y la miniatura está en `plantillas/marca/` (H
 2. Descarga una voz de Piper en español desde [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices/tree/main/es): los dos archivos `.onnx` y `.onnx.json`, juntos en la misma carpeta.
 3. Pon la ruta del `.onnx` en `[voz] modelo_piper` y cambia `modo = "sintetica"`.
 
+Recomendada: **`es_MX-claude-high`** (licencia Apache 2.0, permite uso comercial). En las pruebas, Whisper transcribió su audio casi sin errores.
+
+- `[voz] velocidad`: 1.0 es el ritmo natural; 1.08 (por defecto) suena más ágil.
+- `[pronunciacion]` en `config/glosario.toml`: cómo debe decir la voz algunas palabras («Claude» → «Clod», «C&M» → «C y M»). Solo afecta al audio; los subtítulos conservan la escritura correcta.
+
 Revisa la licencia de cada voz antes de usarla en un producto comercial.
 
 ## Estructura

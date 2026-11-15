@@ -35,7 +35,9 @@ def cargar_config(carpeta_proyecto: Path | None = None, raiz: Path = RAIZ) -> di
     config = _leer_toml(raiz / "config" / "canal.toml")
     if carpeta_proyecto is not None:
         config = _mezclar(config, _leer_toml(carpeta_proyecto / "config.toml"))
-    config["_glosario"] = _leer_toml(raiz / "config" / "glosario.toml").get("reemplazos", {})
+    glosario = _leer_toml(raiz / "config" / "glosario.toml")
+    config["_glosario"] = glosario.get("reemplazos", {})
+    config["_pronunciacion"] = glosario.get("pronunciacion", {})
     config["_raiz"] = str(raiz)
     return config
 

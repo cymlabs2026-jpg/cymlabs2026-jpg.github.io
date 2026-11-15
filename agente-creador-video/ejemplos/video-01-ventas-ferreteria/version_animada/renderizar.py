@@ -4,11 +4,12 @@ Cada cuadro se dibuja en un navegador sin ventana (escenas.html), con el estado 
 la animación calculado solo a partir del tiempo; así el resultado es exacto y
 repetible. Luego se une con la intro y la pantalla final de la marca.
 
-Uso (con el agente instalado con el extra [marca]):
-    python renderizar.py            # video completo
-    python renderizar.py --previa   # solo cuadros fijos de cada escena, para revisar el diseño
+Uso (con el agente instalado con los extras [marca] y [voz]):
+    python renderizar.py                                  # video sin voz
+    python renderizar.py --voz ruta/es_MX-claude-high.onnx  # con locución y subtítulos
+    python renderizar.py --previa                         # cuadros fijos para revisar el diseño
 
-Salida: video_01_version_animada.mp4 en esta carpeta.
+Salida en esta carpeta: video_01_version_animada.mp4 (y subtitulos.srt si hay voz).
 """
 
 from __future__ import annotations
@@ -32,10 +33,39 @@ import generar_datos  # noqa: E402  (fija la semilla y regenera los datos limpio
 from agente_video import medios, render  # noqa: E402
 from agente_video.config import RAIZ, cargar_config  # noqa: E402
 from agente_video.etapas.marca import tarjeta_a_clip  # noqa: E402
+from agente_video.etapas.subtitulos import generar_srt  # noqa: E402
 
 FPS = 30
 MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
 TITULO = "Analiza las ventas de tu negocio con Claude en 15 minutos"
+
+# Duración mínima de cada escena (s). Si la locución es más larga, la escena se alarga.
+ESCENAS_BASE = [["e1", 8], ["e2", 11], ["e3", 7], ["e4", 10], ["e5", 8], ["e6", 10], ["e7", 9], ["e8", 11], ["e9", 7]]
+ENTRADA_VOZ = 0.6   # La voz empieza un poco después de que aparece la escena.
+SALIDA_VOZ = 0.9    # Y deja un respiro antes de la siguiente.
+
+# Locución, escrita como se lee (las cifras en palabras). La pronunciación de
+# «Claude» y «C&M» la corrige el diccionario de config/glosario.toml.
+LOCUCION = {
+    "e1": "Este es un año completo de ventas de una ferretería con tres sedes: más de tres mil seiscientas filas. Y nadie lo había mirado.",
+    "e2": "Antes de analizar, hay que entender los datos. Y aquí había siete errores escondidos: sedes mal escritas, "
+          "costos vacíos, fechas guardadas como texto, devoluciones sin marcar, una venta de mil galones de thinner, "
+          "totales que no cuadran y facturas duplicadas.",
+    "e3": "Con los datos limpios, el año se resume en dos cifras: quinientos setenta millones de pesos en ventas, "
+          "y un margen bruto del veinticinco por ciento.",
+    "e4": "Primera alerta: Palmira Norte se está cayendo. Desde julio vende un veintiocho por ciento menos cada mes. "
+          "Algo cambió, y hay que averiguar qué.",
+    "e5": "La buena noticia: Candelaria, la sede más pequeña, pasó de nueve a diecisiete millones al mes. Casi duplica sus ventas.",
+    "e6": "Segunda alerta: vender mucho no es ganar mucho. Construcción y herramientas eléctricas son el cuarenta y cuatro "
+          "por ciento de las ventas, pero solo el veinticuatro por ciento del margen. La tornillería, en cambio, deja un "
+          "cuarenta y cinco por ciento.",
+    "e7": "Y el calendario manda: diciembre es el mejor mes del año. Enero, el peor.",
+    "e8": "Con esto, hay tres decisiones claras para el próximo mes. Uno: ir a Palmira Norte y entender la caída. "
+          "Dos: empujar los productos que dejan margen. Y tres: preparar el inventario para diciembre y para la temporada de lluvias.",
+    "e9": "Todo este análisis se hizo con Claude, en una tarde, sin fórmulas. Los prompts están en la descripción, "
+          "y el paso a paso, en el próximo video.",
+    "cierre": "Si quieres que tu equipo trabaje así, conoce la formación Claude Empresarial de C&M Labs. Nos vemos en el próximo video.",
+}
 
 DECISIONES = [
     ("Ir a Palmira Norte y entender la caída", "¿Qué cambió en julio: un competidor, los precios, el equipo?"),
@@ -96,18 +126,19 @@ def calcular_datos() -> dict:
     }
 
 
-def armar_html() -> str:
+def armar_html(escenas: list | None = None) -> str:
     plantillas = RAIZ / "plantillas" / "marca"
     html = (AQUI / "escenas.html").read_text(encoding="utf-8")
     html = html.replace("/*CSS_MARCA*/", (plantillas / "base.css").read_text(encoding="utf-8"))
     html = html.replace("/*LOGO*/", (plantillas / "logo.svg").read_text(encoding="utf-8"))
-    return html.replace("/*DATOS*/", json.dumps(calcular_datos(), ensure_ascii=False))
+    datos = {**calcular_datos(), "escenas": escenas or ESCENAS_BASE}
+    return html.replace("/*DATOS*/", json.dumps(datos, ensure_ascii=False))
 
 
-def abrir_pagina(p):
+def abrir_pagina(p, escenas: list | None = None):
     navegador = p.chromium.launch(executable_path=os.environ.get("AGENTE_VIDEO_CHROMIUM") or None)
     pagina = navegador.new_page(viewport={"width": 1920, "height": 1080})
-    pagina.set_content(armar_html(), wait_until="networkidle")
+    pagina.set_content(armar_html(escenas), wait_until="networkidle")
     pagina.evaluate("document.fonts.ready")
     return navegador, pagina
 
@@ -130,18 +161,37 @@ def previa() -> None:
     print(f"Cuadros de revisión en {carpeta}")
 
 
-def video() -> None:
+def sintetizar_locucion(modelo: str, config: dict, carpeta: Path) -> dict[str, tuple[Path, float]]:
+    from agente_video.proveedores.tts import VozPiper
+
+    voz = VozPiper(modelo, velocidad=config["voz"].get("velocidad", 1.0), pronunciacion=config["_pronunciacion"])
+    carpeta.mkdir(parents=True, exist_ok=True)
+    clips = {}
+    for clave, texto in LOCUCION.items():
+        wav = carpeta / f"{clave}.wav"
+        voz.sintetizar(texto, str(wav))
+        clips[clave] = (wav, medios.duracion(wav))
+    return clips
+
+
+def video(modelo_voz: str | None) -> None:
     from playwright.sync_api import sync_playwright
 
     config = cargar_config()
     config["video"].update(ancho=1920, alto=1080, fps=FPS)
     trabajo = AQUI / "trabajo"
     trabajo.mkdir(exist_ok=True)
+    marca = config["marca"]
+
+    # 0. Locución: cada escena dura al menos lo que su voz más los respiros.
+    clips = sintetizar_locucion(modelo_voz, config, trabajo / "voz") if modelo_voz else {}
+    escenas = [[e, max(d, round(clips[e][1] + ENTRADA_VOZ + SALIDA_VOZ, 2)) if e in clips else d] for e, d in ESCENAS_BASE]
+    cierre_s = max(marca["cierre_s"], round(clips["cierre"][1] + 2.5, 2)) if clips else marca["cierre_s"]
 
     # 1. La animación, cuadro por cuadro.
     animacion = trabajo / "animacion.mp4"
     with sync_playwright() as p:
-        navegador, pagina = abrir_pagina(p)
+        navegador, pagina = abrir_pagina(p, escenas)
         total = pagina.evaluate("TOTAL")
         cuadros = int(total * FPS)
         ffmpeg = subprocess.Popen(
@@ -163,7 +213,6 @@ def video() -> None:
         navegador.close()
 
     # 2. Intro y pantalla final de la marca.
-    marca = config["marca"]
     plantillas = RAIZ / "plantillas" / "marca"
     render.a_png(render.llenar(plantillas, "intro.html", {
         "etiqueta": marca["etiqueta"], "titulo": TITULO, "lema": marca["lema"]}), trabajo / "intro.png")
@@ -171,15 +220,48 @@ def video() -> None:
         "etiqueta": "Gracias por ver", "titulo": marca["cierre_titulo"],
         "llamado": marca["cierre_llamado"], "enlace": marca["cierre_enlace"]}), trabajo / "cierre.png")
     tarjeta_a_clip(trabajo / "intro.png", trabajo / "intro.mp4", marca["intro_s"], config["video"])
-    tarjeta_a_clip(trabajo / "cierre.png", trabajo / "cierre.mp4", marca["cierre_s"], config["video"])
+    tarjeta_a_clip(trabajo / "cierre.png", trabajo / "cierre.mp4", cierre_s, config["video"])
 
     # 3. Todo junto.
     salida = AQUI / "video_01_version_animada.mp4"
-    medios.concatenar([trabajo / "intro.mp4", animacion, trabajo / "cierre.mp4"], salida)
+    imagen = trabajo / "imagen.mp4" if clips else salida
+    medios.concatenar([trabajo / "intro.mp4", animacion, trabajo / "cierre.mp4"], imagen)
+    if clips:
+        mezclar_locucion(imagen, salida, clips, escenas, marca["intro_s"], trabajo)
     print(f"Listo: {salida} ({medios.duracion(salida):.0f} s)")
+
+
+def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, intro_s: float, trabajo: Path) -> None:
+    """Pone cada frase en el momento de su escena, nivela el audio y escribe los subtítulos."""
+    inicios, t = {}, intro_s
+    for e, d in escenas:
+        inicios[e] = t + ENTRADA_VOZ
+        t += d
+    inicios["cierre"] = t + 0.8
+    duracion = medios.duracion(imagen)
+
+    entradas, filtros, etiquetas, bloques = ["-i", str(imagen)], [], [], []
+    for i, (clave, (wav, dur)) in enumerate(clips.items(), 1):
+        entradas += ["-i", str(wav)]
+        filtros.append(f"[{i}:a]aresample=48000,adelay={int(inicios[clave] * 1000)}:all=1[v{i}];")
+        etiquetas.append(f"[v{i}]")
+        bloques.append({"inicio": inicios[clave], "fin": inicios[clave] + dur, "texto": LOCUCION[clave]})
+    filtros.append(
+        f"{''.join(etiquetas)}amix=inputs={len(etiquetas)}:normalize=0,apad,atrim=0:{duracion:.3f},"
+        "loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000[voz]"
+    )
+    guion = trabajo / "locucion_filtro.txt"
+    guion.write_text("\n".join(filtros), encoding="utf-8")
+    medios.ffmpeg(*entradas, "-filter_complex_script", str(guion), "-map", "0:v", "-map", "[voz]",
+                  "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{duracion:.3f}", str(salida))
+
+    plan = [{"inicio": 0, "fin": duracion, "tipo": "normal", "velocidad": 1.0}]
+    (AQUI / "subtitulos.srt").write_text(generar_srt(bloques, plan), encoding="utf-8")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--previa", action="store_true")
-    previa() if parser.parse_args().previa else video()
+    parser.add_argument("--voz", help="Modelo .onnx de Piper para la locución")
+    args = parser.parse_args()
+    previa() if args.previa else video(args.voz)

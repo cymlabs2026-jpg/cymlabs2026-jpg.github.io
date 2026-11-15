@@ -15,3 +15,11 @@
 "scroll y tailer" = "Scrollyteller"
 "pawer bi" = "Power BI"
 "Pawer BI" = "Power BI"
+
+# Cómo debe pronunciar la voz sintética algunas palabras. Solo cambia el audio:
+# los subtítulos y la descripción conservan la escritura correcta.
+[pronunciacion]
+"Claude" = "Clod"
+"C&M" = "C y M"
+"Power BI" = "Pauer bi ai"
+"Excel" = "Éksel"

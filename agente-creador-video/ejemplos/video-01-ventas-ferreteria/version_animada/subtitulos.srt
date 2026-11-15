@@ -1,0 +1,115 @@
+1
+00:00:03,600 --> 00:00:08,655
+Este es un año completo de ventas de una
+ferretería con tres sedes: más de tres mil
+
+2
+00:00:08,655 --> 00:00:11,274
+seiscientas filas. Y
+nadie lo había mirado.
+
+3
+00:00:12,770 --> 00:00:17,662
+Antes de analizar, hay que entender
+los datos. Y aquí había siete errores
+
+4
+00:00:17,662 --> 00:00:22,687
+escondidos: sedes mal escritas, costos
+vacíos, fechas guardadas como texto,
+
+5
+00:00:22,687 --> 00:00:28,316
+devoluciones sin marcar, una venta de mil
+galones de thinner, totales que no cuadran
+
+6
+00:00:28,316 --> 00:00:29,790
+y facturas duplicadas.
+
+7
+00:00:31,290 --> 00:00:36,426
+Con los datos limpios, el año se resume en
+dos cifras: quinientos setenta millones
+
+8
+00:00:36,426 --> 00:00:40,497
+de pesos en ventas, y un margen
+bruto del veinticinco por ciento.
+
+9
+00:00:42,000 --> 00:00:47,652
+Primera alerta: Palmira Norte se está
+cayendo. Desde julio vende un veintiocho por
+
+10
+00:00:47,652 --> 00:00:51,787
+ciento menos cada mes. Algo
+cambió, y hay que averiguar qué.
+
+11
+00:00:53,290 --> 00:00:58,586
+La buena noticia: Candelaria, la sede
+más pequeña, pasó de nueve a diecisiete
+
+12
+00:00:58,586 --> 00:01:01,405
+millones al mes. Casi duplica sus ventas.
+
+13
+00:01:02,910 --> 00:01:07,511
+Segunda alerta: vender mucho no es
+ganar mucho. Construcción y herramientas
+
+14
+00:01:07,511 --> 00:01:12,050
+eléctricas son el cuarenta y cuatro
+por ciento de las ventas, pero solo el
+
+15
+00:01:12,050 --> 00:01:17,018
+veinticuatro por ciento del margen. La
+tornillería, en cambio, deja un cuarenta y
+
+16
+00:01:17,018 --> 00:01:18,061
+cinco por ciento.
+
+17
+00:01:19,560 --> 00:01:24,680
+Y el calendario manda: diciembre es
+el mejor mes del año. Enero, el peor.
+
+18
+00:01:28,560 --> 00:01:34,238
+Con esto, hay tres decisiones claras para
+el próximo mes. Uno: ir a Palmira Norte y
+
+19
+00:01:34,238 --> 00:01:39,916
+entender la caída. Dos: empujar los productos
+que dejan margen. Y tres: preparar el
+
+20
+00:01:39,916 --> 00:01:43,816
+inventario para diciembre y
+para la temporada de lluvias.
+
+21
+00:01:45,320 --> 00:01:50,839
+Todo este análisis se hizo con Claude, en
+una tarde, sin fórmulas. Los prompts están
+
+22
+00:01:50,839 --> 00:01:54,585
+en la descripción, y el paso
+a paso, en el próximo video.
+
+23
+00:01:56,280 --> 00:02:01,746
+Si quieres que tu equipo trabaje así, conoce
+la formación Claude Empresarial de C&M
+
+24
+00:02:01,746 --> 00:02:04,117
+Labs. Nos vemos en el próximo video.

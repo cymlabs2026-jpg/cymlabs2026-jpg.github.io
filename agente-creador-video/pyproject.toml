@@ -12,7 +12,8 @@ dependencies = []
 
 [project.optional-dependencies]
 # Transcripción local con Whisper (gratis, corre en tu equipo).
-transcripcion = ["faster-whisper>=1.0"]
+# PyAV 16 o superior rompe faster-whisper 1.2 (argumento metadata_errors eliminado).
+transcripcion = ["faster-whisper>=1.0", "av<16"]
 # Guion, capítulos y descripción con Claude.
 ia = ["anthropic>=2.8", "pydantic>=2"]
 # Voz sintética local con Piper.

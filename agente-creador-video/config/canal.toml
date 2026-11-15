@@ -55,7 +55,10 @@ miniatura = true
 # "sintetica": se reemplaza por una voz generada con Piper a partir del guion.
 modo = "original"
 # Solo para modo sintética: ruta al modelo .onnx de Piper (con su .onnx.json al lado).
+# Recomendada: es_MX-claude-high (licencia Apache 2.0, permite uso comercial).
 modelo_piper = ""
+# 1.0 = ritmo natural de la voz; 1.1 = 10 % más rápida.
+velocidad = 1.08
 
 [musica]
 # Ruta a un .mp3/.wav de fondo (vacío = sin música). Baja sola cuando hay voz.
