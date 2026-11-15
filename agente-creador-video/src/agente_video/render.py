@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 
 # Valores de la configuración o del propio agente, que pueden llevar HTML a propósito.
-CLAVES_SIN_ESCAPAR = {"css", "logo", "foco", "llamado"}
+CLAVES_SIN_ESCAPAR = {"css", "logo", "foco", "llamado", "imagen_html", "logo_html"}
 
 
 def disponible() -> bool:
@@ -46,7 +46,7 @@ def llenar(carpeta: Path, nombre: str, valores: dict[str, str]) -> str:
 
 def imagen_como_dato(ruta: Path) -> str:
     """Imagen incrustada en el HTML (la página no puede leer archivos locales)."""
-    tipo = "png" if ruta.suffix.lower() == ".png" else "jpeg"
+    tipo = {".png": "png", ".webp": "webp", ".svg": "svg+xml"}.get(ruta.suffix.lower(), "jpeg")
     return f"data:image/{tipo};base64,{base64.b64encode(ruta.read_bytes()).decode()}"
 
 

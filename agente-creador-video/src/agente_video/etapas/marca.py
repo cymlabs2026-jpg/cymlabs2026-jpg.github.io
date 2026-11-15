@@ -24,6 +24,25 @@ def video_base(proyecto: Proyecto) -> Path:
     return con_marca if con_marca.exists() else proyecto.trabajo / "montaje.mp4"
 
 
+def valores_cierre(config: dict, plantillas: Path) -> dict:
+    """Textos de la pantalla final y, si están configurados, la foto del recuadro y el logo del círculo."""
+    cfg = config["marca"]
+    valores = {
+        "etiqueta": "Gracias por ver", "titulo": cfg["cierre_titulo"],
+        "llamado": cfg["cierre_llamado"], "enlace": cfg["cierre_enlace"],
+    }
+    imagen = cfg.get("cierre_imagen", "")
+    if imagen:
+        ruta = Path(imagen) if Path(imagen).is_absolute() else Path(config["_raiz"]) / imagen
+        valores["imagen_html"] = f'<div class="dentro"><img src="{render.imagen_como_dato(ruta)}" alt=""></div>'
+        valores["clase_imagen"] = "lleno"
+    if cfg.get("cierre_logo_en_circulo"):
+        logo = (plantillas / "logo.svg").read_text(encoding="utf-8")
+        valores["logo_html"] = f'<div class="dentro"><div class="logo-circulo">{logo}</div></div>'
+        valores["clase_logo"] = "lleno"
+    return valores
+
+
 def tarjeta_a_clip(png: Path, salida: Path, segundos: float, video: dict) -> None:
     """Imagen fija con entrada y salida suaves, y pista de silencio, en el mismo formato del montaje."""
     fundido = min(0.5, segundos / 4)
@@ -77,10 +96,7 @@ def ejecutar(proyecto: Proyecto, config: dict, servicios) -> dict:
 
     if cfg["cierre"]:
         png = proyecto.trabajo / "cierre.png"
-        render.a_png(render.llenar(plantillas, "cierre.html", {
-            "etiqueta": "Gracias por ver", "titulo": cfg["cierre_titulo"],
-            "llamado": cfg["cierre_llamado"], "enlace": cfg["cierre_enlace"],
-        }), png)
+        render.a_png(render.llenar(plantillas, "cierre.html", valores_cierre(config, plantillas)), png)
         clip = proyecto.trabajo / "cierre.mp4"
         tarjeta_a_clip(png, clip, cfg["cierre_s"], video)
         partes.append(clip)

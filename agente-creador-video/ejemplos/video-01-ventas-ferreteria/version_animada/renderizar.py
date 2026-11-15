@@ -34,7 +34,7 @@ sys.path.insert(0, str(CARPETA_VIDEO))
 import generar_datos  # noqa: E402  (fija la semilla y regenera los datos limpios)
 from agente_video import medios, render  # noqa: E402
 from agente_video.config import RAIZ, cargar_config  # noqa: E402
-from agente_video.etapas.marca import tarjeta_a_clip  # noqa: E402
+from agente_video.etapas.marca import tarjeta_a_clip, valores_cierre  # noqa: E402
 from agente_video.etapas.subtitulos import generar_srt  # noqa: E402
 
 FPS = 30
@@ -198,6 +198,10 @@ def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: st
     trabajo = AQUI / "trabajo"
     trabajo.mkdir(exist_ok=True)
     marca = config["marca"]
+    # Pantalla final de este video: foto del equipo en el recuadro y logo en el círculo.
+    if (AQUI / "cierre_foto.webp").exists():
+        marca["cierre_imagen"] = str(AQUI / "cierre_foto.webp")
+    marca["cierre_logo_en_circulo"] = True
 
     # 0. Locución: cada escena dura al menos lo que su voz más los respiros.
     if locucion:
@@ -237,9 +241,7 @@ def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: st
     plantillas = RAIZ / "plantillas" / "marca"
     render.a_png(render.llenar(plantillas, "intro.html", {
         "etiqueta": marca["etiqueta"], "titulo": TITULO, "lema": marca["lema"]}), trabajo / "intro.png")
-    render.a_png(render.llenar(plantillas, "cierre.html", {
-        "etiqueta": "Gracias por ver", "titulo": marca["cierre_titulo"],
-        "llamado": marca["cierre_llamado"], "enlace": marca["cierre_enlace"]}), trabajo / "cierre.png")
+    render.a_png(render.llenar(plantillas, "cierre.html", valores_cierre(config, plantillas)), trabajo / "cierre.png")
     tarjeta_a_clip(trabajo / "intro.png", trabajo / "intro.mp4", marca["intro_s"], config["video"])
     tarjeta_a_clip(trabajo / "cierre.png", trabajo / "cierre.mp4", cierre_s, config["video"])
 
