@@ -4,16 +4,16 @@
    ========================================================================== */
 
 :root {
-  /* Color de marca — tema "Azul noche y oro"
-     Fondo casi negro que transmite tecnología seria; el oro solo como acento.
+  /* Color de marca — tema "Blanco y oro"
+     Fondo blanco limpio, texto azul noche y el oro solo como acento.
      Los nombres antiguos (--azul-*, --cian-ia) se conservan como alias para no
      romper los estilos internos de cada página. */
-  --noche: #070B14;          /* fondo principal */
+  --noche: #0B1220;          /* azul noche: titulares */
   --tinta: #070B14;          /* texto sobre botones dorados */
-  --oro: #D4AF37;            /* acento: botones, líneas, iconos */
-  --oro-texto: #E2C15A;      /* oro para texto pequeño sobre fondo oscuro */
-  --oro-claro: #F0D592;      /* oro brillante: resaltes y estados hover */
-  --oro-velo: rgba(212, 175, 55, 0.10);
+  --oro: #B8892B;            /* acento: botones, líneas, iconos */
+  --oro-texto: #8A6A1F;      /* oro oscuro: texto pequeño legible sobre blanco */
+  --oro-claro: #D4AF37;      /* oro brillante: estados hover */
+  --oro-velo: rgba(184, 137, 43, 0.08);
 
   --azul-corporativo: var(--tinta);
   --azul-tecnologico: var(--oro);
@@ -23,19 +23,19 @@
   --gris-claro: #F4F5F8;
 
   /* Superficies derivadas */
-  --fondo: #070B14;
-  --fondo-alt: #0A0F1C;
-  --superficie: rgba(255, 255, 255, 0.025);
-  --superficie-hover: rgba(255, 255, 255, 0.05);
-  --borde: rgba(255, 255, 255, 0.08);
-  --borde-fuerte: rgba(212, 175, 55, 0.45);
+  --fondo: #FFFFFF;
+  --fondo-alt: #F7F8FA;
+  --superficie: #FFFFFF;
+  --superficie-hover: #FCFCFD;
+  --borde: rgba(11, 18, 32, 0.09);
+  --borde-fuerte: rgba(184, 137, 43, 0.45);
 
   /* Texto */
-  --texto: #F4F5F8;
-  --texto-suave: #B4BCCB;
-  --texto-tenue: #7F889B;
+  --texto: #0B1220;
+  --texto-suave: #3B4456;
+  --texto-tenue: #667085;
 
-  --degradado: linear-gradient(120deg, #F0D592 0%, #D4AF37 45%, #B8892B 100%);
+  --degradado: linear-gradient(120deg, #D4AF37 0%, #B8892B 50%, #8A6A1F 100%);
 
   /* Tipografía */
   --font-titular: 'Sora', system-ui, sans-serif;
@@ -58,7 +58,7 @@
   --contenedor: 1200px;
   --nav-alto: 72px;
 
-  --sombra: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+  --sombra: 0 20px 50px -24px rgba(16, 24, 40, 0.20);
   --transicion: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -228,14 +228,14 @@ p { text-wrap: pretty; }
   background: var(--oro);
   color: var(--tinta);
   border: 1px solid var(--oro);
-  box-shadow: 0 10px 30px -12px rgba(212, 175, 55, 0.55);
+  box-shadow: 0 10px 30px -12px rgba(184, 137, 43, 0.55);
 }
 
 .boton--primario:hover {
   transform: translateY(-2px);
   background: var(--oro-claro);
   border-color: var(--oro-claro);
-  box-shadow: 0 16px 40px -12px rgba(212, 175, 55, 0.7);
+  box-shadow: 0 16px 40px -12px rgba(184, 137, 43, 0.7);
 }
 
 .boton--secundario {
@@ -268,7 +268,7 @@ p { text-wrap: pretty; }
 }
 
 .nav--scrolled {
-  background-color: rgba(7, 11, 20, 0.82);
+  background-color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--borde);
@@ -349,7 +349,7 @@ p { text-wrap: pretty; }
   position: fixed;
   inset: var(--nav-alto) 0 0 0;
   z-index: 99;
-  background-color: rgba(7, 11, 20, 0.98);
+  background-color: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: var(--e-4) var(--e-3) var(--e-6);
@@ -415,7 +415,7 @@ p { text-wrap: pretty; }
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(ellipse 65% 55% at 50% 45%, rgba(7, 11, 20, 0.78), rgba(7, 11, 20, 0.15) 80%),
+    radial-gradient(ellipse 65% 55% at 50% 45%, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.25) 80%),
     linear-gradient(to bottom, transparent 70%, var(--fondo) 100%);
   pointer-events: none;
 }
@@ -465,14 +465,14 @@ p { text-wrap: pretty; }
   height: 8px;
   border-radius: 50%;
   background: var(--oro);
-  box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 0 0 rgba(184, 137, 43, 0.6);
   animation: latido 2s infinite;
 }
 
 @keyframes latido {
-  0%   { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.55); }
-  70%  { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(184, 137, 43, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(184, 137, 43, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(184, 137, 43, 0); }
 }
 
 .hero__pastillas {
@@ -492,7 +492,7 @@ p { text-wrap: pretty; }
   .hero__pastillas { justify-content: flex-start; }
   .hero::after {
     background:
-      linear-gradient(90deg, rgba(7, 11, 20, 0.95) 0%, rgba(7, 11, 20, 0.75) 38%, rgba(7, 11, 20, 0) 62%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.8) 38%, rgba(255, 255, 255, 0) 62%),
       linear-gradient(to bottom, transparent 75%, var(--fondo) 100%);
   }
 }
@@ -540,7 +540,7 @@ p { text-wrap: pretty; }
   place-items: center;
   border-radius: 12px;
   background: var(--oro-velo);
-  border: 1px solid rgba(212, 175, 55, 0.28);
+  border: 1px solid rgba(184, 137, 43, 0.28);
   color: var(--oro-texto);
   margin-bottom: var(--e-2);
   flex-shrink: 0;
@@ -695,7 +695,7 @@ p { text-wrap: pretty; }
 }
 
 .propuesta {
-  background: linear-gradient(160deg, rgba(212, 175, 55, 0.08), rgba(255, 255, 255, 0.02) 60%);
+  background: linear-gradient(160deg, rgba(184, 137, 43, 0.08), rgba(255, 255, 255, 0.02) 60%);
   border: 1px solid var(--borde-fuerte);
   border-radius: var(--radio);
   padding: var(--e-4);
@@ -898,8 +898,8 @@ p { text-wrap: pretty; }
 .campo textarea {
   width: 100%;
   padding: 0.8rem var(--e-2);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--borde);
+  background: #FFFFFF;
+  border: 1px solid rgba(11, 18, 32, 0.16);
   border-radius: var(--radio-s);
   color: var(--texto);
   font-size: 0.95rem;
@@ -909,20 +909,20 @@ p { text-wrap: pretty; }
 .campo textarea { resize: vertical; min-height: 120px; }
 
 .campo input::placeholder,
-.campo textarea::placeholder { color: #5D6577; }
+.campo textarea::placeholder { color: #98A2B3; }
 
 .campo input:focus,
 .campo select:focus,
 .campo textarea:focus {
   outline: none;
   border-color: var(--cian-ia);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(184, 137, 43, 0.15);
 }
 
 .campo select { appearance: none; cursor: pointer; }
 
-.campo select option { background: #0A0F1C; color: var(--texto); }
+.campo select option { background: #FFFFFF; color: var(--texto); }
 
 .campo--doble {
   display: grid;
@@ -932,13 +932,13 @@ p { text-wrap: pretty; }
 
 .campo__error {
   font-size: 0.8rem;
-  color: #FCA5A5;
+  color: #D92D20;
   min-height: 1em;
 }
 
 .campo input[aria-invalid='true'],
 .campo select[aria-invalid='true'],
-.campo textarea[aria-invalid='true'] { border-color: #F87171; }
+.campo textarea[aria-invalid='true'] { border-color: #D92D20; }
 
 .formulario__estado {
   font-size: 0.9rem;
@@ -956,9 +956,9 @@ p { text-wrap: pretty; }
 }
 
 .formulario__estado--error {
-  background: rgba(248, 113, 113, 0.08);
+  background: rgba(217, 45, 32, 0.06);
   border: 1px solid rgba(248, 113, 113, 0.35);
-  color: #FCA5A5;
+  color: #D92D20;
 }
 
 .boton[data-cargando='true'] { opacity: 0.7; pointer-events: none; }
@@ -996,7 +996,7 @@ p { text-wrap: pretty; }
 /* ========================= Pie de página ========================= */
 
 .pie {
-  background: #05080F;
+  background: #F2F4F7;
   border-top: 1px solid var(--borde);
   padding-block: var(--e-5) var(--e-3);
 }
@@ -1168,7 +1168,7 @@ p { text-wrap: pretty; }
 :is(.solucion, .valor, .publico__item, .contacto__canal, .pmv__item,
     .formacion__lista li, .modulo, .fact, .cifra, .faq details, .diag-vista):hover {
   background-image: radial-gradient(380px circle at var(--mx, -500px) var(--my, -500px),
-                    rgba(212, 175, 55, 0.10), transparent 45%);
+                    rgba(184, 137, 43, 0.10), transparent 45%);
 }
 
 :is(.valor, .publico__item, .contacto__canal, .modulo, .cifra):hover {
@@ -1182,7 +1182,7 @@ p { text-wrap: pretty; }
   padding-block: var(--e-5);
   border-top: 1px solid var(--borde);
   border-bottom: 1px solid var(--borde);
-  background: linear-gradient(180deg, var(--fondo) 0%, #0A0F1C 100%);
+  background: var(--fondo-alt);
 }
 
 .cifras {
@@ -1248,7 +1248,7 @@ p { text-wrap: pretty; }
   font-family: var(--font-titular);
   font-size: 1.05rem;
   font-weight: 500;
-  color: #5D6577;
+  color: #98A2B3;
   letter-spacing: -0.01em;
   transition: color var(--transicion);
 }
@@ -1278,7 +1278,7 @@ p { text-wrap: pretty; }
 
 .diag-destacado {
   background:
-    radial-gradient(ellipse 50% 60% at 85% 50%, rgba(212, 175, 55, 0.08), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 85% 50%, rgba(184, 137, 43, 0.08), transparent 70%),
     var(--fondo);
 }
 
@@ -1320,11 +1320,11 @@ p { text-wrap: pretty; }
 
 .diag-vista {
   position: relative;
-  background-color: #0D1322;
+  background-color: #FFFFFF;
   border: 1px solid var(--borde-fuerte);
   border-radius: 20px;
   padding: var(--e-4);
-  box-shadow: var(--sombra), 0 0 80px -30px rgba(212, 175, 55, 0.35);
+  box-shadow: var(--sombra), 0 0 80px -30px rgba(184, 137, 43, 0.35);
 }
 
 .diag-vista__marca {
@@ -1354,8 +1354,8 @@ p { text-wrap: pretty; }
   display: grid;
   place-items: center;
   background:
-    radial-gradient(closest-side, #0D1322 82%, transparent 83%),
-    conic-gradient(var(--oro) calc(var(--valor) * 1%), rgba(255, 255, 255, 0.08) 0);
+    radial-gradient(closest-side, #FFFFFF 82%, transparent 83%),
+    conic-gradient(var(--oro) calc(var(--valor) * 1%), rgba(11, 18, 32, 0.08) 0);
 }
 
 .diag-vista__anillo span {
@@ -1377,7 +1377,7 @@ p { text-wrap: pretty; }
   color: var(--texto-suave);
   padding: 12px 14px;
   border-left: 2px solid var(--oro);
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--fondo-alt);
   border-radius: 0 10px 10px 0;
   line-height: 1.45;
 }
@@ -1451,7 +1451,7 @@ p { text-wrap: pretty; }
   appearance: none;
   -webkit-appearance: none;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--oro) var(--pct, 50%), rgba(255, 255, 255, 0.1) var(--pct, 50%));
+  background: linear-gradient(90deg, var(--oro) var(--pct, 50%), rgba(11, 18, 32, 0.10) var(--pct, 50%));
   cursor: pointer;
 }
 
@@ -1461,8 +1461,8 @@ p { text-wrap: pretty; }
   height: 22px;
   border-radius: 50%;
   background: var(--oro-claro);
-  border: 4px solid var(--noche);
-  box-shadow: 0 0 0 1px var(--oro), 0 4px 14px rgba(212, 175, 55, 0.45);
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 0 0 1px var(--oro), 0 4px 14px rgba(184, 137, 43, 0.45);
 }
 
 .calc input[type='range']::-moz-range-thumb {
@@ -1470,16 +1470,16 @@ p { text-wrap: pretty; }
   height: 16px;
   border-radius: 50%;
   background: var(--oro-claro);
-  border: 4px solid var(--noche);
+  border: 4px solid #FFFFFF;
   box-shadow: 0 0 0 1px var(--oro);
 }
 
 .calc__resultado {
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212, 175, 55, 0.12), transparent 70%),
-    #0D1322;
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184, 137, 43, 0.12), transparent 70%),
+    #FFFFFF;
   border-color: var(--borde-fuerte);
-  box-shadow: var(--sombra), 0 0 80px -30px rgba(212, 175, 55, 0.3);
+  box-shadow: var(--sombra), 0 0 80px -30px rgba(184, 137, 43, 0.3);
   text-align: center;
 }
 
@@ -1501,7 +1501,7 @@ p { text-wrap: pretty; }
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-top: 4px;
-  color: #FCA5A5;
+  color: #D92D20;
 }
 
 .calc__sub { color: var(--texto-tenue); font-size: 0.92rem; }
@@ -1556,10 +1556,10 @@ p { text-wrap: pretty; }
   border: 1px solid var(--borde);
 }
 
-.caso__antes { background-color: rgba(255, 255, 255, 0.015); }
+.caso__antes { background-color: #FFFFFF; }
 
 .caso__despues {
-  background-color: rgba(212, 175, 55, 0.05);
+  background-color: rgba(184, 137, 43, 0.05);
   border-color: var(--borde-fuerte);
 }
 
@@ -1585,7 +1585,7 @@ p { text-wrap: pretty; }
   font-size: 1rem;
 }
 
-.caso__antes .caso__dato { color: #FCA5A5; }
+.caso__antes .caso__dato { color: #D92D20; }
 .caso__despues .caso__dato { color: var(--oro-claro); }
 
 .caso__flecha {
