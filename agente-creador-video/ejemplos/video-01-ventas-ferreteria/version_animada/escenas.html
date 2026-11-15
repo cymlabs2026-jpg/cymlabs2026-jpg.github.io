@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+/*CSS_MARCA*/
+body::before { z-index: 0; }
+.escena { position: absolute; inset: 0; padding: 120px 150px; opacity: 0; z-index: 1; }
+.titulo { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 84px; letter-spacing: -0.03em; line-height: 1.05; max-width: 1500px; }
+.titulo .acento { background: var(--degradado); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sub { margin-top: 22px; font-size: 40px; font-weight: 500; color: var(--texto-suave); max-width: 1400px; }
+.etq { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: .18em; text-transform: uppercase; color: var(--cian); margin-bottom: 26px; }
+.rojo { color: #E11D48; }
+.logo-esq { position: absolute; right: 70px; top: 56px; width: 230px; opacity: .9; z-index: 2; }
+
+/* Escena: hoja de cálculo */
+.hoja { position: absolute; left: 150px; right: 150px; top: 470px; height: 500px; overflow: hidden; border-radius: 22px;
+        border: 2px solid #E5E7EB; background: #fff; box-shadow: 0 30px 60px rgba(11,18,32,.10); }
+.hoja table { width: 100%; border-collapse: collapse; font-size: 25px; table-layout: fixed; }
+.hoja td, .hoja th { overflow: hidden; text-overflow: ellipsis; }
+.hoja td.num, .hoja th.num { text-align: right; }
+.hoja > table { position: relative; z-index: 2; }
+.hoja th { background: #0B1220; color: #fff; text-align: left; padding: 16px 18px; font-weight: 600; }
+.hoja td { padding: 13px 18px; border-bottom: 1px solid #EEF0F3; white-space: nowrap; color: #3B4456; }
+.hoja .filas { will-change: transform; }
+.sub b { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--noche); }
+
+/* Escena: errores */
+.errores { margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 60px; }
+.error { display: flex; align-items: center; gap: 24px; font-size: 40px; font-weight: 600; opacity: 0; }
+.error i { flex: none; width: 58px; height: 58px; border-radius: 16px; background: #FFE4E6; color: #E11D48; font-style: normal;
+           display: grid; place-items: center; font-family: 'Sora'; font-weight: 800; font-size: 34px; }
+.error small { color: #667085; font-weight: 500; }
+
+/* Cifras grandes */
+.cifras { margin-top: 90px; display: flex; gap: 120px; }
+.cifra b { display: block; font-family: 'Sora', sans-serif; font-weight: 800; font-size: 150px; line-height: 1; letter-spacing: -0.04em; }
+.cifra span { font-size: 38px; color: var(--texto-suave); font-weight: 600; }
+
+/* Gráficos de barras */
+.grafico { position: absolute; left: 150px; right: 150px; bottom: 120px; height: 440px; display: flex; align-items: flex-end; gap: 22px;
+           border-bottom: 4px solid #E5E7EB; }
+.col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; }
+.col .b { width: 100%; border-radius: 12px 12px 0 0; background: var(--degradado); height: 0; }
+.col .b.roja { background: linear-gradient(180deg, #FB7185, #E11D48); }
+.col .b.gris { background: #CBD5E1; }
+.col .m { position: absolute; bottom: -54px; font-size: 26px; font-weight: 600; color: #667085; }
+.col .v { position: absolute; font-family: 'Sora'; font-weight: 700; font-size: 26px; color: #0B1220; opacity: 0; }
+.sello { position: absolute; right: 150px; top: 330px; font-family: 'Sora', sans-serif; font-weight: 800; font-size: 120px; opacity: 0; }
+
+/* Comparación de participación */
+.comparar { margin-top: 90px; display: grid; gap: 54px; }
+.fila-c { display: grid; grid-template-columns: 330px 1fr 150px; align-items: center; gap: 30px; font-size: 40px; font-weight: 600; }
+.pista { height: 64px; border-radius: 999px; background: #EEF2F6; overflow: hidden; }
+.pista div { height: 100%; width: 0; border-radius: 999px; background: var(--degradado); }
+.pista div.roja { background: linear-gradient(90deg, #FB7185, #E11D48); }
+.fila-c b { font-family: 'Sora'; font-weight: 800; font-size: 54px; text-align: right; }
+.nota { margin-top: 64px; font-size: 38px; color: var(--texto-suave); font-weight: 500; opacity: 0; }
+.nota b { color: var(--noche); }
+
+/* Decisiones */
+.decisiones { margin-top: 64px; display: grid; gap: 40px; }
+.decision { display: flex; gap: 34px; align-items: flex-start; opacity: 0; }
+.decision i { flex: none; width: 84px; height: 84px; border-radius: 24px; background: var(--degradado); color: #fff; font-style: normal;
+              display: grid; place-items: center; font-family: 'Sora'; font-weight: 800; font-size: 44px; }
+.decision div { font-size: 44px; font-weight: 700; font-family: 'Sora'; line-height: 1.15; }
+.decision small { display: block; font-family: 'Inter'; font-weight: 500; font-size: 32px; color: var(--texto-suave); margin-top: 8px; }
+
+/* Cierre del análisis */
+.centro { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.puntos { margin-top: 56px; display: grid; gap: 26px; font-size: 42px; font-weight: 600; }
+.puntos div { opacity: 0; }
+.puntos div::before { content: "→ "; color: var(--cian); }
+</style>
+</head>
+<body>
+
+<!-- 1 · El Excel olvidado -->
+<section class="escena" id="e1">
+  <div class="etq">El caso</div>
+  <h1 class="titulo">Un año de ventas de una ferretería.<br><span class="acento">Nadie lo había mirado.</span></h1>
+  <p class="sub"><b id="e1-n">0</b> filas de ventas · 3 sedes · 12 meses</p>
+  <div class="hoja"><table><colgroup id="e1-col1"></colgroup><thead><tr id="e1-cab"></tr></thead></table><div class="filas" id="e1-filas"><table><colgroup id="e1-col2"></colgroup><tbody id="e1-cuerpo"></tbody></table></div></div>
+</section>
+
+<!-- 2 · Errores -->
+<section class="escena" id="e2">
+  <div class="etq">Paso 1 · Entender los datos</div>
+  <h1 class="titulo">Antes de analizar: <span class="rojo">7 errores</span> escondidos</h1>
+  <div class="errores" id="e2-lista"></div>
+</section>
+
+<!-- 3 · Cifras generales -->
+<section class="escena" id="e3">
+  <div class="etq">Paso 2 · Ordenar</div>
+  <h1 class="titulo">Con los datos limpios, el año se resume en <span class="acento">dos cifras</span></h1>
+  <div class="cifras">
+    <div class="cifra"><b id="e3-ventas">$0 M</b><span>en ventas</span></div>
+    <div class="cifra"><b id="e3-margen">0 %</b><span>de margen bruto</span></div>
+  </div>
+</section>
+
+<!-- 4 · Palmira Norte -->
+<section class="escena" id="e4">
+  <div class="etq">Alerta 1</div>
+  <h1 class="titulo">Palmira Norte se está <span class="rojo">cayendo</span></h1>
+  <p class="sub">Ventas por mes, en millones de pesos</p>
+  <div class="sello rojo" id="e4-sello">−28 %</div>
+  <div class="grafico" id="e4-graf"></div>
+</section>
+
+<!-- 5 · Candelaria -->
+<section class="escena" id="e5">
+  <div class="etq">Buena noticia</div>
+  <h1 class="titulo">Candelaria, la sede más pequeña,<br><span class="acento">casi duplica</span> sus ventas</h1>
+  <p class="sub">Ventas por mes, en millones de pesos</p>
+  <div class="sello" id="e5-sello" style="font-size:72px; top: 360px"></div>
+  <div class="grafico" id="e5-graf"></div>
+</section>
+
+<!-- 6 · Margen -->
+<section class="escena" id="e6">
+  <div class="etq">Alerta 2</div>
+  <h1 class="titulo">Vender mucho <span class="rojo">no es</span> ganar mucho</h1>
+  <p class="sub">Construcción y herramientas eléctricas:</p>
+  <div class="comparar">
+    <div class="fila-c"><span>de las ventas</span><div class="pista"><div id="e6-a"></div></div><b id="e6-an">0 %</b></div>
+    <div class="fila-c"><span>del margen</span><div class="pista"><div class="roja" id="e6-b"></div></div><b id="e6-bn">0 %</b></div>
+  </div>
+  <p class="nota" id="e6-nota">Al otro extremo, <b>tornillería y fijaciones</b>: tickets pequeños y <b>45 % de margen</b>.</p>
+</section>
+
+<!-- 7 · Estacionalidad -->
+<section class="escena" id="e7">
+  <div class="etq">El calendario</div>
+  <h1 class="titulo">Diciembre es el mejor mes.<br><span class="rojo">Enero, el peor.</span></h1>
+  <p class="sub">Ventas totales por mes, en millones de pesos</p>
+  <div class="grafico" id="e7-graf"></div>
+</section>
+
+<!-- 8 · Decisiones -->
+<section class="escena" id="e8">
+  <div class="etq">Lo que importa</div>
+  <h1 class="titulo">Tres decisiones para el <span class="acento">próximo mes</span></h1>
+  <div class="decisiones" id="e8-lista"></div>
+</section>
+
+<!-- 9 · Cómo se hizo -->
+<section class="escena centro" id="e9">
+  <div class="etq">¿Cómo se hizo?</div>
+  <h1 class="titulo">Todo este análisis, <span class="acento">con Claude</span>, en una tarde</h1>
+  <div class="puntos" id="e9-lista">
+    <div>Sin fórmulas ni tablas dinámicas</div>
+    <div>Los prompts, en la descripción</div>
+    <div>El paso a paso, en el próximo video</div>
+  </div>
+</section>
+
+<div class="logo-esq" id="logo-esq">/*LOGO*/</div>
+
+<script>
+const D = /*DATOS*/;
+
+// Duración de cada escena en segundos (el guion de tiempos del video).
+const ESCENAS = [["e1", 8], ["e2", 11], ["e3", 7], ["e4", 10], ["e5", 8], ["e6", 10], ["e7", 9], ["e8", 11], ["e9", 7]];
+const TOTAL = ESCENAS.reduce((s, [, d]) => s + d, 0);
+const FUNDIDO = 0.45;
+
+const lim = x => Math.max(0, Math.min(1, x));
+const tramo = (p, a, b) => lim((p - a) / (b - a));
+const suave = x => 1 - Math.pow(1 - lim(x), 3);
+const $ = id => document.getElementById(id);
+const millones = v => "$" + v.toLocaleString("es-CO", {minimumFractionDigits: 1, maximumFractionDigits: 1}) + " M";
+
+// ---------- Construcción de las escenas con los datos ----------
+// Cabecera y cuerpo son dos tablas con los mismos anchos fijos, para que el cuerpo se desplace bajo la cabecera.
+const anchos = D.anchos.map(a => `<col style="width:${a}%">`).join("");
+$("e1-col1").innerHTML = anchos; $("e1-col2").innerHTML = anchos;
+const num = i => D.numericas.includes(i) ? ' class="num"' : "";
+$("e1-cab").innerHTML = D.columnas.map((c, i) => `<th${num(i)}>${c}</th>`).join("");
+$("e1-cuerpo").innerHTML = D.filas.map(f => `<tr>${f.map((v, i) => `<td${num(i)}>${v}</td>`).join("")}</tr>`).join("");
+
+$("e2-lista").innerHTML = D.errores.map(([n, t]) => `<div class="error"><i>${n}</i><span>${t}</span></div>`).join("");
+
+function barras(id, serie, clase) {
+  const max = Math.max(...serie.map(s => s[1]));
+  $(id).innerHTML = serie.map(([m, v], i) =>
+    `<div class="col"><div class="b ${clase(i, v)}" data-h="${(v / max * 100).toFixed(1)}"></div>
+      <span class="v" style="bottom:${(v / max * 100).toFixed(1)}%">${v.toLocaleString("es-CO", {maximumFractionDigits: 1, minimumFractionDigits: 1})}</span>
+      <span class="m">${m}</span></div>`).join("");
+}
+barras("e4-graf", D.norte, i => i >= D.indice_julio ? "roja" : "");
+barras("e5-graf", D.candelaria, () => "");
+barras("e7-graf", D.totales, (i, v) => v === Math.max(...D.totales.map(s => s[1])) ? "" : (v === Math.min(...D.totales.map(s => s[1])) ? "roja" : "gris"));
+$("e5-sello").textContent = `${millones(D.candelaria[0][1])} → ${millones(D.candelaria.at(-1)[1])}`;
+
+$("e8-lista").innerHTML = D.decisiones.map(([t, s], i) =>
+  `<div class="decision"><i>${i + 1}</i><div>${t}<small>${s}</small></div></div>`).join("");
+
+// ---------- Animación: el estado depende solo del tiempo t ----------
+function crecer(id, p, a, b) {
+  const cols = $(id).querySelectorAll(".col");
+  cols.forEach((c, i) => {
+    const pi = suave(tramo(p, a + i * (b - a) / cols.length * 0.6, b));
+    const barra = c.querySelector(".b");
+    barra.style.height = (barra.dataset.h * pi) + "%";
+    c.querySelector(".v").style.opacity = tramo(pi, 0.85, 1);
+  });
+}
+
+const ANIMAR = {
+  e1(p, s) {
+    $("e1-n").textContent = Math.round(D.total_filas * suave(tramo(p, 0.05, 0.6))).toLocaleString("es-CO");
+    $("e1-filas").style.transform = `translateY(${-p * 900}px)`;
+  },
+  e2(p) {
+    document.querySelectorAll("#e2 .error").forEach((e, i) => {
+      const q = suave(tramo(p, 0.12 + i * 0.09, 0.2 + i * 0.09));
+      e.style.opacity = q; e.style.transform = `translateX(${(1 - q) * -40}px)`;
+    });
+  },
+  e3(p) {
+    const q = suave(tramo(p, 0.15, 0.7));
+    $("e3-ventas").textContent = millones(D.ventas * q);
+    $("e3-margen").textContent = (D.margen * q).toLocaleString("es-CO", {maximumFractionDigits: 1, minimumFractionDigits: 1}) + " %";
+  },
+  e4(p) { crecer("e4-graf", p, 0.08, 0.55); $("e4-sello").style.opacity = suave(tramo(p, 0.6, 0.7)); },
+  e5(p) { crecer("e5-graf", p, 0.1, 0.6); $("e5-sello").style.opacity = suave(tramo(p, 0.62, 0.72)); },
+  e6(p) {
+    const a = suave(tramo(p, 0.15, 0.45)), b = suave(tramo(p, 0.4, 0.7));
+    $("e6-a").style.width = D.part_ventas * a + "%"; $("e6-an").textContent = Math.round(D.part_ventas * a) + " %";
+    $("e6-b").style.width = D.part_margen * b + "%"; $("e6-bn").textContent = Math.round(D.part_margen * b) + " %";
+    $("e6-nota").style.opacity = suave(tramo(p, 0.72, 0.8));
+  },
+  e7(p) { crecer("e7-graf", p, 0.1, 0.6); },
+  e8(p) {
+    document.querySelectorAll("#e8 .decision").forEach((e, i) => {
+      const q = suave(tramo(p, 0.12 + i * 0.22, 0.22 + i * 0.22));
+      e.style.opacity = q; e.style.transform = `translateY(${(1 - q) * 30}px)`;
+    });
+  },
+  e9(p) {
+    document.querySelectorAll("#e9-lista div").forEach((e, i) => {
+      const q = suave(tramo(p, 0.2 + i * 0.15, 0.3 + i * 0.15));
+      e.style.opacity = q; e.style.transform = `translateX(${(1 - q) * -30}px)`;
+    });
+  },
+};
+
+window.TOTAL = TOTAL;
+window.pintar = function (t) {
+  let inicio = 0;
+  for (const [id, dur] of ESCENAS) {
+    const el = $(id);
+    const local = t - inicio;
+    if (local >= 0 && local < dur) {
+      const entrada = suave(local / FUNDIDO), salida = suave((dur - local) / FUNDIDO);
+      el.style.opacity = Math.min(entrada, salida);
+      el.style.transform = `translateY(${(1 - entrada) * 24}px)`;
+      ANIMAR[id](local / dur, local);
+    } else {
+      el.style.opacity = 0;
+    }
+    inicio += dur;
+  }
+};
+pintar(0);
+</script>
+</body>
+</html>

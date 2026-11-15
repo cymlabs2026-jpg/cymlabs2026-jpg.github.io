@@ -21,7 +21,7 @@ from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 AQUI = Path(__file__).parent
-random.seed(2026)
+SEMILLA = 2026
 
 INICIO = date(2025, 11, 1)
 FIN = date(2026, 10, 31)
@@ -86,6 +86,9 @@ def factor_categoria(categoria: str, d: date) -> float:
 
 
 def generar_filas() -> list[dict]:
+    # La semilla se fija aquí y no al importar: otras librerías (el navegador del
+    # renderizador, por ejemplo) consumen números al azar y cambiarían los datos.
+    random.seed(SEMILLA)
     filas = []
     factura = 10_000
     d = INICIO
