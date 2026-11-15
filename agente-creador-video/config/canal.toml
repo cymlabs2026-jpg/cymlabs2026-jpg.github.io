@@ -1,0 +1,55 @@
+# Configuración del canal. Cada proyecto puede sobrescribir cualquier valor
+# con su propio archivo `config.toml` dentro de la carpeta del proyecto.
+
+[canal]
+nombre = "C&M Labs"
+idioma = "es"
+tono = "cercano, claro y práctico; tutea al espectador; sin relleno"
+# Llamado a la acción que el guion puede insertar a mitad del video.
+llamado_accion = "Si quieres dominar estas herramientas en tu empresa, el enlace a nuestros cursos está en la descripción."
+
+[video]
+ancho = 1920
+alto = 1080
+fps = 30
+
+[edicion]
+# Un silencio cuenta como "espera" si dura al menos esto (segundos).
+silencio_min_s = 1.5
+# Por debajo de este volumen se considera silencio (dB).
+silencio_db = -35
+# La pantalla se considera quieta si no cambia durante al menos esto (segundos).
+quieto_min_s = 2.0
+# Las esperas con pantalla en movimiento (la IA generando) se aceleran a esta velocidad.
+velocidad_espera = 4.0
+# Las esperas con pantalla quieta y sin voz se cortan.
+cortar_tiempo_muerto = true
+# Margen que se respeta antes y después de cada frase para no comerse palabras.
+margen_s = 0.3
+
+[ia]
+# Modelo de Claude para el guion, los capítulos y la descripción.
+modelo = "claude-opus-5-5"
+esfuerzo = "high"
+# El proceso se detiene tras el guion hasta que lo apruebes.
+aprobar_guion = true
+
+[voz]
+# "original": se conserva tu voz de la grabación (limpia y recortada).
+# "sintetica": se reemplaza por una voz generada con Piper a partir del guion.
+modo = "original"
+# Solo para modo sintética: ruta al modelo .onnx de Piper (con su .onnx.json al lado).
+modelo_piper = ""
+
+[musica]
+# Ruta a un .mp3/.wav de fondo (vacío = sin música). Baja sola cuando hay voz.
+archivo = ""
+volumen = 0.15
+
+[subtitulos]
+# true = los subtítulos quedan grabados en la imagen; false = solo el .srt aparte.
+quemar = false
+
+[transcripcion]
+# tiny | base | small | medium | large-v3  (más grande = más preciso y más lento)
+modelo_whisper = "small"

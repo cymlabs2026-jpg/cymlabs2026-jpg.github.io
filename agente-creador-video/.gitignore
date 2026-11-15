@@ -1,0 +1,15 @@
+# Videos y archivos de trabajo: pesan mucho y no van a Git
+proyectos/*
+!proyectos/.gitkeep
+plantillas/musica/*
+!plantillas/musica/.gitkeep
+
+# Claves
+.env
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/

@@ -1,0 +1,17 @@
+# Glosario de marca: corrige lo que la transcripción automática escucha mal.
+# Se aplica a la transcripción, al guion y a los subtítulos.
+# Cada reemplazo es palabra completa y distingue mayúsculas.
+# Ojo: "Cloud" puede ser correcto en otros contextos (Google Cloud);
+# quítalo si tu canal habla de la nube.
+
+[reemplazos]
+"Cloud" = "Claude"
+"Clot" = "Claude"
+"Clod" = "Claude"
+"cloud" = "Claude"
+"promes" = "prompts"
+"promis" = "prompt"
+"scroll y teller" = "Scrollyteller"
+"scroll y tailer" = "Scrollyteller"
+"pawer bi" = "Power BI"
+"Pawer BI" = "Power BI"

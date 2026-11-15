@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agente-creador-video"
+version = "0.1.0"
+description = "Agente de C&M Labs que convierte grabaciones de pantalla en tutoriales listos para publicar."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Transcripción local con Whisper (gratis, corre en tu equipo).
+transcripcion = ["faster-whisper>=1.0"]
+# Guion, capítulos y descripción con Claude.
+ia = ["anthropic>=2.8", "pydantic>=2"]
+# Voz sintética local con Piper.
+voz = ["piper-tts>=1.2"]
+todo = ["agente-creador-video[transcripcion,ia,voz]"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+agente-video = "agente_video.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
