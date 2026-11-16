@@ -128,3 +128,11 @@ def test_plantilla_escapa_texto_y_resalta():
     html = render.llenar(RAIZ / "plantillas" / "marca", "miniatura.html", {"texto": "<b>¿Por qué *cayó*?", "foco": "x"})
     assert "&lt;b&gt;¿Por qué <span class=\"acento\">cayó</span>?" in html
     assert "{{" not in html and "<svg" in html
+
+
+def test_musica_original_dura_lo_pedido(tmp_path):
+    from agente_video.medios import duracion
+    from agente_video.musica import componer
+
+    salida = componer(8, tmp_path / "musica.wav", intro_s=2, cierre_s=3)
+    assert abs(duracion(salida) - 8) < 0.1

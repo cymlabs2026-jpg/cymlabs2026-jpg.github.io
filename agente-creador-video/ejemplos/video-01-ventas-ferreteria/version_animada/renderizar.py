@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import subprocess
 import sys
@@ -190,7 +191,8 @@ def cargar_locucion(carpeta: Path) -> dict[str, tuple[Path, float]]:
     return clips
 
 
-def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: str = "video_01_version_animada.mp4") -> None:
+def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: str = "video_01_version_animada.mp4",
+          musica: bool = False) -> None:
     from playwright.sync_api import sync_playwright
 
     config = cargar_config()
@@ -250,12 +252,13 @@ def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: st
     imagen = trabajo / "imagen.mp4" if clips else salida
     medios.concatenar([trabajo / "intro.mp4", animacion, trabajo / "cierre.mp4"], imagen)
     if clips:
-        mezclar_locucion(imagen, salida, clips, escenas, marca["intro_s"], trabajo)
+        mezclar_locucion(imagen, salida, clips, escenas, marca["intro_s"], trabajo, musica, cierre_s)
     print(f"Listo: {salida} ({medios.duracion(salida):.0f} s)")
 
 
-def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, intro_s: float, trabajo: Path) -> None:
-    """Pone cada frase en el momento de su escena, nivela el audio y escribe los subtítulos."""
+def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, intro_s: float, trabajo: Path,
+                     musica: bool = False, cierre_s: float = 15.0) -> None:
+    """Pone cada frase en el momento de su escena, añade la música (si se pide), nivela y escribe los subtítulos."""
     inicios, t = {}, intro_s
     for e, d in escenas:
         inicios[e] = t + ENTRADA_VOZ
@@ -269,13 +272,36 @@ def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, int
         filtros.append(f"[{i}:a]aresample=48000,adelay={int(inicios[clave] * 1000)}:all=1[v{i}];")
         etiquetas.append(f"[v{i}]")
         bloques.append({"inicio": inicios[clave], "fin": inicios[clave] + dur, "texto": LOCUCION[clave]})
-    filtros.append(
-        f"{''.join(etiquetas)}amix=inputs={len(etiquetas)}:normalize=0,apad,atrim=0:{duracion:.3f},"
-        "loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000[voz]"
-    )
+    filtros.append(f"{''.join(etiquetas)}amix=inputs={len(etiquetas)}:normalize=0,apad,atrim=0:{duracion:.3f}[locucion];")
+    if musica:
+        from agente_video.musica import componer
+
+        pista = componer(duracion, trabajo / "musica.wav", intro_s=intro_s, cierre_s=cierre_s)
+        indice = len(clips) + 1
+        entradas += ["-i", str(pista)]
+        filtros += [
+            "[locucion]asplit=2[voz_sola][voz_control];",
+            # La música deja hueco a la voz (−4 dB entre 1 y 3 kHz), va 9 dB por debajo y baja más cuando se habla.
+            f"[{indice}:a]equalizer=f=1800:t=o:w=1.5:g=-4,volume=0.35[cama];",
+            "[cama][voz_control]sidechaincompress=threshold=0.03:ratio=6:attack=40:release=500[cama_baja];",
+            "[voz_sola][cama_baja]amix=inputs=2:normalize=0:duration=first[mezcla];",
+        ]
+        etiqueta = "[mezcla]"
+    else:
+        etiqueta = "[locucion]"
+    filtros.append(f"{etiqueta}aresample=48000[voz]")
     guion = trabajo / "locucion_filtro.txt"
     guion.write_text("\n".join(filtros), encoding="utf-8")
-    medios.ffmpeg(*entradas, "-filter_complex_script", str(guion), "-map", "0:v", "-map", "[voz]",
+    audio = trabajo / "audio_mezcla.wav"
+    medios.ffmpeg(*entradas, "-filter_complex_script", str(guion), "-map", "[voz]", "-t", f"{duracion:.3f}", str(audio))
+
+    # Nivel final con UNA ganancia fija para todo el video (−16 LUFS). La normalización
+    # dinámica subiría los tramos de solo música hasta el nivel de la voz.
+    medicion = medios.ffmpeg("-i", str(audio), "-af", "ebur128", "-f", "null", "-").stderr
+    integrado = float(re.findall(r"I:\s+(-?[\d.]+) LUFS", medicion)[-1])
+    ganancia = -16.0 - integrado
+    medios.ffmpeg("-i", str(imagen), "-i", str(audio), "-map", "0:v", "-map", "1:a",
+                  "-af", f"volume={ganancia:.2f}dB,alimiter=limit=0.84:attack=3:release=60:level=false",
                   "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{duracion:.3f}", str(salida))
 
     plan = [{"inicio": 0, "fin": duracion, "tipo": "normal", "velocidad": 1.0}]
@@ -288,5 +314,6 @@ if __name__ == "__main__":
     parser.add_argument("--voz", help="Modelo .onnx de Piper para la locución sintética")
     parser.add_argument("--locucion", help="Carpeta con la locución grabada por bloques")
     parser.add_argument("--salida", default="video_01_version_animada.mp4", help="Nombre del video final")
+    parser.add_argument("--musica", action="store_true", help="Añade música de fondo original (compuesta por código)")
     args = parser.parse_args()
-    previa() if args.previa else video(args.voz, args.locucion, args.salida)
+    previa() if args.previa else video(args.voz, args.locucion, args.salida, args.musica)
