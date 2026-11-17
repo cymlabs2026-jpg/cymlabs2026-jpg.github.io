@@ -56,6 +56,8 @@ En `dataset/revision.md` queda la lista de frases rechazadas y el motivo, para v
 
 ## 3. Entrenar (en una máquina con GPU)
 
+**La forma más fácil: Google Colab.** Abre `entrenar_en_colab.ipynb` en [colab.research.google.com](https://colab.research.google.com) (Archivo → Subir cuaderno) y sigue sus celdas en orden. Todo está en español, guarda el avance en tu Google Drive y te deja escuchar la voz mientras entrena. Lo de abajo es el mismo proceso en una máquina propia o alquilada.
+
 Entrenar sin GPU tardaría semanas. Alquila una por horas:
 - **Google Colab:** con una GPU T4 o mejor.
 - **RunPod o Vast.ai:** con una RTX 3090 o 4090.
