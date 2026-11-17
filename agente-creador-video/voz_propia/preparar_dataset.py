@@ -48,7 +48,9 @@ def cifras_en_palabras(t: str) -> str:
     from num2words import num2words
 
     t = t.replace("%", " por ciento ")
-    t = re.sub(r"(?<=\d)\.(?=\d{3}\b)", "", t)  # 3.600 → 3600
+    # Teléfonos (317-546-9066): se dictan dígito a dígito.
+    t = re.sub(r"\d+(?:-\d+){2,}", lambda m: " ".join(NUMEROS[c] for c in m.group() if c.isdigit()), t)
+    t = re.sub(r"(?<=\d)[.,](?=\d{3}\b)", "", t)  # 3.600 o 8,000 → 3600
     return re.sub(r"\d+(?:,\d+)?", lambda m: num2words(float(m.group().replace(",", ".")) if "," in m.group()
                                                        else int(m.group()), lang="es"), t)
 
@@ -66,6 +68,40 @@ def similitud(esperado: str, oido: str) -> float:
     # Por letras tolera diferencias como «seiscientas»/«seiscientos» o palabras unidas.
     por_letras = difflib.SequenceMatcher(None, "".join(a), "".join(b)).ratio()
     return max(por_palabras, por_letras)
+
+
+def palabras_con_tiempos(modelo, ruta: Path) -> list:
+    segmentos, _ = modelo.transcribe(str(ruta), language="es", vad_filter=True, word_timestamps=True)
+    return [w for s in segmentos for w in (s.words or [])]
+
+
+def buscar_lectura(modelo, rutas: list[Path], esperado: str) -> tuple[Path, float, float, float] | None:
+    """Busca, en una o varias tomas, el tramo exacto (inicio y fin) que mejor coincide con la frase.
+
+    Resuelve dos casos: la frase leída varias veces en la misma toma (gana la ÚLTIMA lectura
+    completa) y varias frases grabadas en una sola toma (se extrae solo la que corresponde).
+    Devuelve (toma, inicio, fin, similitud) o None si nada alcanza el mínimo.
+    """
+    n_esperado = len(normalizar_texto(esperado))
+    mejor = None
+    for ruta in rutas:
+        palabras = palabras_con_tiempos(modelo, ruta)
+        for i in range(len(palabras)):
+            for j in range(i, min(len(palabras), i + n_esperado + 6)):
+                tramo = "".join(w.word for w in palabras[i:j + 1])
+                sim = similitud(esperado, tramo)
+                # Más parecido gana; ante un empate (±1 %), gana el tramo más tardío: la última lectura.
+                if mejor is None or sim > mejor[3] + 0.01 or (abs(sim - mejor[3]) <= 0.01 and
+                                                              (rutas.index(ruta), i) >= (rutas.index(mejor[0]), mejor[4])):
+                    mejor = (ruta, max(0.0, palabras[i].start - 0.15), palabras[j].end + 0.25, sim, i)
+    if mejor and mejor[3] >= SIMILITUD_MINIMA:
+        return mejor[:4]
+    return None
+
+
+def recortar(entrada: Path, salida: Path, desde: float, hasta: float) -> None:
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-ss", f"{desde:.2f}", "-to", f"{hasta:.2f}",
+                    "-i", str(entrada), "-c:a", "pcm_s16le", str(salida)], check=True)
 
 
 def leer_wav(ruta: Path) -> np.ndarray:
@@ -110,15 +146,32 @@ def main() -> None:
 
         (args.salida / "wavs").mkdir(parents=True, exist_ok=True)
         transcriptor = TranscriptorWhisper(args.modelo_whisper, "es")
-        aprobadas, rechazadas, segundos = [], [], 0.0
+        aprobadas, rechazadas, recuperadas, segundos = [], [], [], 0.0
         for clave in sorted(textos):
             x = leer_wav(audios[clave])
             problema = revisar_audio(x)
-            if problema is None:
+            larga = problema is not None and problema.startswith("dura") and len(x) / SR > DURACION[1]
+            if problema is None or larga:
                 oido = " ".join(s["texto"] for s in transcriptor.transcribir(str(audios[clave])))
                 parecido = similitud(textos[clave], oido)
-                if parecido < SIMILITUD_MINIMA:
-                    problema = f"no coincide con el texto ({parecido:.0%}). Whisper oyó: «{oido}»"
+                if parecido < SIMILITUD_MINIMA or larga:
+                    # ¿Se repitió la frase o quedó dentro de otra toma? Se busca el tramo exacto
+                    # en esta toma y en las vecinas (el grabador a veces junta varias frases).
+                    claves = sorted(textos)
+                    k = claves.index(clave)
+                    vecinas = [audios[c] for c in claves[max(0, k - 2):k + 3] if c != clave]
+                    rescate = buscar_lectura(transcriptor.modelo, [audios[clave]] + vecinas, textos[clave])
+                    if rescate:
+                        recortada = tmp / f"{clave}_rescate.wav"
+                        recortar(rescate[0], recortada, rescate[1], rescate[2])
+                        x2 = leer_wav(recortada)
+                        if revisar_audio(x2) is None:
+                            origen = "" if rescate[0] == audios[clave] else f" (estaba en {rescate[0].stem})"
+                            audios[clave], x, problema = recortada, x2, None
+                            recuperadas.append(clave)
+                            print(f"  ↺ {clave}: tramo {rescate[1]:.1f}–{rescate[2]:.1f} s{origen}")
+                    if clave not in recuperadas:
+                        problema = problema or f"no coincide con el texto ({parecido:.0%}). Whisper oyó: «{oido}»"
             if problema:
                 rechazadas.append((clave, textos[clave], problema))
                 print(f"  ✗ {clave}: {problema}")
@@ -138,6 +191,7 @@ def main() -> None:
     informe = [
         "# Revisión del conjunto de entrenamiento\n",
         f"- Aprobadas: **{len(aprobadas)}** ({segundos / 60:.1f} minutos de voz)",
+        f"- Recuperadas (frase repetida o dentro de otra toma; se extrajo el tramo exacto): **{len(recuperadas)}**",
         f"- Rechazadas: **{len(rechazadas)}**",
         "",
         "Recomendado para afinar una voz: al menos 20 minutos aprobados; ideal, 45 a 60.",
