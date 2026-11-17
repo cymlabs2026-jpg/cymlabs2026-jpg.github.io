@@ -20,6 +20,8 @@ ia = ["anthropic>=2.8", "pydantic>=2"]
 voz = ["piper-tts>=1.2"]
 # Intro, cierre y miniatura con la identidad de marca (después: playwright install chromium).
 marca = ["playwright>=1.40"]
+# Revisión de grabaciones para entrenar la voz propia (voz_propia/preparar_dataset.py).
+voz-propia = ["faster-whisper>=1.0", "av<16", "num2words>=0.5", "numpy>=1.24"]
 todo = ["agente-creador-video[transcripcion,ia,voz,marca]"]
 dev = ["pytest>=8"]
 

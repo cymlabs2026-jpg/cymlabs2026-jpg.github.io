@@ -1,0 +1,231 @@
+# Corpus de grabación para la voz propia de C&M Labs (lote 1).
+# Una frase por línea. Las líneas que empiezan con # se ignoran.
+# Las cifras van escritas en palabras para que el texto coincida con lo que se dice.
+
+## Negocio, datos e inteligencia artificial
+La inteligencia artificial ya no es el futuro: es una herramienta de trabajo diario.
+Claude puede leer un contrato largo y resumir sus riesgos en un par de minutos.
+Antes de analizar cualquier dato, hay que revisar si está completo y bien escrito.
+Un buen tablero de Power BI responde preguntas antes de que alguien las haga.
+La hoja de cálculo tenía filas duplicadas, fechas como texto y costos vacíos.
+Los agentes de inteligencia artificial hacen el trabajo repetitivo mientras tu equipo decide.
+Excel sigue siendo la herramienta más usada en las empresas de toda Latinoamérica.
+El margen bruto muestra cuánto dinero queda después de pagar lo que se vende.
+Las ventas subieron en diciembre, pero el inventario no alcanzó para todos los pedidos.
+Una buena instrucción para la inteligencia artificial es clara, concreta y tiene contexto.
+Automatizar un reporte semanal puede ahorrarle a tu equipo varias horas cada mes.
+El análisis mostró que la sede del norte vendía menos desde el mes de julio.
+Si los datos están sucios, cualquier conclusión que saques puede ser equivocada.
+Nuestro diagnóstico digital identifica dónde está perdiendo horas tu operación.
+La formación práctica convierte las licencias que ya pagas en resultados reales.
+Cada empresa tiene información valiosa escondida en sus propios archivos.
+El tablero se actualiza cada mañana con las cifras del día anterior.
+Un proyecto en Claude guarda las instrucciones y los documentos de tu empresa.
+Las tablas dinámicas resumen miles de filas en una vista que cualquiera entiende.
+Los clientes quieren respuestas rápidas, incluso un domingo a medianoche.
+Este flujo de trabajo envía la factura, descuenta el inventario y avisa al cliente.
+La calidad de la respuesta depende, sobre todo, de la calidad de la pregunta.
+Medir tarde es casi tan grave como no medir nada.
+La tornillería deja más margen que las herramientas eléctricas, aunque venda menos.
+Cuando el gerente ve las alertas a tiempo, puede corregir antes de perder dinero.
+Ontara convierte los datos de tu empresa en decisiones que se pueden rastrear.
+La proyección para los próximos tres meses depende de supuestos que puedes cambiar.
+Un asistente bien configurado responde con el tono y las reglas de tu marca.
+Separar las devoluciones de las ventas evita inflar los resultados del mes.
+La privacidad de los datos de tus clientes no es negociable.
+Primero entendemos el proceso, después elegimos la herramienta.
+El reporte llegó a las seis de la mañana, sin que nadie lo armara a mano.
+Las fórmulas complicadas asustan, pero la lógica detrás de ellas es sencilla.
+Un indicador sin meta es solo un número bonito en la pantalla.
+La conciliación bancaria ahora se cruza sola y solo muestra las excepciones.
+Formamos equipos de ventas, operaciones, finanzas y recursos humanos.
+La pregunta correcta no es qué herramienta usar, sino qué problema resolver.
+El panel se ve bien en el celular, que es donde el gerente lo revisa.
+Los prompts de este video están en la descripción, listos para copiar.
+Con datos ordenados, una tarde basta para tomar mejores decisiones.
+La inteligencia artificial se equivoca a veces, por eso siempre hay que verificar.
+El inventario de pinturas e impermeabilizantes debe prepararse antes de las lluvias.
+Este agente investiga el tema del día y prepara el material de producción.
+La automatización no reemplaza a las personas: les quita el trabajo aburrido.
+En una semana, el equipo ya estaba creando sus propios informes.
+Una empresa que mide bien puede crecer sin perder el control.
+La sede de Candelaria casi duplicó sus ventas en un año.
+Vender mucho no siempre significa ganar mucho.
+Los datos de este ejemplo son ficticios, pero el método es real.
+Cada decisión importante debería poder explicarse con números.
+
+## Vida cotidiana y descripciones
+El sol de la tarde entraba por la ventana y calentaba la mesa de madera.
+Mi abuela preparaba arepas los sábados, mientras sonaba la radio en la cocina.
+El bus de las siete siempre llega tarde cuando llueve en la ciudad.
+En Palmira el café de la mañana sabe mejor si se toma sin prisa.
+Los niños jugaban fútbol en la calle hasta que se encendían los faroles.
+La montaña estaba cubierta de niebla y el camino se veía muy angosto.
+Compré pan, queso, huevos y un poco de fruta en la tienda de la esquina.
+El perro del vecino ladra cada vez que pasa una bicicleta.
+Viajamos al mar en diciembre y regresamos con la piel quemada por el sol.
+La biblioteca del barrio abre temprano y cierra a las ocho de la noche.
+Ella guardó las fotos viejas en una caja de cartón con flores pintadas.
+El río crecía con fuerza después de tres días de lluvia sin parar.
+Los domingos la plaza se llena de familias, globos y vendedores de helado.
+Mi hermano aprendió a tocar guitarra viendo videos por internet.
+La reunión empezó tarde porque el proyector no quería encender.
+Las mangas de su camisa estaban manchadas de pintura azul.
+Desde la terraza se ven los cañaduzales que rodean el pueblo.
+El tren avanzaba despacio entre túneles, puentes y campos verdes.
+Mi papá siempre dice que la puntualidad es una forma de respeto.
+La gata durmió toda la tarde encima del computador portátil.
+Hicimos un sancocho enorme para celebrar el cumpleaños de la tía.
+La carretera tenía curvas peligrosas y huecos que nadie arreglaba.
+El viento movía las hojas del guayabo y tumbaba algunas frutas.
+Cuando era niño quería ser piloto, después quise ser profesor.
+La tienda de zapatos cerró y en su lugar abrieron una panadería.
+El parque tiene un lago pequeño donde nadan patos y tortugas.
+Me gusta caminar temprano, cuando la ciudad todavía está en silencio.
+Los estudiantes salieron corriendo apenas sonó el timbre.
+El médico le recomendó dormir más y tomar mucha agua.
+En la feria había artesanías, música en vivo y comida típica.
+Mi celular se descargó justo cuando necesitaba llamar un taxi.
+La casa de la finca tiene corredores largos y una hamaca en cada esquina.
+El cielo se puso naranja y luego morado antes de oscurecer.
+Mañana tengo que llevar el carro al taller para cambiarle los frenos.
+La profesora explicó la lección con paciencia y muchos ejemplos.
+Encontramos una cafetería tranquila con buena música y mesas al aire libre.
+La fila del banco era tan larga que preferí volver otro día.
+Los aguaceros de abril llenan las calles de charcos y hojas.
+El cocinero picó la cebolla, el tomate y el cilantro muy finos.
+Aprender algo nuevo da miedo al principio y orgullo al final.
+El estadio vibraba con cada gol del equipo local.
+La vecina riega sus matas todos los días a la misma hora.
+Guardé el recibo en el bolsillo de la chaqueta y luego lo perdí.
+El pueblo celebra sus fiestas en agosto con desfiles y fuegos artificiales.
+Su risa se escuchaba desde el otro lado del pasillo.
+Las mudanzas siempre toman más tiempo del que uno calcula.
+La lámpara del escritorio parpadea cuando se va la luz.
+El mercado campesino vende frutas frescas a muy buen precio.
+Escribí una lista de pendientes y taché cada tarea al terminarla.
+La brisa del atardecer trajo olor a tierra mojada.
+El auditorio quedó en silencio cuando el conferencista subió al escenario.
+Las palomas se reunían frente a la iglesia esperando migas de pan.
+El ingeniero revisó los planos dos veces antes de aprobarlos.
+Nadie sabía dónde estaban las llaves del depósito.
+El tráfico de los viernes por la tarde es imposible en la avenida principal.
+Ese libro me acompañó durante todo el viaje en avión.
+Las vacas pastaban tranquilas junto a la cerca de alambre.
+Prefiero el jugo de lulo bien frío y con poca azúcar.
+La exposición de arte reunió obras de pintores jóvenes de la región.
+Al final del día, lo único que quería era una ducha y dormir.
+
+## Preguntas y exclamaciones
+¿Cuánto tiempo pierde tu equipo copiando datos de un archivo a otro?
+¿Sabías que la mayoría de las empresas usa menos de la mitad de lo que paga en software?
+¿Qué harías tú con la sede que está perdiendo ventas?
+¿Y si el reporte de cada lunes se armara solo?
+¿Por qué cayeron las ventas justo en el mes de julio?
+¡Esto cambia por completo la forma de trabajar!
+¡Mira cómo se actualiza el panel en tiempo real!
+¿Te ha pasado que tienes los datos, pero no tienes tiempo de analizarlos?
+¡Qué diferencia hace una buena pregunta!
+¿Cuál es el producto que más dinero le deja a tu negocio?
+¿Quieres que tu equipo trabaje así? Escríbenos.
+¡Increíble! El análisis que antes tomaba una semana ahora toma una tarde.
+¿Dónde guardas la información más importante de tu empresa?
+¿Cómo sabes si una campaña funcionó o solo tuviste suerte?
+¡Ojo! La inteligencia artificial también puede equivocarse.
+¿Alguna vez has visto un tablero que nadie entiende?
+¿Qué pasaría si tus clientes recibieran respuesta en un minuto?
+¡No lo hagas a mano otra vez!
+¿Ya tienes claro cuál es tu indicador más importante?
+¿Vale la pena invertir en formación para todo el equipo? Sí, y te muestro por qué.
+¡Atención! Antes de compartir el panel, revisa los permisos.
+¿Cuántas horas al mes dedica tu empresa a informes que nadie lee?
+¡Hoy aprendes algo que vas a usar mañana mismo!
+¿Por dónde empiezo si nunca he usado inteligencia artificial?
+¿Es seguro subir los datos de mi empresa a una herramienta de inteligencia artificial?
+¡Listo! Ya tienes tu primer tablero funcionando.
+¿Te gustaría recibir este análisis cada mañana en tu celular?
+¡Qué buena noticia para la sede de Candelaria!
+¿Y ahora qué hacemos con esta información?
+¡Vamos al grano!
+¿Cuál de estas tres decisiones tomarías primero?
+¡Esto no lo hace ninguna fórmula de Excel por sí sola!
+¿Notas la diferencia entre un dato y una decisión?
+¡Suscríbete para no perderte el próximo video!
+¿Quién en tu equipo revisa los números cada semana?
+¿Será que el competidor nuevo explica la caída?
+¡Ahí está el error que nadie había visto!
+¿Por qué diciembre siempre es el mejor mes?
+¿Te imaginas tener un asistente que conoce todos tus procesos?
+¡Hasta la próxima, y que tengas una semana muy productiva!
+
+## Números, fechas y cifras
+Las ventas totales del año fueron de quinientos setenta millones de pesos.
+El margen bruto llegó al veinticinco por ciento.
+En julio, las ventas cayeron un veintiocho por ciento frente al promedio.
+La reunión quedó para el martes dieciocho de noviembre a las tres de la tarde.
+El curso dura doce horas, repartidas en cuatro sesiones de tres horas.
+Recibimos mil doscientos cuarenta y siete pedidos durante la temporada.
+La factura número diez mil ochenta y cuatro tenía un error en el total.
+El precio unitario es de treinta y cuatro mil quinientos pesos.
+Tres de cada diez clientes compran por transferencia o por Nequi.
+El inventario se revisa el primero y el quince de cada mes.
+Pasamos de nueve a diecisiete millones de pesos en ventas mensuales.
+El archivo tenía tres mil seiscientas cincuenta y siete filas.
+La sede principal concentra el cuarenta y cuatro por ciento de los ingresos.
+El servidor cuesta unos seis dólares al mes y la inteligencia artificial unos diez.
+El dos mil veintiséis fue el año en que la empresa empezó a medir todo.
+Entre enero y marzo, el crecimiento fue del doce coma cinco por ciento.
+El taladro cuesta doscientos ochenta y nueve mil pesos, con garantía de un año.
+Nos escriben más de cien personas a la semana por el sitio web.
+La meta del trimestre es reducir los costos en un ocho por ciento.
+El reporte se envía todos los lunes a las seis de la mañana.
+La empresa tiene tres sedes, quince empleados y más de dos mil clientes.
+Cada bulto de cemento pesa cincuenta kilos.
+La entrega se hizo el treinta y uno de octubre, justo a tiempo.
+Uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve y diez.
+Once, doce, trece, catorce, quince, dieciséis, diecisiete, dieciocho, diecinueve y veinte.
+Treinta, cuarenta, cincuenta, sesenta, setenta, ochenta, noventa y cien.
+Mil, diez mil, cien mil, un millón y mil millones.
+El cliente pagó la mitad al principio y el resto al terminar el proyecto.
+La tasa de respuesta subió del cuarenta al setenta y cinco por ciento.
+Tenemos capacidad para atender veinte proyectos al mismo tiempo.
+Llámanos al tres uno siete, cinco cuatro seis, nueve cero seis seis.
+El evento será el sábado veintiuno de noviembre en la mañana.
+La primera sesión empieza a las nueve y termina al mediodía.
+Un cuarto de los productos explica tres cuartas partes de las ventas.
+El costo promedio por pedido bajó de ocho mil a cinco mil pesos.
+El trimestre cerró con un crecimiento del dieciocho por ciento.
+Revisamos los datos de los últimos doce meses, de noviembre a octubre.
+La garantía cubre dos años o cuarenta mil kilómetros, lo que ocurra primero.
+En promedio, cada vendedor atiende treinta y dos clientes al día.
+La diferencia entre las dos sedes es de casi cuatro millones de pesos al mes.
+
+## Narración de tutoriales
+En este video te voy a enseñar a convertir un archivo desordenado en decisiones claras.
+Paso uno: entender los datos antes de analizarlos.
+Paso dos: ordenar la información en una hoja de cálculo con supuestos editables.
+Paso tres: convertir esa hoja en un panel que cualquiera pueda leer.
+Vamos a empezar por lo más sencillo, y luego subimos de nivel.
+Fíjate en este detalle, porque aquí es donde la mayoría se equivoca.
+Ahora le damos clic al botón y dejamos que la herramienta trabaje.
+Mientras termina de procesar, te explico qué está haciendo por dentro.
+Este truco te va a ahorrar mucho tiempo en tu trabajo diario.
+Si te quedó alguna duda, déjala en los comentarios y te respondo.
+Lo importante no es la herramienta, sino el método que aplicas.
+Copia este prompt tal cual y luego adáptalo a tu propio negocio.
+Como ves, el resultado es claro y se entiende a primera vista.
+Ahora cambiemos un supuesto para ver cómo se recalcula la proyección.
+Aquí tienes un resumen de lo que acabamos de hacer en tres pasos.
+Recuerda verificar siempre dos o tres cifras clave antes de decidir.
+Si quieres llevar esto a tu equipo, en la descripción encuentras nuestros cursos.
+Te espero en el próximo video, donde vamos a ir un paso más allá.
+Bienvenido a C&M Labs, donde la tecnología trabaja para tu negocio.
+Hoy vamos a resolver un problema real con datos reales.
+Primero te muestro el resultado, y después cómo llegamos a él.
+Presta atención a esta alerta, porque es la más importante del análisis.
+Volvamos un momento a la hoja anterior para comparar.
+Lo que antes tomaba una semana, ahora lo resolvemos en una tarde.
+Este es el momento perfecto para pausar el video y probarlo tú mismo.
+Si este contenido te sirvió, compártelo con alguien de tu equipo.
+Gracias por acompañarme hasta el final.
+Nos vemos en el próximo video. ¡Hasta pronto!

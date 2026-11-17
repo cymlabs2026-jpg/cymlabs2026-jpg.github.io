@@ -192,6 +192,7 @@ agente-creador-video/
 │   ├── proyecto.py         Carpeta y estado de un video
 │   └── config.py           Configuración y glosario
 ├── ejemplos/               Material listo para grabar (video 01: ventas de una ferretería)
+├── voz_propia/             Grabador y entrenamiento de una voz sintética con tu propia voz
 └── tests/
 ```
 
@@ -224,6 +225,7 @@ Las pruebas de punta a punta fabrican una grabación falsa con FFmpeg y usan pro
 
 - [x] **Fase 1 — Modo tutorial:** cortes, aceleración, guion, subtítulos, capítulos, descripción, voz original o sintética, música.
 - [x] Intro, pantalla final y miniatura con la identidad de marca.
+- [ ] Voz propia: grabador y revisión listos; falta grabar y entrenar (ver `voz_propia/LEEME.md`).
 - [ ] Zoom automático donde se hace clic o se escribe.
 - [ ] Avatar de presentador (HeyGen) en intro y cierre.
 - [ ] Formato vertical para Shorts y Reels a partir del mismo proyecto.

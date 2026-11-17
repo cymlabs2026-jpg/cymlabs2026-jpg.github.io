@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grabador de voz propia</title>
+<style>
+:root {
+  --noche: #0B1220; --suave: #3B4456; --tenue: #667085; --cian: #0891B2; --rojo: #E11D48; --verde: #059669;
+  --fondo: #F7F8FA; --borde: #E5E7EB;
+  --degradado: linear-gradient(120deg, #06B6D4 0%, #3B82F6 50%, #8B5CF6 100%);
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", Inter, Arial, sans-serif; background: var(--fondo); color: var(--noche); }
+header { padding: 16px 24px; background: #fff; border-bottom: 1px solid var(--borde); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+header h1 { margin: 0; font-size: 18px; }
+.progreso { flex: 1; min-width: 200px; max-width: 420px; }
+.barra { height: 10px; background: #EEF2F6; border-radius: 99px; overflow: hidden; }
+.barra div { height: 100%; width: 0; background: var(--degradado); transition: width .3s; }
+.progreso small { color: var(--tenue); }
+main { max-width: 980px; margin: 0 auto; padding: 32px 24px; }
+.tarjeta { background: #fff; border: 1px solid var(--borde); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(11,18,32,.06); }
+.id { color: var(--cian); font-weight: 700; letter-spacing: .1em; font-size: 13px; text-transform: uppercase; }
+.frase { font-size: clamp(26px, 4vw, 40px); line-height: 1.3; font-weight: 600; margin: 18px 0 30px; min-height: 2.6em; }
+.medidor { height: 14px; background: #EEF2F6; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+.medidor div { height: 100%; width: 0; background: var(--verde); transition: width .05s; }
+.medidor div.alto { background: var(--rojo); }
+.estado { min-height: 24px; color: var(--suave); font-size: 15px; margin-bottom: 24px; }
+.estado.mal { color: var(--rojo); font-weight: 600; }
+.estado.bien { color: var(--verde); font-weight: 600; }
+.botones { display: flex; gap: 12px; flex-wrap: wrap; }
+button { font: inherit; font-weight: 600; border: 0; border-radius: 12px; padding: 14px 22px; cursor: pointer; background: #EEF2F6; color: var(--noche); }
+button.principal { background: var(--degradado); color: #fff; }
+button.grabando { background: var(--rojo); color: #fff; }
+button:disabled { opacity: .45; cursor: default; }
+.ayuda { margin-top: 28px; color: var(--tenue); font-size: 14px; line-height: 1.6; }
+kbd { background: #fff; border: 1px solid var(--borde); border-bottom-width: 2px; border-radius: 6px; padding: 1px 7px; font-size: 13px; }
+.exportar { margin-top: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.ir { display: flex; gap: 8px; align-items: center; }
+.ir input { width: 90px; padding: 10px; border-radius: 10px; border: 1px solid var(--borde); font: inherit; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Grabador de voz propia · C&amp;M Labs</h1>
+  <div class="progreso"><div class="barra"><div id="barra"></div></div><small id="cuenta">0 de 0 frases grabadas</small></div>
+</header>
+<main>
+  <section class="tarjeta">
+    <div class="id" id="id"></div>
+    <div class="frase" id="frase"></div>
+    <div class="medidor"><div id="nivel"></div></div>
+    <div class="estado" id="estado">Pulsa «Activar micrófono» para empezar.</div>
+    <div class="botones">
+      <button id="activar" class="principal">Activar micrófono</button>
+      <button id="grabar" disabled>Grabar <kbd>Espacio</kbd></button>
+      <button id="escuchar" disabled>Escuchar <kbd>E</kbd></button>
+      <button id="anterior">← Anterior</button>
+      <button id="siguiente">Siguiente →</button>
+    </div>
+    <div class="exportar">
+      <button id="exportar">Descargar grabaciones (.zip)</button>
+      <span class="ir">Ir a la frase <input id="ir" type="number" min="1"></span>
+    </div>
+    <p class="ayuda">
+      <b>Cómo grabar bien:</b> el mismo lugar, el mismo micrófono y la misma distancia (un palmo) en todas las sesiones.
+      Lee con tu tono natural de narrador, ni muy rápido ni muy lento. Pulsa <kbd>Espacio</kbd>, espera medio segundo,
+      lee la frase, espera medio segundo y vuelve a pulsar <kbd>Espacio</kbd>. Si te equivocas, vuelve a grabar: la toma
+      anterior se reemplaza. Di «Claude» como «Clod» y «C y M Labs» como «ce y eme labs».
+      Tus grabaciones se guardan en este navegador; descarga el .zip al terminar cada sesión como copia de seguridad.
+    </p>
+  </section>
+</main>
+
+<script>
+const FRASES = /*FRASES*/;
+const SR = 22050;               // Frecuencia que usa Piper.
+const CLAVE_POS = "voz_propia_posicion";
+let pos = 0, flujo = null, contexto = null, analizador = null, grabador = null, trozos = [], grabando = false;
+const $ = id => document.getElementById(id);
+
+// ---------- Almacenamiento (IndexedDB): una grabación WAV por frase ----------
+let db;
+const abrirDB = () => new Promise((ok, mal) => {
+  const r = indexedDB.open("voz_propia", 1);
+  r.onupgradeneeded = () => r.result.createObjectStore("tomas");
+  r.onsuccess = () => { db = r.result; ok(); };
+  r.onerror = () => mal(r.error);
+});
+const guardar = (id, blob) => new Promise((ok, mal) => {
+  const t = db.transaction("tomas", "readwrite"); t.objectStore("tomas").put(blob, id);
+  t.oncomplete = ok; t.onerror = () => mal(t.error);
+});
+const leer = id => new Promise(ok => {
+  const r = db.transaction("tomas").objectStore("tomas").get(id); r.onsuccess = () => ok(r.result); r.onerror = () => ok(null);
+});
+const claves = () => new Promise(ok => {
+  const r = db.transaction("tomas").objectStore("tomas").getAllKeys(); r.onsuccess = () => ok(new Set(r.result));
+});
+
+// ---------- Interfaz ----------
+async function mostrar() {
+  const f = FRASES[pos];
+  $("id").textContent = `Frase ${pos + 1} de ${FRASES.length} · ${f.id}`;
+  $("frase").textContent = f.texto;
+  const hechas = await claves();
+  $("cuenta").textContent = `${hechas.size} de ${FRASES.length} frases grabadas`;
+  $("barra").style.width = (100 * hechas.size / FRASES.length) + "%";
+  $("escuchar").disabled = !hechas.has(f.id);
+  try { localStorage.setItem(CLAVE_POS, pos); } catch (e) {}
+}
+function estado(texto, clase = "") { const e = $("estado"); e.textContent = texto; e.className = "estado " + clase; }
+
+// ---------- Micrófono SIN procesamiento: el modelo debe aprender tu voz real ----------
+$("activar").onclick = async () => {
+  try {
+    flujo = await navigator.mediaDevices.getUserMedia({ audio: {
+      echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 } });
+  } catch (e) { estado("No se pudo usar el micrófono: " + e.message, "mal"); return; }
+  contexto = new AudioContext();
+  analizador = contexto.createAnalyser(); analizador.fftSize = 1024;
+  contexto.createMediaStreamSource(flujo).connect(analizador);
+  medir();
+  $("activar").disabled = true; $("grabar").disabled = false;
+  estado("Micrófono listo. Pulsa Espacio para grabar la frase.");
+};
+function medir() {
+  const datos = new Float32Array(analizador.fftSize);
+  analizador.getFloatTimeDomainData(datos);
+  const pico = Math.max(...datos.map(Math.abs));
+  const barra = $("nivel"); barra.style.width = Math.min(100, pico * 110) + "%";
+  barra.className = pico > 0.95 ? "alto" : "";
+  requestAnimationFrame(medir);
+}
+
+async function alternarGrabacion() {
+  if (!flujo) return;
+  if (!grabando) {
+    trozos = [];
+    grabador = new MediaRecorder(flujo);
+    grabador.ondataavailable = e => trozos.push(e.data);
+    grabador.onstop = procesarToma;
+    grabador.start();
+    grabando = true;
+    $("grabar").classList.add("grabando"); $("grabar").firstChild.textContent = "Detener ";
+    estado("Grabando… lee la frase y pulsa Espacio al terminar.");
+  } else {
+    grabador.stop(); grabando = false;
+    $("grabar").classList.remove("grabando"); $("grabar").firstChild.textContent = "Grabar ";
+  }
+}
+
+// Convierte la toma a WAV mono de 22.050 Hz y revisa su calidad.
+async function procesarToma() {
+  const crudo = await new Blob(trozos).arrayBuffer();
+  const audio = await contexto.decodeAudioData(crudo);
+  const offline = new OfflineAudioContext(1, Math.ceil(audio.duration * SR), SR);
+  const fuente = offline.createBufferSource(); fuente.buffer = audio; fuente.connect(offline.destination); fuente.start();
+  const mono = (await offline.startRendering()).getChannelData(0);
+  // Saturación: muchas muestras pegadas al máximo (un pico aislado no es problema).
+  const recortadas = mono.reduce((n, v) => n + (Math.abs(v) >= 0.99 ? 1 : 0), 0);
+  const rms = Math.sqrt(mono.reduce((s, v) => s + v * v, 0) / mono.length);
+  const id = FRASES[pos].id;
+  await guardar(id, aWav(mono, SR));
+  if (recortadas > Math.max(10, 0.0005 * mono.length)) estado("Guardada, pero SATURÓ (se recortó el sonido). Aléjate un poco o baja la ganancia y vuelve a grabar.", "mal");
+  else if (rms < 0.01) estado("Guardada, pero se oye MUY BAJO. Acércate al micrófono y vuelve a grabar.", "mal");
+  else if (audio.duration < 1) estado("Guardada, pero es muy corta. ¿Leíste la frase completa?", "mal");
+  else { estado(`Guardada (${audio.duration.toFixed(1)} s). Pasando a la siguiente…`, "bien"); setTimeout(() => { if (pos < FRASES.length - 1) { pos++; mostrar(); } }, 700); }
+  mostrar();
+}
+
+function aWav(muestras, sr) {
+  const buf = new ArrayBuffer(44 + muestras.length * 2), v = new DataView(buf);
+  const txt = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  txt(0, "RIFF"); v.setUint32(4, 36 + muestras.length * 2, true); txt(8, "WAVE"); txt(12, "fmt ");
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true);
+  v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); txt(36, "data");
+  v.setUint32(40, muestras.length * 2, true);
+  muestras.forEach((m, i) => v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, m)) * 0x7fff, true));
+  return new Blob([buf], { type: "audio/wav" });
+}
+
+$("escuchar").onclick = async () => { const b = await leer(FRASES[pos].id); if (b) new Audio(URL.createObjectURL(b)).play(); };
+$("grabar").onclick = alternarGrabacion;
+$("anterior").onclick = () => { if (pos > 0) { pos--; mostrar(); } };
+$("siguiente").onclick = () => { if (pos < FRASES.length - 1) { pos++; mostrar(); } };
+$("ir").onchange = e => { const n = +e.target.value - 1; if (n >= 0 && n < FRASES.length) { pos = n; mostrar(); } };
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.code === "Space") { e.preventDefault(); alternarGrabacion(); }
+  if (e.key === "e" || e.key === "E") $("escuchar").click();
+  if (e.key === "ArrowRight") $("siguiente").click();
+  if (e.key === "ArrowLeft") $("anterior").click();
+});
+
+// ---------- Exportación: ZIP (sin compresión) con wavs/ y metadata.csv en formato de Piper ----------
+const TABLA_CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = b => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = TABLA_CRC[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+function zip(archivos) {
+  const enc = new TextEncoder(), partes = [], central = []; let desplaz = 0;
+  for (const [nombre, datos] of archivos) {
+    const n = enc.encode(nombre), crc = crc32(datos);
+    const loc = new DataView(new ArrayBuffer(30));
+    loc.setUint32(0, 0x04034b50, true); loc.setUint16(4, 20, true); loc.setUint16(6, 0x0800, true);
+    loc.setUint32(14, crc, true); loc.setUint32(18, datos.length, true); loc.setUint32(22, datos.length, true); loc.setUint16(26, n.length, true);
+    partes.push(loc, n, datos);
+    const cen = new DataView(new ArrayBuffer(46));
+    cen.setUint32(0, 0x02014b50, true); cen.setUint16(4, 20, true); cen.setUint16(6, 20, true); cen.setUint16(8, 0x0800, true);
+    cen.setUint32(16, crc, true); cen.setUint32(20, datos.length, true); cen.setUint32(24, datos.length, true); cen.setUint16(28, n.length, true);
+    cen.setUint32(42, desplaz, true);
+    central.push(cen, n);
+    desplaz += 30 + n.length + datos.length;
+  }
+  const tam = central.reduce((s, p) => s + (p.byteLength ?? p.length), 0);
+  const fin = new DataView(new ArrayBuffer(22));
+  fin.setUint32(0, 0x06054b50, true); fin.setUint16(8, archivos.length, true); fin.setUint16(10, archivos.length, true);
+  fin.setUint32(12, tam, true); fin.setUint32(16, desplaz, true);
+  return new Blob([...partes, ...central, fin], { type: "application/zip" });
+}
+$("exportar").onclick = async () => {
+  const hechas = await claves(), archivos = [], filas = [];
+  for (const f of FRASES) {
+    if (!hechas.has(f.id)) continue;
+    archivos.push([`wavs/${f.id}.wav`, new Uint8Array(await (await leer(f.id)).arrayBuffer())]);
+    filas.push(`${f.id}|${f.modelo}`);
+  }
+  if (!archivos.length) { estado("Todavía no hay grabaciones para descargar.", "mal"); return; }
+  archivos.push(["metadata.csv", new TextEncoder().encode(filas.join("\n") + "\n")]);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(zip(archivos));
+  a.download = `voz_propia_${new Date().toISOString().slice(0, 10)}.zip`;
+  a.click();
+  estado(`Descargado: ${archivos.length - 1} grabaciones.`, "bien");
+};
+
+abrirDB().then(() => {
+  try { pos = Math.min(+localStorage.getItem(CLAVE_POS) || 0, FRASES.length - 1); } catch (e) {}
+  mostrar();
+});
+</script>
+</body>
+</html>

@@ -21,3 +21,8 @@ ejemplos/*/version_animada/*.mp4
 ejemplos/*/version_animada/video_01_tu_voz.srt
 ejemplos/*/version_animada/cierre_foto.*
 ejemplos/*/version_animada/*.mp3
+
+# Voz propia: grabaciones y conjunto de entrenamiento (datos personales, no se suben)
+voz_propia/*.zip
+voz_propia/dataset/
+voz_propia/cache/
