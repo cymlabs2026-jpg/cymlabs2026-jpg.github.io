@@ -272,7 +272,10 @@ def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, int
         filtros.append(f"[{i}:a]aresample=48000,adelay={int(inicios[clave] * 1000)}:all=1[v{i}];")
         etiquetas.append(f"[v{i}]")
         bloques.append({"inicio": inicios[clave], "fin": inicios[clave] + dur, "texto": LOCUCION[clave]})
-    filtros.append(f"{''.join(etiquetas)}amix=inputs={len(etiquetas)}:normalize=0,apad,atrim=0:{duracion:.3f}[locucion];")
+    filtros.append(f"{''.join(etiquetas)}amix=inputs={len(etiquetas)}:normalize=0,apad,atrim=0:{duracion:.3f},"
+                   # La voz se nivela sola antes de mezclarla: así la música queda siempre ~10 dB por debajo,
+                   # venga la locución de un micrófono o de una voz sintética con otro volumen.
+                   "loudnorm=I=-18:TP=-2:LRA=7[locucion];")
     if musica:
         from agente_video.musica import componer
 
