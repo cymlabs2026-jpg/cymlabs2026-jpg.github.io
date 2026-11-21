@@ -8,7 +8,7 @@ Hace lo mismo que se hizo a mano con el video 01:
 2. Imagen: escenas animadas estilo CapCut (palabras que suben, acercamiento lento, barrido de color).
 3. Subtítulos quemados con la palabra activa en cian, música original bajo la voz y nivel final de −16 LUFS.
 4. Entrega: sube video.mp4, subtitulos.srt y, al final, listo.json al repositorio privado,
-   en resultados/<job_id>/ de la rama main. Si algo falla, sube solo listo.json con estado "error".
+   en resultados/<job_id>/ de la rama claude/resultados (se crea desde main si no existe). Si algo falla, sube solo listo.json con estado "error".
 
 Uso:
     python rutina.py --encargo encargo.json --repo-privado ../superinteligencia-videos
@@ -45,6 +45,7 @@ ENTRADA_VOZ, SALIDA_VOZ = 0.5, 0.7   # respiro antes y después de cada bloque
 UMBRAL_INTELIGIBILIDAD = 0.95
 UMBRAL_PARECIDO = 0.92               # medido contra la referencia (las tomas del video 01 dieron 0,93–0,96)
 LUFS_OBJETIVO = -16.0
+RAMA_RESULTADOS = "claude/resultados"   # las tareas programadas solo pueden subir a ramas claude/
 MAX_LETRAS_TOMA = 280                # bloques más largos se generan por frases y se unen
 
 FORMATOS = {
@@ -455,8 +456,8 @@ def _git(repo: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["git", *identidad, "-C", str(repo), *args], capture_output=True, text=True)
 
 
-def subir(repo: Path, job_id: str, archivos: dict[str, Path], mensaje: str) -> None:
-    """Copia los archivos a resultados/<job_id>/ y los sube a main (con reintentos)."""
+def subir(repo: Path, job_id: str, archivos: dict[str, Path], mensaje: str, rama: str = RAMA_RESULTADOS) -> None:
+    """Copia los archivos a resultados/<job_id>/ y los sube a la rama de resultados (con reintentos)."""
     destino = repo / "resultados" / job_id
     destino.mkdir(parents=True, exist_ok=True)
     for nombre, origen in archivos.items():
@@ -466,22 +467,27 @@ def subir(repo: Path, job_id: str, archivos: dict[str, Path], mensaje: str) -> N
     if r.returncode != 0 and "nothing to commit" not in r.stdout:
         raise RuntimeError(f"git commit falló: {r.stderr or r.stdout}")
     for intento in range(5):
-        r = _git(repo, "-c", "push.negotiate=true", "push", "origin", "HEAD:main")
+        r = _git(repo, "-c", "push.negotiate=true", "push", "origin", f"HEAD:refs/heads/{rama}")
         if r.returncode == 0:
             return
         log(f"  push rechazado (intento {intento + 1}): {r.stderr.strip()[-300:]}")
-        _git(repo, "fetch", "--depth=50", "origin", "main")
-        _git(repo, "rebase", "origin/main")
+        if _git(repo, "fetch", "--depth=50", "origin", rama).returncode == 0:
+            _git(repo, "rebase", "FETCH_HEAD")
         time.sleep(2 ** (intento + 1))
     raise RuntimeError(f"no se pudo subir al repositorio privado: {r.stderr.strip()[-500:]}")
 
 
-def preparar_repo(repo: Path) -> None:
+def preparar_repo(repo: Path, rama: str = RAMA_RESULTADOS) -> None:
     if not (repo / ".git").exists():
         raise RuntimeError(f"{repo} no es un repositorio git (¿se clonó superinteligencia-videos?)")
-    _git(repo, "checkout", "main")
-    _git(repo, "fetch", "--depth=50", "origin", "main")
-    _git(repo, "rebase", "origin/main")
+    # La rama de resultados: si ya existe en GitHub se parte de ella; si no, se crea desde main.
+    if _git(repo, "fetch", "--depth=50", "origin", rama).returncode == 0:
+        r = _git(repo, "checkout", "-B", rama, "FETCH_HEAD")
+    else:
+        _git(repo, "fetch", "--depth=50", "origin", "main")
+        r = _git(repo, "checkout", "-B", rama, "FETCH_HEAD")
+    if r.returncode != 0:
+        raise RuntimeError(f"no se pudo preparar la rama {rama}: {r.stderr.strip()}")
 
 
 def buscar_referencia(repo: Path, voz: str | None) -> Path:
@@ -498,6 +504,7 @@ def main() -> int:
     parser.add_argument("--repo-privado", default=os.environ.get("SUPERINTELIGENCIA_REPO", str(RAIZ.parent.parent / "superinteligencia-videos")),
                         help="Clon de cymlabs2026-jpg/superinteligencia-videos")
     parser.add_argument("--voz", help="Otra voz de referencia (por defecto voz/ref_larga.wav del repo privado)")
+    parser.add_argument("--rama", default=RAMA_RESULTADOS, help="Rama del repo privado donde se entregan los resultados")
     parser.add_argument("--tomas", type=int, default=TOMAS)
     parser.add_argument("--trabajo", help="Carpeta de trabajo (por defecto, una temporal fuera de Git)")
     parser.add_argument("--no-subir", action="store_true", help="No sube nada; deja la entrega en la carpeta de trabajo")
@@ -523,7 +530,7 @@ def main() -> int:
         job_id = enc["job_id"]
         log(f"Encargo {job_id}: «{enc['tema']}» · {len(enc['bloques'])} bloques · {enc['formato']}")
         if not args.no_subir:
-            preparar_repo(repo)
+            preparar_repo(repo, args.rama)
         referencia = buscar_referencia(repo, args.voz)
         r = producir(enc, referencia, trabajo, args.tomas, notas)
         listo = {"job_id": job_id, "estado": "ok", "duracion_seg": r["duracion_seg"], "loudness_lufs": r["loudness_lufs"],
@@ -532,7 +539,7 @@ def main() -> int:
                  "minutos_de_trabajo": round((time.time() - inicio) / 60, 1), "notas": notas}
         if not args.no_subir:
             log("Subiendo video y subtítulos al repositorio privado")
-            subir(repo, job_id, {"video.mp4": r["video"], "subtitulos.srt": r["srt"]}, f"Resultado {job_id}: video y subtítulos")
+            subir(repo, job_id, {"video.mp4": r["video"], "subtitulos.srt": r["srt"]}, f"Resultado {job_id}: video y subtítulos", args.rama)
         else:
             shutil.copy(r["video"], trabajo / "entrega_video.mp4")
     except Exception as e:  # noqa: BLE001 - cualquier fallo se reporta en listo.json
@@ -544,7 +551,7 @@ def main() -> int:
     ruta_listo.write_text(json.dumps(listo, ensure_ascii=False, indent=2), encoding="utf-8")
     if not args.no_subir and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,99}", job_id):
         try:
-            subir(repo, job_id, {"listo.json": ruta_listo}, f"Resultado {job_id}: {listo['estado']}")
+            subir(repo, job_id, {"listo.json": ruta_listo}, f"Resultado {job_id}: {listo['estado']}", args.rama)
         except Exception as e:  # noqa: BLE001
             log(f"ERROR al subir listo.json: {e}")
             listo["estado"] = "error"

@@ -15,23 +15,24 @@ Eres la rutina automática de video de C&M Labs. Responde y escribe todo en espa
 
 2. En el repositorio cymlabs2026-jpg.github.io trabaja en la rama claude/gifted-cray-jp4w71
    (git fetch origin claude/gifted-cray-jp4w71 && git checkout claude/gifted-cray-jp4w71). No la fusiones con main.
-   Ubica el clon de cymlabs2026-jpg/superinteligencia-videos (normalmente junto al otro repositorio) y deja su rama main
-   al día.
+   Ubica el clon de cymlabs2026-jpg/superinteligencia-videos (normalmente junto al otro repositorio). La rutina se encarga
+   de su rama claude/resultados.
 
 3. Ejecuta, desde la carpeta agente-creador-video de esa rama, con un tiempo de espera de al menos 45 minutos:
    /opt/venv-video/bin/python rutina.py --encargo /tmp/encargo.json --repo-privado <ruta del clon de superinteligencia-videos>
    La rutina genera el video con la voz clonada (3 tomas por bloque, se queda con la mejor), las animaciones, los
-   subtítulos, la música y el nivel de −16 LUFS, y sube a resultados/<job_id>/ de la rama main del repo privado:
+   subtítulos, la música y el nivel de −16 LUFS, y sube a resultados/<job_id>/ de la rama claude/resultados del repo privado
+   (la crea desde main si no existe):
    video.mp4, subtitulos.srt y, al final, listo.json.
    Si /opt/venv-video no existe, ejecuta primero agente-creador-video/rutina/instalar_entorno.sh.
 
 4. Verifica el resultado antes de terminar:
-   - En el repo privado (git pull) existe resultados/<job_id>/listo.json y su estado es "ok" o "error".
+   - En el repo privado (git fetch origin claude/resultados) existe resultados/<job_id>/listo.json y su estado es "ok" o "error".
    - Si es "ok": están video.mp4 y subtitulos.srt; ffprobe muestra video y audio; la duración y el nivel (loudness_lufs)
      de listo.json coinciden con el archivo (−16 ± 1 LUFS); parecido_voz_min ≥ 0,92 e inteligibilidad_min ≥ 0,95
      (si no se cumplen, agrégalo en notas pero no lo borres).
    - Saca un cuadro del video a mitad de duración y míralo: debe verse la escena con los subtítulos abajo.
-   - Si la rutina se cayó sin escribir listo.json, súbelo tú a resultados/<job_id>/listo.json en main con
+   - Si la rutina se cayó sin escribir listo.json, súbelo tú a resultados/<job_id>/listo.json en la rama claude/resultados con
      {"job_id": ..., "estado": "error", "error": "<qué pasó>", "minutos_de_trabajo": ..., "notas": [...]}.
    - Si un problema es pasajero (red, push rechazado), reintenta una vez la rutina completa.
 
@@ -39,7 +40,8 @@ Eres la rutina automática de video de C&M Labs. Responde y escribe todo en espa
    - Nunca subas la voz del autor (ningún .wav, .mp3, .flac ni referencias), los videos ni las tomas al repositorio
      público cymlabs2026-jpg.github.io. Antes de cualquier commit en ese repo revisa git status: no debe haber audio
      ni video. En esta tarea normalmente no hay que hacer commits en el repo público.
-   - Los resultados solo van al repo privado superinteligencia-videos, en resultados/<job_id>/ de main.
+   - Los resultados solo van al repo privado superinteligencia-videos, en resultados/<job_id>/ de la rama
+     claude/resultados. Nunca subas a main del repo privado.
    - No toques otras carpetas del repo privado ni otras ramas. No fusiones nada a main del repo público.
    - No pidas confirmaciones: nadie está mirando. Si algo te bloquea, deja estado "error" en listo.json con el motivo.
 

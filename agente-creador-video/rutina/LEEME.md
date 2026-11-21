@@ -40,7 +40,7 @@ en el repositorio privado `cymlabs2026-jpg/superinteligencia-videos`.
 
 ## Entrega
 
-En `resultados/<job_id>/` de la rama `main` del repositorio privado:
+En `resultados/<job_id>/` de la rama `claude/resultados` del repositorio privado (se crea desde `main` si no existe):
 
 1. `video.mp4` y `subtitulos.srt` (primer commit).
 2. `listo.json` (último commit; Superinteligencia puede esperar a que aparezca):
