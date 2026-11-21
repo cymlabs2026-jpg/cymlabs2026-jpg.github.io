@@ -1,0 +1,12 @@
+{
+ "e1": "Este es un año completo de ventas de una ferretería con tres sedes: más de 3.600 filas. Y nadie lo había mirado.",
+ "e2": "Antes de analizar, hay que entender los datos. Y aquí había siete errores escondidos: sedes mal escritas, costos vacíos, fechas guardadas como texto, devoluciones sin marcar, una venta de mil galones de thinner, totales que no cuadran y facturas duplicadas.",
+ "e3": "Con los datos limpios, el año se resume en dos cifras: 570 millones de pesos en ventas, y un margen bruto del 25 %.",
+ "e4": "Primera alerta: Palmira Norte se está cayendo. Desde julio vende un 28 % menos cada mes. Algo cambió, y hay que averiguar qué.",
+ "e5": "La buena noticia: Candelaria, la sede más pequeña, pasó de 9 a 17 millones al mes. Casi duplica sus ventas.",
+ "e6": "Segunda alerta: vender mucho no es ganar mucho. Construcción y herramientas eléctricas son el 44 % de las ventas, pero solo el 24 % del margen. La tornillería, en cambio, deja un 45 %.",
+ "e7": "Y el calendario manda: diciembre es el mejor mes del año. Enero, el peor.",
+ "e8": "Con esto, hay tres decisiones claras para el próximo mes. Uno: ir a Palmira Norte y entender la caída. Dos: empujar los productos que dejan margen. Y tres: preparar el inventario para diciembre y para la temporada de lluvias.",
+ "e9": "Todo este análisis se hizo con Claude, en una tarde, sin fórmulas. Los prompts están en la descripción, y el paso a paso, en el próximo video.",
+ "cierre": "Si quieres que tu equipo trabaje así, conoce la formación Claude Empresarial de C&M Labs. Nos vemos en el próximo video."
+}
