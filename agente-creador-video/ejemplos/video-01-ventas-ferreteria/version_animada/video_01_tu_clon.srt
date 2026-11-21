@@ -1,0 +1,107 @@
+1
+00:00:03,600 --> 00:00:09,020
+Este es un año completo de ventas de una
+ferretería con tres sedes: más de 3.600
+
+2
+00:00:09,020 --> 00:00:11,120
+filas. Y nadie lo había mirado.
+
+3
+00:00:12,620 --> 00:00:16,782
+Antes de analizar, hay que entender
+los datos. Y aquí había siete errores
+
+4
+00:00:16,782 --> 00:00:21,057
+escondidos: sedes mal escritas, costos
+vacíos, fechas guardadas como texto,
+
+5
+00:00:21,057 --> 00:00:25,846
+devoluciones sin marcar, una venta de mil
+galones de thinner, totales que no cuadran
+
+6
+00:00:25,846 --> 00:00:27,100
+y facturas duplicadas.
+
+7
+00:00:28,600 --> 00:00:34,837
+Con los datos limpios, el año se resume
+en dos cifras: 570 millones de pesos en
+
+8
+00:00:34,837 --> 00:00:37,600
+ventas, y un margen bruto del 25 %.
+
+9
+00:00:39,100 --> 00:00:44,784
+Primera alerta: Palmira Norte se está
+cayendo. Desde julio vende un 28 % menos cada
+
+10
+00:00:44,784 --> 00:00:47,660
+mes. Algo cambió, y hay que averiguar qué.
+
+11
+00:00:49,160 --> 00:00:55,596
+La buena noticia: Candelaria, la sede más
+pequeña, pasó de 9 a 17 millones al mes.
+
+12
+00:00:55,596 --> 00:00:57,480
+Casi duplica sus ventas.
+
+13
+00:00:58,980 --> 00:01:04,700
+Segunda alerta: vender mucho no es
+ganar mucho. Construcción y herramientas
+
+14
+00:01:04,700 --> 00:01:11,030
+eléctricas son el 44 % de las ventas, pero
+solo el 24 % del margen. La tornillería,
+
+15
+00:01:11,030 --> 00:01:12,860
+en cambio, deja un 45 %.
+
+16
+00:01:14,360 --> 00:01:19,560
+Y el calendario manda: diciembre es
+el mejor mes del año. Enero, el peor.
+
+17
+00:01:23,360 --> 00:01:28,005
+Con esto, hay tres decisiones claras para
+el próximo mes. Uno: ir a Palmira Norte y
+
+18
+00:01:28,005 --> 00:01:32,650
+entender la caída. Dos: empujar los productos
+que dejan margen. Y tres: preparar el
+
+19
+00:01:32,650 --> 00:01:35,840
+inventario para diciembre y
+para la temporada de lluvias.
+
+20
+00:01:37,340 --> 00:01:42,702
+Todo este análisis se hizo con Claude, en
+una tarde, sin fórmulas. Los prompts están
+
+21
+00:01:42,702 --> 00:01:46,340
+en la descripción, y el paso
+a paso, en el próximo video.
+
+22
+00:01:48,040 --> 00:01:53,787
+Si quieres que tu equipo trabaje así, conoce
+la formación Claude Empresarial de C&M
+
+23
+00:01:53,787 --> 00:01:56,280
+Labs. Nos vemos en el próximo video.
