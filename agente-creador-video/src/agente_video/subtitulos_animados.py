@@ -86,7 +86,8 @@ def _limpiar(texto: str) -> str:
     return texto.replace("{", "(").replace("}", ")").replace("\\", "/")
 
 
-def generar_ass(bloques: list[dict], salida: Path, ancho: int = 1920, alto: int = 1080) -> Path:
+def generar_ass(bloques: list[dict], salida: Path, ancho: int = 1920, alto: int = 1080,
+                tamano: int = 64, margen_v: int = 58) -> Path:
     """bloques: [{"inicio": s, "palabras": [(palabra, ini, fin), ...]}] con tiempos relativos al bloque."""
     lineas = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {ancho}", f"PlayResY: {alto}",
@@ -96,7 +97,7 @@ def generar_ass(bloques: list[dict], salida: Path, ancho: int = 1920, alto: int 
         "Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, "
         "MarginL, MarginR, MarginV, Encoding",
         # BorderStyle 3 = caja de fondo detrás del texto, como en CapCut.
-        f"Style: Capcut,Inter ExtraBold,64,{BLANCO},{BLANCO},{CAJA},{CAJA},-1,0,0,0,100,100,0,0,3,18,0,2,120,120,58,1",
+        f"Style: Capcut,Inter ExtraBold,{tamano},{BLANCO},{BLANCO},{CAJA},{CAJA},-1,0,0,0,100,100,0,0,3,18,0,2,90,90,{margen_v},1",
         "",
         "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",

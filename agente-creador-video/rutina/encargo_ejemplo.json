@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "job_id": "prueba-agente-ia-001",
+  "tema": "Qué es un agente de IA, explicado para dueños de negocio",
+  "duracion_objetivo_seg": 30,
+  "formato": "horizontal",
+  "titulo_en_pantalla": "¿Qué es un *agente de IA*?",
+  "bloques": [
+    {
+      "locucion": "Un chat de IA te responde. Un agente de IA, además, hace el trabajo por ti.",
+      "pantalla": {"etiqueta": "La diferencia", "titulo": "Un chat responde. Un agente *actúa*."}
+    },
+    {
+      "locucion": "Le das un objetivo, y él solo revisa tus correos, consulta tu Excel y te deja el informe listo.",
+      "pantalla": {"etiqueta": "Cómo funciona", "titulo": "Le das un *objetivo*", "puntos": ["Revisa tus correos", "Consulta tu Excel", "Te deja el informe listo"]}
+    },
+    {
+      "locucion": "Tú decides qué puede tocar y qué no. Él se encarga de lo repetitivo.",
+      "pantalla": {"etiqueta": "Tú tienes el control", "titulo": "Tú pones las reglas. Él hace *lo repetitivo*."}
+    }
+  ],
+  "cierre": {
+    "llamado_a_la_accion": "En C&M Labs te enseñamos a crear el tuyo.",
+    "pantalla": "¿Quieres tu propio *agente*?"
+  },
+  "estilo": {"tema": "claro", "musica": true, "etiqueta": "IA para tu negocio"}
+}

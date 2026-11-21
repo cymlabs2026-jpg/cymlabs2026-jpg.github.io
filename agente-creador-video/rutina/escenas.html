@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<!-- Escenas genéricas de la rutina automática: intro, un bloque por idea y cierre.
+     rutina.py inserta los estilos de la marca, el logo y los datos del encargo, y luego llama a pintar(t) cuadro por cuadro. -->
+<style>
+/*CSS_MARCA*/
+html, body { width: var(--ancho) !important; height: var(--alto) !important; }
+body::before { z-index: 0; }
+body.oscuro { background: radial-gradient(1200px 900px at 100% 0%, rgba(139,92,246,.28), transparent 60%),
+                          radial-gradient(1100px 900px at 0% 100%, rgba(34,211,238,.22), transparent 60%), #0B1220 !important;
+              color: #fff; }
+body.oscuro .sub, body.oscuro .puntos div { color: #CBD5E1; }
+
+/* El contenido deja libre la franja de abajo para los subtítulos. */
+.escena { position: absolute; inset: 0; padding: calc(var(--k) * 150px) calc(var(--k) * 150px) var(--libre-abajo);
+          display: flex; flex-direction: column; justify-content: center; opacity: 0; z-index: 1; transform-origin: 50% 45%; }
+.etq { font-family: 'Sora', sans-serif; font-weight: 700; font-size: calc(var(--k) * 30px); letter-spacing: .18em;
+       text-transform: uppercase; color: var(--cian); margin-bottom: calc(var(--k) * 28px); }
+body.oscuro .etq { color: var(--cian-claro); }
+.titulo { font-family: 'Sora', sans-serif; font-weight: 800; font-size: calc(var(--k) * 92px); letter-spacing: -0.03em;
+          line-height: 1.06; max-width: calc(var(--ancho) - var(--k) * 300px); }
+.intro .titulo { font-size: calc(var(--k) * 112px); }
+.acento { background: var(--degradado); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sub { margin-top: calc(var(--k) * 30px); font-size: calc(var(--k) * 42px); font-weight: 500; color: var(--texto-suave);
+       max-width: calc(var(--ancho) - var(--k) * 300px); line-height: 1.3; }
+.cifra { font-family: 'Sora', sans-serif; font-weight: 800; font-size: calc(var(--k) * 210px); line-height: 1;
+         letter-spacing: -0.04em; margin-bottom: calc(var(--k) * 20px); }
+.puntos { margin-top: calc(var(--k) * 50px); display: grid; gap: calc(var(--k) * 26px); font-size: calc(var(--k) * 44px); font-weight: 600; }
+.puntos div { opacity: 0; display: flex; gap: calc(var(--k) * 22px); align-items: baseline; }
+.puntos i { flex: none; font-style: normal; color: #fff; background: var(--degradado); border-radius: calc(var(--k) * 14px);
+            width: calc(var(--k) * 56px); height: calc(var(--k) * 56px); display: grid; place-items: center;
+            font-family: 'Sora'; font-weight: 800; font-size: calc(var(--k) * 30px); transform: translateY(calc(var(--k) * 8px)); }
+.barra { height: calc(var(--k) * 10px); width: calc(var(--k) * 360px); border-radius: 99px; background: var(--degradado);
+         margin-top: calc(var(--k) * 44px); transform-origin: left; }
+.logo-grande { width: calc(var(--k) * 420px); margin-top: calc(var(--k) * 70px); }
+.enlace { margin-top: calc(var(--k) * 34px); font-family: 'Sora'; font-weight: 700; font-size: calc(var(--k) * 40px); color: var(--cian); }
+.logo-esq { position: absolute; right: calc(var(--k) * 70px); top: calc(var(--k) * 56px); width: calc(var(--k) * 230px); opacity: .9; z-index: 2; }
+
+/* Estilo CapCut: palabras que suben, barrido de color entre escenas y formas de fondo en movimiento. */
+.palabra { display: inline-block; will-change: transform, opacity; }
+.barrido { position: absolute; top: 0; bottom: 0; width: 140%; left: -140%; z-index: 5; background: var(--degradado);
+           transform: skewX(-12deg); pointer-events: none; }
+.forma { position: absolute; border-radius: 50%; filter: blur(calc(var(--k) * 60px)); opacity: .35; z-index: 0; }
+</style>
+</head>
+<body>
+<div class="forma" id="f1" style="width:42vw;height:42vw;background:#22D3EE"></div>
+<div class="forma" id="f2" style="width:36vw;height:36vw;background:#8B5CF6"></div>
+<div id="escenas"></div>
+<div class="logo-esq" id="logo-esq">/*LOGO*/</div>
+<div class="barrido" id="barrido"></div>
+
+<script>
+const D = /*DATOS*/;
+const $ = id => document.getElementById(id);
+const lim = x => Math.max(0, Math.min(1, x));
+const suave = x => 1 - Math.pow(1 - lim(x), 3);
+const FUNDIDO = 0.45;
+const LOGO = $("logo-esq").innerHTML;
+
+document.documentElement.style.setProperty("--ancho", D.ancho + "px");
+document.documentElement.style.setProperty("--alto", D.alto + "px");
+document.documentElement.style.setProperty("--k", D.k);
+document.documentElement.style.setProperty("--libre-abajo", D.libre_abajo + "px");
+if (D.tema === "oscuro") document.body.classList.add("oscuro");
+
+// Escapa el texto y convierte *palabras* en resaltado con el degradado de la marca.
+const esc = s => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const marcar = s => esc(s).replace(/\*([^*]+)\*/g, '<span class="acento">$1</span>');
+
+function htmlEscena(e) {
+  if (e.tipo === "intro") return `<div class="etq">${esc(e.etiqueta)}</div><h1 class="titulo">${marcar(e.titulo)}</h1><div class="barra"></div>`;
+  if (e.tipo === "cierre") return `<h1 class="titulo">${marcar(e.titulo)}</h1>${e.sub ? `<div class="sub">${marcar(e.sub)}</div>` : ""}
+      <div class="logo-grande">${LOGO}</div>${e.enlace ? `<div class="enlace">${esc(e.enlace)}</div>` : ""}`;
+  let h = e.etiqueta ? `<div class="etq">${esc(e.etiqueta)}</div>` : "";
+  if (e.cifra) h += `<div class="cifra acento">${esc(e.cifra)}</div>`;
+  h += `<h1 class="titulo">${marcar(e.titulo)}</h1>`;
+  if (e.sub) h += `<div class="sub">${marcar(e.sub)}</div>`;
+  if (e.puntos && e.puntos.length) h += `<div class="puntos">${e.puntos.map((p, i) => `<div><i>${i + 1}</i><span>${marcar(p)}</span></div>`).join("")}</div>`;
+  return h;
+}
+$("escenas").innerHTML = D.escenas.map((e, i) => `<section class="escena ${e.tipo}" id="s${i}">${htmlEscena(e)}</section>`).join("");
+if (D.escenas.some(e => e.tipo === "cierre")) $("s" + (D.escenas.length - 1)).dataset.sinLogo = "1";
+
+// Cada palabra de los títulos en su propio <span> (respeta el resaltado .acento).
+document.querySelectorAll(".escena .titulo").forEach(h => {
+  const partir = nodo => [...nodo.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(w => {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { f.append(w); return; }
+        const sp = document.createElement("span"); sp.className = "palabra"; sp.textContent = w; f.append(sp);
+      });
+      n.replaceWith(f);
+    } else if (n.classList && n.classList.contains("acento")) { n.classList.add("palabra"); }
+    else { partir(n); }
+  });
+  partir(h);
+});
+
+const TOTAL = D.escenas.reduce((s, e) => s + e.duracion, 0);
+window.TOTAL = TOTAL;
+
+window.pintar = function (t) {
+  let inicio = 0;
+  D.escenas.forEach((e, i) => {
+    const el = $("s" + i), dur = e.duracion, local = t - inicio;
+    if (local >= 0 && local < dur) {
+      const entrada = suave(local / FUNDIDO), salida = i === D.escenas.length - 1 ? 1 : suave((dur - local) / FUNDIDO);
+      el.style.opacity = Math.min(entrada, salida);
+      const zoom = 1 + 0.035 * (local / dur) - (1 - entrada) * 0.04 + (1 - salida) * 0.03;
+      el.style.transform = `translateY(${(1 - entrada) * 30}px) scale(${zoom})`;
+      el.style.filter = `blur(${((1 - entrada) + (1 - salida)) * 6}px)`;
+      el.querySelectorAll(".titulo .palabra").forEach((w, j) => {
+        const q = lim((local - 0.15 - j * 0.07) / 0.35);
+        const rebote = q < 1 ? 1 - Math.pow(1 - q, 3) * Math.cos(q * Math.PI * 1.5) : 1;
+        w.style.opacity = suave(q * 1.6);
+        w.style.transform = `translateY(${(1 - rebote) * 46 * D.k}px)`;
+      });
+      const nPal = el.querySelectorAll(".titulo .palabra").length;
+      const despues = 0.5 + nPal * 0.07;   // lo demás entra cuando ya se leyó el título
+      el.querySelectorAll(".sub, .cifra, .logo-grande, .enlace").forEach((x, j) => {
+        const q = suave((local - despues - j * 0.2) / 0.4);
+        x.style.opacity = q; x.style.transform = `translateY(${(1 - q) * 24 * D.k}px)`;
+      });
+      el.querySelectorAll(".puntos div").forEach((x, j) => {
+        const q = suave((local - despues - 0.2 - j * Math.min(0.9, (dur - despues - 1.5) / Math.max(1, j + 1))) / 0.4);
+        x.style.opacity = q; x.style.transform = `translateX(${(1 - q) * -40 * D.k}px)`;
+      });
+      el.querySelectorAll(".barra").forEach(x => { x.style.transform = `scaleX(${suave((local - despues) / 0.6)})`; });
+      $("logo-esq").style.opacity = (e.tipo === "cierre" || e.tipo === "intro") ? 0 : 0.9;
+    } else {
+      el.style.opacity = 0;
+    }
+    inicio += dur;
+  });
+  // Barrido de color en cada corte (cruza la pantalla en 0,5 s centrado en el corte).
+  let corte = 0, barrido = -1;
+  for (const e of D.escenas.slice(0, -1)) {
+    corte += e.duracion;
+    const q = (t - (corte - 0.25)) / 0.5;
+    if (q >= 0 && q <= 1) barrido = q;
+  }
+  $("barrido").style.left = barrido < 0 ? "-140%" : `${-140 + barrido * 280}%`;
+  // Formas de fondo que flotan despacio.
+  $("f1").style.transform = `translate(${D.ancho * (0.62 + 0.08 * Math.sin(t / 3))}px, ${D.alto * (-0.2 + 0.06 * Math.cos(t / 4))}px)`;
+  $("f2").style.transform = `translate(${D.ancho * (-0.15 + 0.07 * Math.cos(t / 3.5))}px, ${D.alto * (0.55 + 0.06 * Math.sin(t / 2.8))}px)`;
+};
+pintar(0);
+</script>
+</body>
+</html>
