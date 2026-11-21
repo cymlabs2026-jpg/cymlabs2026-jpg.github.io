@@ -192,7 +192,7 @@ def cargar_locucion(carpeta: Path) -> dict[str, tuple[Path, float]]:
 
 
 def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: str = "video_01_version_animada.mp4",
-          musica: bool = False) -> None:
+          musica: bool = False, subtitulos: bool = False) -> None:
     from playwright.sync_api import sync_playwright
 
     config = cargar_config()
@@ -252,12 +252,12 @@ def video(modelo_voz: str | None, locucion: str | None = None, nombre_salida: st
     imagen = trabajo / "imagen.mp4" if clips else salida
     medios.concatenar([trabajo / "intro.mp4", animacion, trabajo / "cierre.mp4"], imagen)
     if clips:
-        mezclar_locucion(imagen, salida, clips, escenas, marca["intro_s"], trabajo, musica, cierre_s)
+        mezclar_locucion(imagen, salida, clips, escenas, marca["intro_s"], trabajo, musica, cierre_s, subtitulos)
     print(f"Listo: {salida} ({medios.duracion(salida):.0f} s)")
 
 
 def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, intro_s: float, trabajo: Path,
-                     musica: bool = False, cierre_s: float = 15.0) -> None:
+                     musica: bool = False, cierre_s: float = 15.0, subtitulos: bool = False) -> None:
     """Pone cada frase en el momento de su escena, añade la música (si se pide), nivela y escribe los subtítulos."""
     inicios, t = {}, intro_s
     for e, d in escenas:
@@ -303,9 +303,20 @@ def mezclar_locucion(imagen: Path, salida: Path, clips: dict, escenas: list, int
     medicion = medios.ffmpeg("-i", str(audio), "-af", "ebur128", "-f", "null", "-").stderr
     integrado = float(re.findall(r"I:\s+(-?[\d.]+) LUFS", medicion)[-1])
     ganancia = -16.0 - integrado
+    video_args = ["-c:v", "copy"]
+    if subtitulos:
+        # Subtítulos animados quemados en la imagen (palabra activa resaltada, estilo CapCut).
+        from faster_whisper import WhisperModel
+        from agente_video.subtitulos_animados import generar_ass, tiempos_palabras
+
+        modelo = WhisperModel("small", device="cpu", compute_type="int8")
+        palabras = [{"inicio": inicios[clave], "palabras": tiempos_palabras(wav, LOCUCION[clave], modelo)}
+                    for clave, (wav, _) in clips.items()]
+        ass = generar_ass(palabras, trabajo / "subtitulos.ass")
+        video_args = ["-vf", f"ass={ass}", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p"]
     medios.ffmpeg("-i", str(imagen), "-i", str(audio), "-map", "0:v", "-map", "1:a",
                   "-af", f"volume={ganancia:.2f}dB,alimiter=limit=0.84:attack=3:release=60:level=false",
-                  "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{duracion:.3f}", str(salida))
+                  *video_args, "-c:a", "aac", "-b:a", "192k", "-t", f"{duracion:.3f}", str(salida))
 
     plan = [{"inicio": 0, "fin": duracion, "tipo": "normal", "velocidad": 1.0}]
     salida.with_suffix(".srt").write_text(generar_srt(bloques, plan), encoding="utf-8")
@@ -318,5 +329,7 @@ if __name__ == "__main__":
     parser.add_argument("--locucion", help="Carpeta con la locución grabada por bloques")
     parser.add_argument("--salida", default="video_01_version_animada.mp4", help="Nombre del video final")
     parser.add_argument("--musica", action="store_true", help="Añade música de fondo original (compuesta por código)")
+    parser.add_argument("--subtitulos", action="store_true",
+                        help="Quema subtítulos animados (palabra activa resaltada) en el video")
     args = parser.parse_args()
-    previa() if args.previa else video(args.voz, args.locucion, args.salida, args.musica)
+    previa() if args.previa else video(args.voz, args.locucion, args.salida, args.musica, args.subtitulos)

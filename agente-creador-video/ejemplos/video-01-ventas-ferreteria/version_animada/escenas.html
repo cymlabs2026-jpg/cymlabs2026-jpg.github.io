@@ -11,10 +11,14 @@ body::before { z-index: 0; }
 .sub { margin-top: 22px; font-size: 40px; font-weight: 500; color: var(--texto-suave); max-width: 1400px; }
 .etq { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 28px; letter-spacing: .18em; text-transform: uppercase; color: var(--cian); margin-bottom: 26px; }
 .rojo { color: #E11D48; }
+/* Animaciones estilo CapCut: palabras del título que suben, barrido de color entre escenas */
+.palabra { display: inline-block; will-change: transform, opacity; }
+.barrido { position: absolute; top: 0; bottom: 0; width: 140%; left: -140%; z-index: 5; background: var(--degradado);
+           transform: skewX(-12deg); pointer-events: none; }
 .logo-esq { position: absolute; right: 70px; top: 56px; width: 230px; opacity: .9; z-index: 2; }
 
 /* Escena: hoja de cálculo */
-.hoja { position: absolute; left: 150px; right: 150px; top: 470px; height: 500px; overflow: hidden; border-radius: 22px;
+.hoja { position: absolute; left: 150px; right: 150px; top: 440px; height: 450px; overflow: hidden; border-radius: 22px;
         border: 2px solid #E5E7EB; background: #fff; box-shadow: 0 30px 60px rgba(11,18,32,.10); }
 .hoja table { width: 100%; border-collapse: collapse; font-size: 25px; table-layout: fixed; }
 .hoja td, .hoja th { overflow: hidden; text-overflow: ellipsis; }
@@ -38,7 +42,7 @@ body::before { z-index: 0; }
 .cifra span { font-size: 38px; color: var(--texto-suave); font-weight: 600; }
 
 /* Gráficos de barras */
-.grafico { position: absolute; left: 150px; right: 150px; bottom: 120px; height: 440px; display: flex; align-items: flex-end; gap: 22px;
+.grafico { position: absolute; left: 150px; right: 150px; bottom: 215px; height: 400px; display: flex; align-items: flex-end; gap: 22px;
            border-bottom: 4px solid #E5E7EB; }
 .col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; }
 .col .b { width: 100%; border-radius: 12px 12px 0 0; background: var(--degradado); height: 0; }
@@ -157,6 +161,7 @@ body::before { z-index: 0; }
 </section>
 
 <div class="logo-esq" id="logo-esq">/*LOGO*/</div>
+<div class="barrido" id="barrido"></div>
 
 <script>
 const D = /*DATOS*/;
@@ -196,6 +201,24 @@ $("e5-sello").textContent = `${millones(D.candelaria[0][1])} → ${millones(D.ca
 
 $("e8-lista").innerHTML = D.decisiones.map(([t, s], i) =>
   `<div class="decision"><i>${i + 1}</i><div>${t}<small>${s}</small></div></div>`).join("");
+
+// Cada palabra de los títulos va en su propio <span> (respeta el resaltado .acento).
+document.querySelectorAll(".escena .titulo").forEach(h => {
+  const partir = nodo => [...nodo.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(w => {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { f.append(w); return; }
+        const sp = document.createElement("span"); sp.className = "palabra"; sp.textContent = w; f.append(sp);
+      });
+      n.replaceWith(f);
+    } else if (n.classList && n.classList.contains("acento")) {
+      n.classList.add("palabra");
+    } else { partir(n); }
+  });
+  partir(h);
+});
 
 // ---------- Animación: el estado depende solo del tiempo t ----------
 function crecer(id, p, a, b) {
@@ -256,13 +279,31 @@ window.pintar = function (t) {
     if (local >= 0 && local < dur) {
       const entrada = suave(local / FUNDIDO), salida = suave((dur - local) / FUNDIDO);
       el.style.opacity = Math.min(entrada, salida);
-      el.style.transform = `translateY(${(1 - entrada) * 24}px)`;
+      // Acercamiento lento durante toda la escena y pequeño "pop" de entrada.
+      const zoom = 1 + 0.03 * (local / dur) + (1 - entrada) * -0.04 + (1 - salida) * 0.03;
+      el.style.transform = `translateY(${(1 - entrada) * 30}px) scale(${zoom})`;
+      el.style.filter = `blur(${((1 - entrada) + (1 - salida)) * 6}px)`;
+      // Las palabras del título entran una tras otra con un rebote corto.
+      el.querySelectorAll(".titulo .palabra").forEach((w, i) => {
+        const q = lim((local - 0.15 - i * 0.07) / 0.35);
+        const rebote = q < 1 ? 1 - Math.pow(1 - q, 3) * Math.cos(q * Math.PI * 1.5) : 1;
+        w.style.opacity = suave(q * 1.6);
+        w.style.transform = `translateY(${(1 - rebote) * 46}px)`;
+      });
       ANIMAR[id](local / dur, local);
     } else {
       el.style.opacity = 0;
     }
     inicio += dur;
   }
+  // Barrido de color en cada cambio de escena (cruza la pantalla en 0,5 s centrado en el corte).
+  let corte = 0, barrido = -1;
+  for (const [, dur] of ESCENAS.slice(0, -1)) {
+    corte += dur;
+    const q = (t - (corte - 0.25)) / 0.5;
+    if (q >= 0 && q <= 1) barrido = q;
+  }
+  $("barrido").style.left = barrido < 0 ? "-140%" : `${-140 + barrido * 280}%`;
 };
 pintar(0);
 </script>
